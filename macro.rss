@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Deniz's Web blog</title><link>https://dendiz.github.io</link><description>Deniz's personal web space</description><language>en-US</language><lastBuildDate>Sun, 01 May 2022 01:50:06 GMT</lastBuildDate><generator>rfeed v1.1.1</generator><docs>https://github.com/svpino/rfeed/blob/master/README.md</docs><item><title>Micro rss</title><description>Micro blog syndication</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Sun, 07 Nov 2021 00:00:00 GMT</pubDate><guid isPermaLink="true">micro-rss.html</guid><content:encoded>&lt;p&gt;The micro posts page no longer exists in HTML form, but can only be accessed via RSS.&lt;/p&gt;
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Deniz's Web blog</title><link>https://dendiz.github.io</link><description>Deniz's personal web space</description><language>en-US</language><lastBuildDate>Mon, 02 May 2022 01:50:06 GMT</lastBuildDate><generator>rfeed v1.1.1</generator><docs>https://github.com/svpino/rfeed/blob/master/README.md</docs><item><title>Micro rss</title><description>Micro blog syndication</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Sun, 07 Nov 2021 00:00:00 GMT</pubDate><guid isPermaLink="true">micro-rss.html</guid><content:encoded>&lt;p&gt;The micro posts page no longer exists in HTML form, but can only be accessed via RSS.&lt;/p&gt;
 &lt;hr /&gt;
 &lt;h2&gt;You can subscribe &lt;a href="/micro.rss"&gt;here&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;A good news reader for iOS is NetNewsWire and there are many many other RSS readers
@@ -257,53 +257,6 @@ predicates have an implied and.&lt;/p&gt;
 &lt;p&gt;and finally the top level is calculated as true.&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;
 &lt;/code&gt;&lt;/pre&gt;
-</content:encoded></item><item><title>Calculation of support/resistance zones</title><description>A simple clustering method for calculation of support/resistance zones in price data</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Tue, 23 Jul 2019 00:00:00 GMT</pubDate><guid isPermaLink="true">efficient_calculation_of_support_resistance_zones.html</guid><content:encoded>&lt;p&gt;support/resistance zones are quite essential when trading breakouts. Support is 
-a line below the price on the charts that the price bounced back from a couple 
-of times. Resistance is the same, but above the price. When a human looks at a 
-chart, it’s pretty easy for them to see these points on the chart:&lt;/p&gt;
-&lt;p&gt;&lt;a href="/img/ecosrz1.png"&gt;/img/ecosrz1.png&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;the shaded are is a support/resistance zone, as the price tries multiple times 
-to go past that point and succeeds with that long green candle. How to get the 
-computer to recognize these points it an interesting exercise in programming. 
-The logic is this:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;gather all open, high, low close prices in an array and sort them.&lt;/li&gt;
-&lt;li&gt;define a parameter, called epsilon that will be the sensitivity for the zone.&lt;/li&gt;
-&lt;li&gt;start from the first price and group all prices less than epsilon away from this in a list.&lt;/li&gt;
-&lt;li&gt;remove the added prices from the original array and continue group the remaining prices.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;in the end you will have a list of lists. The more items in the list, the 
-stronger the support/resistance around that area.&lt;/p&gt;
-&lt;p&gt;The worst case running time for the above algorithm is n^2 if all the prices are 
-more than epsilon away from each other, which is not very good. So we need to 
-improve on that.&lt;/p&gt;
-&lt;p&gt;We can build the groups as we are iterating the original array like this:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;maintain a list of groups, initialized with a single group containing the first price.&lt;/li&gt;
-&lt;li&gt;as we are iterating over the array, if the current element is less than epsilon away from the head&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;of the group we add it to that group. Otherwise we create a new group and add it into that group.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Collections.sort(data);
-
-        SuperList&amp;lt;SuperList&amp;lt;Double&amp;gt;&amp;gt; groups = new SuperList&amp;lt;&amp;gt;();
-        groups.add(new SuperList&amp;lt;&amp;gt;());
-        groups.get(0).add(data.get(0));
-        for (int i = 1; i &amp;lt; data.size(); i++) {
-            SuperList&amp;lt;Double&amp;gt; group = groups.getLast();
-            Double x = data.get(i);
-            if (Math.abs(x - group.get(0)) &amp;lt; epsilon) {
-                group.add(x);
-            } else {
-                SuperList&amp;lt;Double&amp;gt; newList = new SuperList&amp;lt;&amp;gt;();
-                newList.add(x);
-                groups.add(newList);
-            }
-        }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;I finally had the chance to plot the results of this, so I updated the post:&lt;/p&gt;
-&lt;p&gt;&lt;a href="/img/ecosrz2.png"&gt;/img/ecosrz2.png&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;The red zones are the resistance which is all tuples with price above the last 
-close price and the green zones are the support zones.&lt;/p&gt;
 </content:encoded></item><item><title>N-Gram sentence splitting</title><description>Using n-grams to figure out multiple item insertion to a list</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Sat, 29 Jun 2019 00:00:00 GMT</pubDate><guid isPermaLink="true">ngram-sentence-split.html</guid><content:encoded>&lt;p&gt;&lt;strong&gt;The Idea&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;one of the biggest annoyences in adding items to reminder app using voice is that the agent can't figure out if there are multiple items in that utterance. Here is an example:&lt;/p&gt;
 &lt;p&gt;&amp;quot;add bananas oranges and lemons to my list&amp;quot;&lt;/p&gt;
