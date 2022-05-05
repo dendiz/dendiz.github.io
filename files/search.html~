@@ -1,0 +1,96 @@
+<html>
+  <head>
+    <script src="/js/underscore-min.js"></script>
+    <script src="/js/lemmatizer/lemmatizer.js"></script>
+    <script src="/search_trie.json"></script>
+  </head>
+
+  <body>
+    <div>This page contains a javascript and downloads ~200kb gzip'd index data</div>
+    <div>
+      <input type="text" id="query" placeholder="search term..." value="rediscovered"/>
+      <button onclick="search()">Search</button>
+    </div>
+    <div id="searchResults"></div>
+    <script>
+      
+      function loadTrie(word) {
+	  var docs = [];
+	  var node = window.searchTrie.trie;
+	  for(var i=0;i<word.length;i++) {
+	      var letter = word[i]
+	      if (!(letter in node)) {
+		  return [];
+	      }
+	      node = node[letter];
+	  }
+	  return node["fi"];
+      }
+      
+      function search() {
+	  window.document.getElementById("searchResults").innerHTML="";
+	  var query = document.getElementById("query").value
+	  var tokens = query.split(" ")
+	  var lemmatizer = new Lemmatizer();
+	  var lemmas = tokens.map(function(t) { return lemmatizer.only_lemmas(t); });
+	  lemmas.push(tokens);
+	  lemmas = _.flatten(lemmas);
+	  console.log(lemmas);
+
+
+	  var resultDocs = [];
+	  lemmas.forEach(function(lemma) {
+	      var docs = loadTrie(lemma);
+	      docs.forEach(doc => resultDocs.push({token: lemma, doc: doc}));
+	  });
+					 
+	  //TODO make reslutDocs uniq
+	  
+	  //resultDocs = _.chain(resultDocs).flatten().uniq().value();
+
+	  console.log("docs", resultDocs);
+	  fetches = resultDocs.map(doc => {
+	      var url = '/post/' + window.searchTrie.files[doc.doc] + '?' + Math.random();
+	      return fetch(url);
+	  });
+	  Promise.all(fetches).then(responses => {
+	      console.log('responses',responses);
+	      var result = responses.map(response => {
+		  return response.text();
+	      });
+	      return Promise.all(result);
+
+	  }).then(docs => {
+	      var container = window.document.getElementById("searchResults");
+	      container.insertAdjacentHTML('beforeend', 'Search results');
+	      if (docs.length == 0) {
+		  container.insertAdjacentHTML('beforeend', 'Nothing found');
+	      }
+	      docs.forEach((doc, i) => {
+		  console.log('result docs', resultDocs[i]);
+		  var parser = new DOMParser();
+		  var document = parser.parseFromString(doc, 'text/html');
+		  var content = document.querySelector(".content");
+		  var start = content.innerText.indexOf(resultDocs[i].token);
+		  
+		  console.log(content.innerText);
+		  console.log("search token", resultDocs[i].token);
+		  console.log("index", content.innerText.indexOf(resultDocs[i].token));
+		  content = content.innerText;
+		  var prefix = "..." + content.substring(start - 40, start - 1)
+		  var hilite = "<strong>" + resultDocs[i].token + "</strong>"
+		  var endIdx = start + resultDocs[i].token.length + 1;
+		  var suffix = content.substring(endIdx, endIdx +  40) + "...";
+		  var resultUrl = '/post/' + window.searchTrie.files[resultDocs[i].doc] + '?' + Math.random();
+		  var title = '<a href="'+resultUrl+'">' + document.querySelector("title").innerText + "</a>";
+
+		  var resultText = "<div>" + title + "</div><div>" + prefix + " " + hilite + " " + suffix + "</div>";
+		  console.log('container', container, query);
+		  container.insertAdjacentHTML('beforeend',resultText);
+		  
+	      });
+	  });											       
+      }
+    </script>
+  </body>
+</html>
