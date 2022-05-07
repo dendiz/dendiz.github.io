@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CORS with spring boot</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="initial-scale=1">
+      <link rel="stylesheet" href="/css/style.css">
+    </head>
+    <body>
+        <div>
+        <strong>
+        <a href="/micro/micro-index.html" onClick="this.href+='?rnd='+new Date().getTime()">Micro</a> &middot; 
+        <a href="/post/index.html" onClick="this.href+='?rnd='+new Date().getTime()">Macro</a> &middot; 
+        <a href="/post/about.html">About</a> &middot; 
+        <a href="/post/now.html">Now</a> &middot; 
+        <a href="/post/fn.html">fn</a>
+        &middot;
+        <a href="/twtxt.txt">twtxt</a>
+        </strong>
+        </div>
+        <hr />
+        <div id="main">
+        <h1 id="title">CORS with spring boot</h1>
+        <div id="date"><em>created 2018-05-09 </em></div>
+        <div class="content">
+        <p>CORS (Cross Origin Resource Sharing) allows to make cross domain ajax requests for allowed domain. To setup CORS in spring add the following filter</p>
+<pre><code>@Component
+public class CORSFilter implements Filter {
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+
+    }
+
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+        HttpServletResponse response = (HttpServletResponse) res;
+        response.setHeader(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;);
+        response.setHeader(&quot;Access-Control-Allow-Methods&quot;, &quot;POST, GET, PUT, OPTIONS, DELETE&quot;);
+        response.setHeader(&quot;Access-Control-Max-Age&quot;, &quot;3600&quot;);
+        response.setHeader(&quot;Access-Control-Allow-Headers&quot;, &quot;Origin, X-Requested-With, Content-Type, Accept&quot;);
+        chain.doFilter(req, res);
+    }
+
+    @Override
+    public void destroy() {
+
+    }
+</code></pre>
+<p>The ‘Access-Control-Allow-Origin’ parameter controls which domains will be allowed to make cross domain requests and ‘Access-Control-Allow-Methods’ defines the methods that will be allowed</p>
+
+        </div>
+        </div>
+	<footer>
+	<em>generated on 2022-05-07 00:18:00</em>
+	</footer>
+  Want to say something? Please <a href="mailto:deniz.dizman@gmail.com?subject=CORS with spring boot">send</a> an email and I will update this post with our correspondance.
+    </body>
+</html>

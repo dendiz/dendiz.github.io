@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Anatomy of a chess engine</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="initial-scale=1">
+      <link rel="stylesheet" href="/css/style.css">
+    </head>
+    <body>
+        <div>
+        <strong>
+        <a href="/micro/micro-index.html" onClick="this.href+='?rnd='+new Date().getTime()">Micro</a> &middot; 
+        <a href="/post/index.html" onClick="this.href+='?rnd='+new Date().getTime()">Macro</a> &middot; 
+        <a href="/post/about.html">About</a> &middot; 
+        <a href="/post/now.html">Now</a> &middot; 
+        <a href="/post/fn.html">fn</a>
+        &middot;
+        <a href="/twtxt.txt">twtxt</a>
+        </strong>
+        </div>
+        <hr />
+        <div id="main">
+        <h1 id="title">Anatomy of a chess engine</h1>
+        <div id="date"><em>created 2015-05-09 </em></div>
+        <div class="content">
+        <p>Let's check out the anatomy of a chess engine.</p>
+<h1>Board Representation</h1>
+<p>The first thing we will tackle in programming our chess engine is a representation of the board. We will use the technique called a 10×12 board with sentinel markers. In this method the 8×8 chess board is wrapper with an extra 2 rows at the top and bottom and extra rows on the right and left side as in the figure</p>
+<p><a href="/img/10x12-board.png">/img/10x12-board.png</a></p>
+<p>The blue squares are the actual chess board and the orange squares the sentinel squares that will come in handy when we are generating moves. You can think of the board as a 2 dimensional array in java. The square with the number 21 is the A1 square and the square 98 is the H8 square of the chess board. We will place our chess pieces in the array locations in this array. So say for example if a white pawn was represented with the value 2 then</p>
+<p><code>Board[21] = 2</code></p>
+<p>would mean that there is a white pawn on A1 (which is not a legal board state for chess – but just for the sake of an example bear with it)</p>
+<p>So let's dive right in and define a few classes that we will need to represent the board. First of some key squares that we will use throughout our engine go into a class</p>
+<pre><code>public class Squares {
+    public static final int A1 = 21;
+    public static final int B1 = 22;
+    public static final int C1 = 23;
+    public static final int D1 = 24;
+    public static final int E1 = 25;
+    public static final int F1 = 26;
+    public static final int G1 = 27;
+    public static final int H1 = 28;
+
+    public static final int A8 = 91;
+    public static final int B8 = 92;
+    public static final int C8 = 93;
+    public static final int D8 = 94;
+    public static final int E8 = 95;
+    public static final int F8 = 96;
+    public static final int G8 = 97;
+    public static final int H8 = 98;
+    public static final int NOSQ = 99;
+    public static final int OFFBOARD = 100;
+</code></pre>
+<p>now we will define some enumerations to make the code more programmer friendly so we don't see magic numbers everywhere</p>
+<pre><code>public class Rank {
+    public static final int RANK_1 = 0;
+    public static final int RANK_2 = 1;
+    public static final int RANK_3 = 2;
+    public static final int RANK_4 = 3;
+    public static final int RANK_5 = 4;
+    public static final int RANK_6 = 5;
+    public static final int RANK_7 = 6;
+    public static final int RANK_8 = 7;
+    public static final int RANK_NONE = 8;
+}
+
+public class File {
+
+    public static final int FILE_A = 0;
+    public static final int FILE_B = 1;
+    public static final int FILE_C = 2;
+    public static final int FILE_D = 3;
+    public static final int FILE_E = 4;
+    public static final int FILE_F = 5;
+    public static final int FILE_G = 6;
+    public static final int FILE_H = 7;
+    public static final int FILE_NONE = 8;
+}
+
+public class File {
+
+    public static final int FILE_A = 0;
+    public static final int FILE_B = 1;
+    public static final int FILE_C = 2;
+    public static final int FILE_D = 3;
+    public static final int FILE_E = 4;
+    public static final int FILE_F = 5;
+    public static final int FILE_G = 6;
+    public static final int FILE_H = 7;
+    public static final int FILE_NONE = 8;
+}
+
+public class Color {
+    public static final int WHITE = 0;
+    public static final int BLACK = 1;
+    public static final int BOTH = 2;
+}
+
+public class Color {
+    public static final int WHITE = 0;
+    public static final int BLACK = 1;
+    public static final int BOTH = 2;
+}
+
+public class Piece {
+    public static final int EMPTY = 0;
+    public static final int wP = 1;
+    public static final int wN = 2;
+    public static final int wB = 3;
+    public static final int wR = 4;
+    public static final int wQ = 5;
+    public static final int wK = 6;
+    public static final int bP = 7;
+    public static final int bN = 8;
+    public static final int bB = 9;
+    public static final int bR = 10;
+    public static final int bQ = 11;
+    public static final int bK = 12;
+}
+
+public class Piece {
+    public static final int EMPTY = 0;
+    public static final int wP = 1;
+    public static final int wN = 2;
+    public static final int wB = 3;
+    public static final int wR = 4;
+    public static final int wQ = 5;
+    public static final int wK = 6;
+    public static final int bP = 7;
+    public static final int bN = 8;
+    public static final int bB = 9;
+    public static final int bR = 10;
+    public static final int bQ = 11;
+    public static final int bK = 12;
+}
+</code></pre>
+<p>Ok these classes are pretty self-explanatory they are a bunch of definitions. Now for some real stuff</p>
+<pre><code>public class Board {
+    public static final int NUM_SQ = 120;
+    int[] filesBoard = new int[NUM_SQ];
+    int[] ranksBoard = new int[NUM_SQ];
+
+    private static Board instance;
+
+    private Board() {
+
+        init();
+    }
+
+    public static Board getInstance() {
+        if (instance == null) {
+            instance = new Board();
+        }
+        return instance;
+    }
+
+    public static int fileRank2Square(int file, int rank) {
+        return 21 + file + rank * 10;
+    }
+
+    public void init() {
+
+        for (int i = 0; i &lt; NUM_SQ; i++) { // part 1
+            filesBoard[i] = Squares.OFFBOARD;
+            ranksBoard[i] = Squares.OFFBOARD;
+        }
+
+        for (int file = File.FILE_A; file &lt;= File.FILE_H ; file++) { // part 2
+            for (int rank = Rank.RANK_1; rank &lt;= Rank.RANK_8; rank++) {
+                int sq = Board.fileRank2Square(file, rank);
+                filesBoard[sq] = file;
+                ranksBoard[sq] = rank;
+            }
+        }
+
+    }
+}
+</code></pre>
+<p>So we have here a basic initialization of the board. We have 2 arrays here that need attention: filesBoard and  ranksBoard . These two arrays hold the values for ranks and files. So after initialized the files board will look like</p>
+<p><a href="/img/10x12-fileboard.png">/img/10x12-fileboard.png</a></p>
+<p>and the rank file board will look like</p>
+<p><a href="/img/10x12-rankboard.png">/img/10x12-rankboard.png</a></p>
+<p>We have also a method that will return the index of a square for the given file and rank. So now on to the initialization part. First off we go and set everything slot in both arrays to an off square value to initialize the sentinel squares. Then we loop from file A rank 1 to file H rank 8 basically iterating over all of the squares on the chess board and set the file and rank values appropriately. After this initialization code has run the state of the arrays will like the figures above.</p>
+<p>Now lets write a test to make sure that our code is working as expected</p>
+<pre><code>@Test
+    public void testFilesBoardInit() {
+        Board b = Board.getInstance();
+        assertTrue(b.ranksBoard[0] == Squares.OFFBOARD);
+        assertTrue(b.ranksBoard[Squares.A1] == Rank.RANK_1);
+        assertTrue(b.filesBoard[Squares.A1] == File.FILE_A);
+
+        assertTrue(b.filesBoard[Squares.C8] == File.FILE_C);
+        assertTrue(b.ranksBoard[Squares.C8] == Rank.RANK_8);
+    }
+</code></pre>
+<h1>Board Flags</h1>
+<p>next some more variables in our board class to hold some board states.</p>
+<pre><code>int[] pieces = new int[NUM_SQ];
+    int side = Color.WHITE;
+    int fiftyMoves = 0;
+    int historyPly = 0;
+    int ply = 0;
+    int castlePerms = 0;
+
+</code></pre>
+<p>the pieces  array will hold the actual pieces as values that we defined in the Pieces class.</p>
+<p>the side  variable holds the current side to move, we just initialize it to white but later we may change it according to a given starting position.</p>
+<p>the fiftyMove  variable is used to determine a draw by fifty moves. This is a lesser known rule in chess so check out this wikipedia page if you don’t know the rule. This variable will get incremented for every move made, and will be reset if a pawn move or a capture happens. If the value every reaches 100 (that’s in half moves, so it’s 50 full moves) then either side is eligible to claim a draw.</p>
+<p>the historyPly  is the number of half-moves (a move by one side) since the beginning of the game. We will use this as an index for undoing moves later.</p>
+<p>the ply  variable is the number of moves in the search tree. Don’t worry about this – you will understand how it is used during the searching phase and move generation.</p>
+<p>the castlePerms  holds the castling permissions for both sides in an integer. The least significant bit represents white king side castling and the next white queen side castling and so on. So it takes 4 bits to represent all castling permissions. In the class CastleMask we define these bits. So to check if a white can castle king side all we need to do is bit wise and the castlePerms  variable with the corresponding value in CastleMask . Bit wise operations are a bit scary for most people so brush up on your bit wise operations by checking out this article.</p>
+<p>Here is the CastleMask class that we use to check the castling permissions</p>
+<pre><code>public class CastleMask {
+    int wk = 1;
+    int wq = 2;
+    int bk = 4;
+    int bq = 8;
+}
+</code></pre>
+<p>So for example if the castle permissions had a value of 3 which is 0011 in binary and we wanted to check if white can castle queen side we would do this operation castlePerm &amp; CastleMask.wq  and check if the result of this operation is 0 or 1. If it is 1 then white can castle queen side. If you apply this operation 0011 and 0010 ( CastleMask.wq  is 2 which is this in binary) the result will be 1 so white can castle queen side.</p>
+<h1>Piece lists</h1>
+<p>When we want to generate moves for the pieces on the board the first approach that comes to mind is looping through all the squares on the board and checking if the current square has a piece of the correct color for the side to move and generating the moves for that piece. But by using some extra memory – only very little we can do a bit better. Instead of going through the squares we will track pieces and know on which square that piece is currently sitting. Before we implement this idea lets add a few convenience variable that we will use later on for look-ups. So in Piece.java we need the following</p>
+<pre><code>    public int[] pieces = new int[]{EMPTY, wP, wN, wB, wR, wQ, wK, bP, bN, bB, bR, bQ, bK};
+    public boolean[] pieceBig = new boolean[]{false, false, true, true, true, true, true, false, true, true, true, true, true};
+    public boolean[] pieceMaj = new boolean[]{false, false, false, false, true, true, true, false, false, false, true, true, true};
+    public boolean[] pieceMin = new boolean[]{false, false, true, true, false, false, false, false, true, true, false, false, false};
+    public int[] pieceVal = new int[]{0, 100, 325, 325, 550, 1000, 50000, 100, 325, 325, 550, 1000, 50000};
+    public int[] pieceCol = new int[]{Color.BOTH, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, 
+        Color.WHITE,Color.BLACK, Color.BLACK, Color.BLACK, Color.BLACK, Color.BLACK, Color.BLACK};
+    public boolean[] piecePawn = new boolean[]{false, true, false, false, false, false, false, true, false, false, false, false, false};
+    public boolean[] pieceKnight = new boolean[]{false, false, true, false, false, false, false, false, true, false, false, false, false};
+    public boolean[] pieceKing = new boolean[]{false, false, false, false, false, false, true, false, false, false, false, false, true};
+    public boolean[] pieceRookQueen = new boolean[]{false, false, false, false, true, true, false, false, false, false, true, true, false};
+    public boolean[] pieceBishopQueen = new boolean[]{false, false, false, true, false, true, false, false, false, true, false, true, false};
+    public boolean[] pieceSlides = new boolean[]{false, false, false, true, true, true, false, false, false, true, true, true, false};
+
+</code></pre>
+<p>These are just some look-up tables and they are pretty simple but I’ll explain one just as an example. The pieceVal[]  array holds the values for each piece indexed by the piece index in the pieces[]  array. So the first element in the  pieces[]  array is EMPTY with an index of 0. The the element at pieceVal[0]  is also 0 because an empty piece does not have a value. The next element in the pieces[]  array at pieces[1]  is a white pawn. So the value in the pieceVal[1]  array is 100 signifying the value of a pawn etc. You get the basic idea behind this, feel free to leave a comment if anything is unclear.</p>
+<p>Now let’s get back to the piece lists. In Board.java we need the following arrays</p>
+<pre><code>int[] material = new int[2]; //WHITE,BLACK;
+    int[] pceNum = new int[13];
+    int[] pList = new int[130];
+    int enPassantSquare = 0;
+</code></pre>
+<p>The material[]  array holds the total value of material present at the board indexed by color. So if the white side has a single pawn on the board material[0]  would 100. Simple enough.</p>
+<p>The pceNum[]  array holds the number of pieces of a certain type on the board. This is again using the Piece.pieces[]  as the index. So the index of a white pawn is 1 in the pieces array, so pceNum[1]  would be 5 if there were 5 white pawns on the board. The pList[] array holds the squares for each of the pieces on the board. There can be a maximum of 10 pieces of the same kind on the board at a given state. How is that possible you ask? This is an edge case but think about this scenario: I promote each of may eight pawns to rooks and I already have my two rooks so that makes a total of ten rooks for me. Taking this logic into account we set aside ten slots for each piece. So the following position</p>
+<p><a href="/img/ah9syj4hw36s.png">/img/ah9syj4hw36s.png</a></p>
+<p>would have pceNum[1]  = 8 and pList = [0,0,0,0,0,0,0,0,A2,B2,C2,...]  where A2 is the actual integer value of the board index. To get the square from the piece list all we have to do is multiply the piece integer representation by 10 and to get the beginning index in the pList[] array then we can get the next pceNum[piece integer value] elements. Let’s add that to the Board class</p>
+<pre><code>  public static int pieceIndex(int piece, int pieceNum) {
+        return piece * 10 + pieceNum;
+    }
+
+</code></pre>
+<h1>Position Hashing</h1>
+<p>In this part we will lay the foundation of our position hashing. Position hashing is mapping a unique value to each unique position on the board. What makes a position unique? It’s basically the pieces on the board, and which squares they are on. If we have two knights on the board we cannot call this unique because we haven’t stated the squares the knights are on. But if we say two knights on the board on squares A1 and A8 we can say this is a unique position. We also have to factor in the side to play, the castling statuses and any en passant squares (If you don’t know what en passant means, take a look here). We will use a method called zorbist hashing to achieve this. The essentials of the hashing algorithm are like this: First we generate a random number for pieces on the board and XOR this with the current key. Then we XOR the resulting value with the side to move and XOR the resulting key with the en passant square etc until we have used all our defining attributes. Let’s do an example to solidify. Say that we have 3 pieces p1, p2 and p3 and our key k.</p>
+<pre><code>p1 = random();
+p2 = random();
+p3 = random();
+k = 0;
+</code></pre>
+<p>we initialized our pieces and our key. Next up XOR</p>
+<pre><code>k = k XOR p1
+k = k XOR p2
+k = k XOR p3
+</code></pre>
+<p>this will yield our final key for the position (we have discarded en passant and the other stuff for simplicity). The nice thing about this hashing is that if we want to take out p1 from the hash we don’t have to reconstruct the hash from the beginning for p2 and p3, we can just XOR p1 out of the hash like this</p>
+<pre><code>k = k XOR p1
+</code></pre>
+<p>and this would give the same result as doing</p>
+<pre><code>k = 0
+k = k XOR p2
+k = k XOR p3
+</code></pre>
+<p>So here is our random number generator and our variable to hold the position key that goes into our Board class</p>
+<pre><code>public static int random() {
+        return ((int)Math.floor((Math.random()*255)+1) &lt;&lt; 23) | ((int)Math.floor((Math.random()*255)+1) &lt;&lt; 16)
+                | ( (int) Math.floor((Math.random()*255)+1) &lt;&lt; 8) | (int) Math.floor((Math.random()*255)+1);
+
+    }
+    int posKey = 0;
+
+</code></pre>
+<h1>Position hashing and key generation</h1>
+<p>In this part we will incorporate the hashing into our engine. We will introduce a new class called Hash that will take care of all hashing related functions. We will need to initialize a table for each piece and square combination, a hashing key for side to move and for the castling permissions. Here is the definition part in code</p>
+<pre><code>public  int[] pieceKeys = new int[13 * 120];
+    public  int sideKey;
+    public  int[] castleKey = new int[16];
+    public static Hash instance;
+
+</code></pre>
+<p>The reason we are using 13 x 120 is that our board has sentinel squares around it and it’s a total of 120 squares for 13 piece types. The castling permissions is a 4 bit number which is 16 in decimal so we use an array of length 16. We will be applying the singleton pattern that is why we defined an instance variable. Now let’s initialize these tables with some values</p>
+<pre><code>private Hash() {}
+    public static Hash getInstance() {
+        if (instance == null) {
+            instance = new Hash();
+        }
+        return instance;
+    }
+
+    public void initHashKeys() {
+        for (int i = 0; i &lt; 13 * 120; i++) {
+            pieceKeys[i] = Board.random();
+        }
+        sideKey = Board.random();
+        for (int i = 0; i &lt; 16; i++) {
+            castleKey[i] = Board.random();
+        }
+    }
+</code></pre>
+<p>This is fairly simple, we just put a random number for every slot in all the arrays. Moving on to the actual key generation:</p>
+<pre><code>public int generatePosKey() {
+        int finalKey = 0;
+        for (int sq = 0; sq &lt; Board.NUM_SQ; sq++) {
+            int piece = Board.getInstance().pieces[sq];
+            if (piece != Piece.EMPTY &amp;&amp; piece != Squares.OFFBOARD) {
+                finalKey ^= pieceKeys[(piece * 120) + sq];
+            }
+        }
+        if (Board.getInstance().side == Color.WHITE) {
+            finalKey ^= sideKey;
+        }
+
+        if (Board.getInstance().enPassantSquare != Squares.NOSQ) {
+            finalKey ^= pieceKeys[Board.getInstance().enPassantSquare];
+        }
+        finalKey ^= castleKey[Board.getInstance().castlePerms];
+        return finalKey;
+    }
+
+</code></pre>
+<p>Ok, here we iterate through all of the squares on the board (including the sentinels) and if there is a piece on that square and it is not a sentinel square we get the corresponding random number from our previously generated pieceKeys[]  array and XOR it with the hash key. Remember we laid our our pieceKeys[]  array by piece type and 120 slots for each piece type. So we can access it by multiplying the piece integer value with 120 and adding the square. We incorporate the side to move into the key if it’s white or skip it for black. If the en passant square is set we also XOR that into our key. We could have also accessed the pieceKeys[]  like this for en passant pieceKeys[Piece.EMPTY * 120 + sq]  but Piece.EMTPY is zero so we can leave it out.</p>
+<p>We can also add some tests to verify that our initialization and generation are working as expected</p>
+<pre><code>@Test
+    public void shouldInitHashKeys() {
+        Hash.getInstance().initHashKeys();
+        for (int i = 0; i &lt; 13 * 120; i++) {
+            int pieceKey = Hash.getInstance().pieceKeys[i];
+            assertTrue(pieceKey != 0);
+        }
+        assertTrue(Hash.getInstance().sideKey != 0);
+        for (int i = 0; i &lt; 16; i++) {
+            assertTrue(Hash.getInstance().castleKey[i] != 0);
+        }
+    }
+
+    @Test
+    public void shouldGeneratePosKey() {
+        Board.getInstance().pieces[21] = Piece.wP;
+        Hash.getInstance().initHashKeys();
+        int key = Hash.getInstance().generatePosKey();
+        assertTrue(key != 0);
+    }
+
+</code></pre>
+
+        </div>
+        </div>
+	<footer>
+	<em>generated on 2022-05-07 00:18:00</em>
+	</footer>
+  Want to say something? Please <a href="mailto:deniz.dizman@gmail.com?subject=Anatomy of a chess engine">send</a> an email and I will update this post with our correspondance.
+    </body>
+</html>
