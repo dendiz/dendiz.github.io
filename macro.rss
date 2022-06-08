@@ -1,5 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Deniz's Web blog</title><link>https://dendiz.github.io</link><description>Deniz's personal web space</description><language>en-US</language><lastBuildDate>Mon, 06 Jun 2022 19:50:05 GMT</lastBuildDate><generator>rfeed v1.1.1</generator><docs>https://github.com/svpino/rfeed/blob/master/README.md</docs><item><title>CORS with spring boot</title><description>setting up a CORS filter in spring boot</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Wed, 09 May 2018 00:00:00 GMT</pubDate><guid isPermaLink="true">cors-with-spring-boot.html</guid><content:encoded>&lt;p&gt;CORS (Cross Origin Resource Sharing) allows to make cross domain ajax requests for allowed domain. To setup CORS in spring add the following filter&lt;/p&gt;
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Deniz's Web blog</title><link>https://dendiz.github.io</link><description>Deniz's personal web space</description><language>en-US</language><lastBuildDate>Wed, 08 Jun 2022 04:12:55 GMT</lastBuildDate><generator>rfeed v1.1.1</generator><docs>https://github.com/svpino/rfeed/blob/master/README.md</docs><item><title>Automatic versioning of Spring boot projects</title><description>No need to manually bump versions with these tricks</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Fri, 22 Apr 2022 00:00:00 GMT</pubDate><guid isPermaLink="true">2022_04_22-versioning-projects-jenkins-gradle-docker-reposilite.html</guid><content:encoded>&lt;h1&gt;Problem&lt;/h1&gt;
+&lt;p&gt;Everytime you publish to a repo you need to manually bump the version. The version number is in a couple of different places (like build file, Dockerfile) and you forget it.&lt;/p&gt;
+&lt;h1&gt;Solution&lt;/h1&gt;
+&lt;p&gt;Using jenkins build number as the version.&lt;/p&gt;
+</content:encoded></item><item><title>A new rackmount server</title><description>After 8 years I built a new machine</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Mon, 17 Jan 2022 00:00:00 GMT</pubDate><guid isPermaLink="true">2022_01_17-new-server.html</guid><content:encoded>&lt;p&gt;I got a rack last year for my birthday and it's been sitting there kind of empty. I installed a 24 port switch (which is way overkill) and 2 shelves. It’s been housing my fanless micro pc box, a small Synology NAS and a laptop with the lid closed on one of the shelves. It’s blasphemy to own a rack and use it as a cabinet but I just didn’t have the time or energy to do the research and get a rack mount server.. Until now. There are an abundant amount of used servers on Amazon and Ebay but I don’t think I can put up with furnace level sounds in my small office so I went ahead and built a PC that is basically rack mounted. This hardware isn’t mission critical so I don’t actually need server grade hardware even though it’s running 24/7.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;sanirim yillar sonra ilk defa bir PC toplayacam. En son 2014 yilinda - Gokturk'te oturuyorduk bunu yaptigimda. Bu sefer ama rack mount bir sasiye - topluyorum o yuzden arastirmam gerekli olacak. - - dd — 2021-02-15 21:05:17&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;So I went on Amazon and compiled mid level components to keep the cost and noise down. I got&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ASRock B450M PRO4 AM4 AMD mobo&lt;/li&gt;
+&lt;li&gt;Ryzen 5 5600g&lt;/li&gt;
+&lt;li&gt;64gb RAM&lt;/li&gt;
+&lt;li&gt;1tb NAND SSD&lt;/li&gt;
+&lt;li&gt;Rosewill rackmount chassis&lt;/li&gt;
+&lt;li&gt;Noctua low profile silent CPU cooler&lt;/li&gt;
+&lt;li&gt;3 x 80mm silent Noctua case fans&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href="/img/220117-s1.png"&gt;/img/220117-s1.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/220117-s2.png"&gt;/img/220117-s2.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;My main concern was building a silent computer so I got a 2U rack for better airflow and kept the CPU a mid-range one. Noctua fans are essential here as the fans that come out of the box are pretty loud. I still haven’t installed the 3 80mm fans from Noctua but with the silent CPU cooler and default case fans I’m getting around 45-50db noise levels which is acceptable. I expect this to get down to the 30s with the new fans.&lt;/p&gt;
+&lt;p&gt;The build itself took me about 4 hours to complete. The case is very tight and there is not a lot of room to maneuver in there. I could not remove the center disk housing because of a screw that just would not come off. I have seen screws that turn but do not go in but it's the first time I have seen a screw that turns but doesn't come out 🙃. Another hiccup was the installation of the CPU cooler which had a mounting plate that is installed on the rear side of the motherboard so I had to uninstall it and attach the plate and reinstall.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/220117-s3.png"&gt;/img/220117-s3.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Migrating the services went smoothly. I keep everything as a docker container so I just had to copy over the volumes and directories. I switched from CGit (which consumes low resources) to Gitea and I had to manually organize and import some of the repos. The main reason for the switch is the built-in mirroring and issue tracking. I also ditched Laminar CI for Jenkins now that I have more resources for the convenience. I will also use this machine as a TechScan machine once the program is ready.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/220117-s4.png"&gt;/img/220117-s4.png&lt;/a&gt;&lt;/p&gt;
+</content:encoded></item><item><title>What happened in 2020</title><description>A look back at the most interesting events of 2020 in my life</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Sat, 19 Dec 2020 00:00:00 GMT</pubDate><guid isPermaLink="true">2020-summary.html</guid><content:encoded>&lt;h3&gt;Good old days&lt;/h3&gt;
+&lt;p&gt;Let's take a trip down memory lane for a year that was like no other:&lt;/p&gt;
+&lt;p&gt;January was the last time we had date night. I cannot believe almost a whole year has gone by without us getting to dine at a nice restaurant. I'm a typical stay-at-home introvert but this is hard to believe even for me.&lt;/p&gt;
+&lt;h3&gt;Looting&lt;/h3&gt;
+&lt;p&gt;Then struck the whole COVID madness. Scenes like this&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/loots.jpg"&gt;/img/loots.jpg&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;became the norm throughout the country. Luckily for us we never got in a dire situation because of the hoarding that people were doing. It's crazy that people act the way that they do when they are panicking but I think the intervention from the authorities (e.g super markets) came too late. They should have started limiting purchases of certain items a lot sooner. Not strictly limiting, e.g keeping track but discouraging people from buying more than they need. I think Costco made a great move by saying they are not going to accept returns for toilet papers.&lt;/p&gt;
+&lt;h3&gt;Day care issues&lt;/h3&gt;
+&lt;p&gt;The impact of COVID is felt by all and I think we were extremely lucky to not contract a virus and were minimally affected by the changes caused by the virus. The most significant changes in our lives were that we started working from home and that our daughter had to start at a different day care. Ironically the new day care she started was the day care that we had considered and decided against last year. The main reasons we decided against it was that it was farther away from where we lived, they didn't provide diapers and my wife thought it was an inconvenience she wasn't willing to put up with and it was 30% more expensive. Well after COVID hit our original day care (which is sister schools with this day care) said that attendance was not enough to justify keeping the school open and that their corporate HQ decided to merge schools in the region. Unfortunately we can't afford not to send our kid to school because we both work and it's just impossible to have her around the house and get any work done. I really do feel for the families that are in this situation due to school shutdowns and wish them all the strength in the world so that they can maintain their sanity. Anyways this change in day care turned out to be a good change. The new place had a much better program with more engagement and more STEM oriented curriculum (yes day cares have  a curriculum). The updates and reports that the teachers were providing via the app were very detailed and she has learned so much after she started here. After some time the old day care announced through the app that they were reopening but we decided to keep her at the new care permanently.&lt;/p&gt;
+&lt;h3&gt;A forgotten drink&lt;/h3&gt;
+&lt;p&gt;I made my first &amp;quot;Churchill&amp;quot; drink since moving to the US.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/curcil.jpg"&gt;/img/curcil.jpg&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;This is a simple cocktail made from mineral water, lemon juice and salt. The reason this is important is that the mineral water I got from a Middle Eastern market sat there in the fridge for months and months before I actually remembered to make this drink (which I actually like quite a lot) and became a symbol of my procastination.&lt;/p&gt;
+&lt;h3&gt;A new house&lt;/h3&gt;
+&lt;p&gt;I guess the biggest change for this year is that we bought a house. Buying a house in Seattle, WA is a very long and tedious process. We actually started our search in fall 2019 but actually managed to buy a house in June 2020.&lt;/p&gt;
+&lt;p&gt;The house is in a great neighborhood ideal for a toddler. We even have a play set in the back yard so I guess she's a lucky kiddo.&lt;/p&gt;
+&lt;p&gt;The house was built in the early 90s and the interior reflected that era with it's oak heavy cabinetry so a remodeling was needed. We decided to go with a small family business that our Realtor recommended and they did a pretty good job, albeit at an extra cost. I was very impressed with the work ethic that contractors have here. When they say they are going to be there at Xpm they are actually there at that time. I've seen all sorts of inexcusable behavior such as being hours late to not showing up at all in a previous life, so this was good experience.&lt;/p&gt;
+&lt;p&gt;Moving is never fun. Moving from an apartment to a house was manageable but moving from a house to a new house was very very exhausting. It's incredible to amount of crap you accumulate through the years.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/packing.jpeg"&gt;/img/packing.jpeg&lt;/a&gt;
+&lt;em&gt;packing at the end of the first day. 3 more days of packing followed&lt;/em&gt;&lt;/p&gt;
+&lt;h3&gt;A blind test&lt;/h3&gt;
+&lt;p&gt;I have always come across people who claim that they can tell the difference between Coke Zero and Diet Coke. I personally think it's not possible as the difference is very subtle (if it even exists). One of these people was my wife. So I put her to the test. Here's the setup:
+There are 5 glasses with coke in them. Find the ones that are Diet Coke. Pretty simple, 1/32 chance of guessing correctly which is good enough to rule that out. So we did the test. She scored 3 out of 5 and declared her self a winner. I guess it's my fault that I didn't explain before the test that she would have to do 100%. I mean, I can tell the difference between coke and water and I would score 100% every time I took such a test so it seemed pretty evident to me that only a full score would pass. But apparently she has a different idea.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/coketest.jpeg"&gt;/img/coketest.jpeg&lt;/a&gt;&lt;/p&gt;
+&lt;h3&gt;Worst weeks&lt;/h3&gt;
+&lt;p&gt;I think 2020 has been a year that is going to be memorable for the bad things that happened. The COVID situation is the most obvious one but it doesn't stop there for me. Our daughter dislocated (or broke can't be sure because it was a hidden fracture) her elbow this year. She had her arm in a cast for 2 weeks. This is not super critical but all this happened after 2 weeks of day care shutdown on the day it was opening back. Having her home all that time was very challenging to say the least. As if all this wasn't enough a cherry tree in the neighbors yard broke and fell on the play set in our yard. Luckily there were no injuries.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/tree.jpeg"&gt;/img/tree.jpeg&lt;/a&gt;&lt;/p&gt;
+&lt;h3&gt;Best buy of 2020&lt;/h3&gt;
+&lt;p&gt;I had to buy a lot of tools for the new house this year. I think the best piece I got this year is the Sun Joe pressure washer. It's very satisfying to see that grime being removed.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/sunjoe.gif"&gt;/img/sunjoe.gif&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;I did not get any electronics this year. There is simply nothing worth buying that will provide a trace of utility in my life. So the best buy has to go to my new server rack and the switch (the computers I already had.)&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/serverrack.jpeg"&gt;/img/serverrack.jpeg&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Another big purchase this year was a car. I was having back pain putting our kid into the car seat in the back everyday and we needed something with a larger cargo capacity to haul things for the back yard and the house from Home Depot so we got an 7 seater SUV.&lt;/p&gt;
+&lt;h3&gt;Future&lt;/h3&gt;
+&lt;p&gt;This was a weird and unusual year indeed and I think the old normal will not be the normal. Things in all aspects of life are going to change and adapt to the new findings caused by the events of 2020.&lt;/p&gt;
+&lt;p&gt;Here's a piece of play-doh art that summarizes 2020&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/playdoh2020.jpeg"&gt;/img/playdoh2020.jpeg&lt;/a&gt;&lt;/p&gt;
+</content:encoded></item><item><title>CORS with spring boot</title><description>setting up a CORS filter in spring boot</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Wed, 09 May 2018 00:00:00 GMT</pubDate><guid isPermaLink="true">cors-with-spring-boot.html</guid><content:encoded>&lt;p&gt;CORS (Cross Origin Resource Sharing) allows to make cross domain ajax requests for allowed domain. To setup CORS in spring add the following filter&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;@Component
 public class CORSFilter implements Filter {
     @Override
@@ -23,6 +85,128 @@ public class CORSFilter implements Filter {
     }
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;The ‘Access-Control-Allow-Origin’ parameter controls which domains will be allowed to make cross domain requests and ‘Access-Control-Allow-Methods’ defines the methods that will be allowed&lt;/p&gt;
+</content:encoded></item><item><title>3 different approaches to the same problem</title><description>finding the first unique character in a string</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Wed, 09 May 2018 00:00:00 GMT</pubDate><guid isPermaLink="true">3-different-approaches.html</guid><content:encoded>&lt;p&gt;I came a across a seemingly simple problem today that turned out to have multiple solutions with varying efficiency. These type of problems are very well suited for step by step iterative solutions where each step you improve upon the existing solution. 
+The problem is the simple matter of find the first unique character in a string. 
+I'm skipping the obvious solution of starting at the beginning of the string and scanning through the string comparing the current charater with every other. This type of solution will lead to an N^2 solution which is usually unacceptable. Think that you are searching a DNA sequence of 10 million nucleotides. No way exponential solutions are going to work. 
+So the first solution is this:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;scan the list from left, and keep track of the characters and the number of times we have seen a character.&lt;/li&gt;
+&lt;li&gt;scan the list from left and lookup the number of times the current character was seen. If it's 1 then we've found the first non-repeating character.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;Character findFirstUniqWorst(String s) {
+        HashMap&amp;lt;Character, Integer&amp;gt; map = new HashMap&amp;lt;&amp;gt;();
+        for (char c : s.toCharArray()) {
+            if (!map.containsKey(c)) {
+                map.put(c, 0);
+            }
+            int e = map.get(c);
+            map.put(c, e + 1);
+        }
+
+        for (char c: s.toCharArray()) {
+            if (map.get(c) == 1) {
+
+                return c;
+            }
+        }
+
+        throw new RuntimeException();
+    }
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;an improvement on this would be to eliminate the 2nd scan. If we stored the position of the 1st occurance of a character with the count we could return that. Something like:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;scan the list from the left and build the count map. Store the position of the first occurance too like 'a'-&amp;gt;(count, position)&lt;/li&gt;
+&lt;li&gt;scan the map and return the result with count equal to 1 having to lowest position.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;static class Pair {
+        public int count;
+        public int position;
+
+        public Pair(int count, int position) {
+            this.count = count;
+            this.position = position;
+        }
+    }
+    Character findFirstUniqMed(String s) {
+        HashMap&amp;lt;Character, Pair&amp;gt; map = new HashMap&amp;lt;&amp;gt;();
+        char[] chars = s.toCharArray();
+        for (int i=0;i&amp;lt;chars.length;i++) {
+            char c = chars[i];
+            if (!map.containsKey(c)) {
+                map.put(c, new Pair(1, i));
+            } else {
+                Pair e = map.get(c);
+                e.count += 1;
+                map.put(c, e);
+            }
+        }
+        int index = Integer.MAX_VALUE;
+        Character returnChar = null;
+        for (Character c : map.keySet()) {
+            if (map.get(c).count == 1) {
+                if (map.get(c).position &amp;lt; index) {
+                    returnChar = c;
+                }
+            }
+        }
+        return returnChar;
+    }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;this is a good option if the alphabet is small like in the DNA example. But if the alphabet is large, we still would do a large scan. So enter the third option: 
+instead of keeping the position of the character, keep a pointer to a linked list node. This linkedlist will hold the the unique characters we've seen so far and the head of the link list will be the first.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;scan the list from the left.&lt;ol&gt;
+&lt;li&gt;if the character is not in the map, insert a node to the tail of the list and add the (char-&amp;gt;node) mapping&lt;/li&gt;
+&lt;li&gt;if the characater is in the map, and pointer to a node exists remove the node from the link delete, set (char-&amp;gt;null) as the mapping&lt;/li&gt;
+&lt;li&gt;if the character is in the map and the pointer doesn't exists do nothing and continue with the next.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;this method will scan the input string once but return the first found character o(1).&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;static class DoubleLinkedList {
+        public Character value;
+        public DoubleLinkedList prev;
+        public DoubleLinkedList next;
+    }
+    Character findFirstUniqBest(String s) {
+        char[] chars = s.toCharArray();
+        DoubleLinkedList list = new DoubleLinkedList();
+        HashMap&amp;lt;Character, DoubleLinkedList&amp;gt; map = new HashMap&amp;lt;&amp;gt;();
+        DoubleLinkedList head, tail;
+        head = list;
+        tail = list;
+        for (int i = 0; i &amp;lt; chars.length; i++) {
+            char cur = chars[i];
+            if (!map.containsKey(cur)) {
+                DoubleLinkedList node = new DoubleLinkedList();
+                node.value = cur;
+                node.prev = tail;
+                node.next = null;
+                tail.next = node;
+                map.put(cur, node);
+                tail = node;
+            } else {
+                if (map.get(cur) != null) {
+                    if (map.get(cur).prev == null) {
+                        head = map.get(cur).next;
+                    } else {
+                        map.get(cur).prev.next = map.get(cur).next;
+                    }
+                    if (map.get(cur).next == null) {
+                        map.get(cur).prev.next=null;
+                        tail = map.get(cur).prev;
+                    } else {
+                        map.get(cur).next.prev = map.get(cur).prev;
+                    }
+                    map.put(cur, null);
+                }
+            }
+        }
+        if (head == null) throw new RuntimeException();
+        return head.value == null ? head.next.value : head.value;
+    }
+&lt;/code&gt;&lt;/pre&gt;
 </content:encoded></item><item><title>TypeSafe config override</title><description>how to override configuration values</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Tue, 28 Mar 2017 00:00:00 GMT</pubDate><guid isPermaLink="true">typesafe-config-override.html</guid><content:encoded>&lt;p&gt;Every now and then you need to be able to define some default value in your configuration and be able to override them based on the environment you are running in. TypeSafe Config has a nice way of allowing this:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;production {
   service1: 172.0.0.1
