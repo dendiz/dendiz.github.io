@@ -1,5 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Deniz's Web blog</title><link>https://dendiz.github.io</link><description>Deniz's personal web space</description><language>en-US</language><lastBuildDate>Thu, 09 Jun 2022 06:50:17 GMT</lastBuildDate><generator>rfeed v1.1.1</generator><docs>https://github.com/svpino/rfeed/blob/master/README.md</docs><item><title>Maven publishing a subset of classes</title><description>How to include all transitive dependencies when publishing a subset of classes from a gradle project</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Fri, 29 Apr 2022 00:00:00 GMT</pubDate><guid isPermaLink="true">2022_04_29-transitive-deps-maven-for-subset-of-classes.html</guid><content:encoded>&lt;p&gt;I have been trying to get a client for a http rest service that I'm running published to a Maven repo. The client code exists within the same project as the service code. The gradle publish script should include only a couple of classes, package them and upload them to a repo. This simple setup is easy to accomplish until you realize that the transitive dependencies are missing.&lt;/p&gt;
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Deniz's Web blog</title><link>https://dendiz.github.io</link><description>Deniz's personal web space</description><language>en-US</language><lastBuildDate>Thu, 09 Jun 2022 07:29:54 GMT</lastBuildDate><generator>rfeed v1.1.1</generator><docs>https://github.com/svpino/rfeed/blob/master/README.md</docs><item><title>Self hosted services</title><description>A rundown of the services that I self host on my server</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Wed, 08 Jun 2022 00:00:00 GMT</pubDate><guid isPermaLink="true">self_hosted_services.html</guid><content:encoded>&lt;p&gt;Server racks are cool. Even though I think just the aesthetics justify its existence, having a couple of self hosted services running is a good idea. I want to go over the services I host and how I use them.&lt;/p&gt;
+&lt;h2&gt;Jenkins - https://www.jenkins.io/&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Jenkins is an automation and orchestration tool.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;This application is definitely the workhorse of my system. I use it to automate a ton of tasks. I mainly have it run CI/CD pipelines for my custom apps and run scheduled tasks. Using Jenkins as a cron substitute makes life easier to monitor script output and synchronize execution of tasks. Jenkins is scheduling system backups of all the services that are running and some additional data repos. I have 2 categories of backups
+Synced backups, that are replicated in encrypted form over to Google
+Unsynced backups, that are only kept locally on a different NAS system. 
+I use borg to actually do the backups and Synology’s CloudSync technology to send data over to Google Drive. I’m considering rsync.net but haven’t had the time to dive deeper into their offerings yet. Borg locks the repo that it is currently working with, so you can’t run 2 backup tasks simultaneously. This is where the “Lock Resources” plugin comes in handy. That will queue up any jobs that need the borg resource. So even if a backup task takes more than I expected it to, and another task is fired due to its schedule, it will wait until the first task is completed and not error out because it cannot acquire the borg lock.&lt;/p&gt;
+&lt;p&gt;Jenkins also schedules my HumHub bots (a service which I will touch on later). These bots are custom python scripts that post various interesting things to HumHub. An example is the reddit bot which will post images of server racks from &lt;code&gt;/r/HomeLab&lt;/code&gt; and keyboard images from &lt;code&gt;/r/mechanicalkeyboards&lt;/code&gt;. Another funny bot is the Markov bot that will produce some gibberish sentences by analyzing all the previous content that I have posted.&lt;/p&gt;
+&lt;p&gt;Jenkins is running on bare metal, but I have plans to containerize Jenkins and only run an agent on the server.&lt;/p&gt;
+&lt;h2&gt;Docker registry - https://docs.docker.com/registry/deploying/&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Docker is a containerization program.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I run a custom docker registry because most of my custom programs are containerized. Jenkins will create a docker image and push it to this registry and the docker host will pull these images and run them. The docker registry itself is also running in a docker container.&lt;/p&gt;
+&lt;h2&gt;DrawIO - https://drawio-app.com/&lt;/h2&gt;
+&lt;p&gt;This is an awesome web-based diagramming tool. It has all the stencils I could need and suits my basic diagramming needs. I usually switch between OmniGraffle, GoodNotes+Apple Pencil and DrawIO.&lt;/p&gt;
+&lt;h2&gt;FileBrowser - https://github.com/filebrowser/filebrowser&lt;/h2&gt;
+&lt;p&gt;This is a nice web based file manager to access the files on my server, when I want to quickly share a file with another machine or just upload some file to the server. It’s a lot quicker than &lt;code&gt;scp&lt;/code&gt;.&lt;/p&gt;
+&lt;h2&gt;PhpBB - https://www.phpbb.com/&lt;/h2&gt;
+&lt;p&gt;This is the decades old forum software. I actually started using it as a way of documenting and blogging my daily work. I was inspired by Josh of Limit Theory fame and the way he meticulously dev logged the progress of his now defunct game. It has great support for image uploading and emojis but I have moved away from this to devonTHINK3 to consolidate all my information in a single repo. Also I’ve always found the search function of PhpBB difficult to use and it didn’t work like I would have expected.&lt;/p&gt;
+&lt;h2&gt;Home Gallery - https://github.com/xemle/home-gallery&lt;/h2&gt;
+&lt;p&gt;This is an app that I use to create galleries for my pictures from my iPhone. It basically serves as a backup to view the pictures from non-Apple devices. I use the Synology DSFile app to backup the pictures from my phone to my Synology NAS and point the NFS share to Home Gallery.
+It can easily deal with 7k or so pictures and videos I throw at it.&lt;/p&gt;
+&lt;h2&gt;Gitea - https://gitea.io/en-us/&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Git is a content versioning system.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I have tried a lot of different self hosted git services ranging from GitLab, to gogs, to GitBucket and even cgit. Throughout all the different versions of my HomeLab I had troubles with each of these implementations and finally settled on Gitea. I host about 100 or so projects of mine and mirror projects that I like on GitHub. Gitea is integrated with Jenkins via webhooks and the Jenkins plugin so a push to a repo will automatically trigger a build and test cycle in Jenkins. If something goes wrong a push notification is sent to my phone and an issue is automatically created in Gitea. Even though I rarely collaborate on my own projects it’s good to have that issue created so I don’t forget to fix the broken build.&lt;/p&gt;
+&lt;h2&gt;HeadPhones - https://github.com/rembo10/headphones&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Headphones is an automated music downloader for NZB and Torrent&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;This may seem like a controversial service but I use it as an easy way to reach album data and to find albums contents. I do not use the torrent/usenet integration.&lt;/p&gt;
+&lt;h2&gt;HumHub - https://github.com/humhub/humhub&lt;/h2&gt;
+&lt;p&gt;This is a self hosted facebook alternative. I don’t have a facebook account as I’m not interested in acquaintances' lives nor am I interested in providing more data to facebook so they can display better ads. But I like to life-log so I can look back and reminisce. My instance only has 2 human accounts: me and my wife. It’s also home to a bunch of bots that post funny stuff or pictures. I also have a bot that will accept location check-ins, so I don’t use Swarm anymore either.&lt;/p&gt;
+&lt;h2&gt;Jupyter Notebooks - https://jupyter.org/&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Jupyter is a web-based interactive computing platform.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Jupyter notebooks are a great way to do exploratory programming and prototyping. I have used Jupyter notebooks for other reasons too, such as running this blog or creating and maintaining a todo list. But I have since reverted to the former. When I have an idea for a trading strategy I usually prototype it out in a Jupyter notebook before porting it to a TradeBrain script.&lt;/p&gt;
+&lt;h2&gt;Minio - https://min.io/&lt;/h2&gt;
+&lt;p&gt;Minio is a S3 compatible blob storage service. I mainly use it to store transient image files that I do not want to upload to HumHub because it is synced to Google Drive and those image files use up a lot of space.&lt;/p&gt;
+&lt;h2&gt;NextCloud - https://nextcloud.com/&lt;/h2&gt;
+&lt;p&gt;NextCloud is a self hosted cloud drive. I use it mainly to host large files that I need access to from different machines.&lt;/p&gt;
+&lt;h2&gt;PiHole - https://pi-hole.net/&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;PiHole is a DNS service.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I used to use dnsmasq to resolve internal domains but now I have migrated my main DNS resolver to PiHole. Ad blocking is good to have even though I use one integrated in my browser. It’s easier to add new hosts via the web interface than it is manually adding them to /etc/hosts. I run PiHole on a dedicated celeron mini PC with Ubuntu and manually set my DNS server on the boxes I want. The router is still using the old dnsmasq box as the primary DNS server.&lt;/p&gt;
+&lt;h2&gt;Plex media server - https://plex.tv&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Plex is a server that will stream your videos and music.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I have been a long time user of Plex to stream video and audio but have recently become a lifetime member. I mainly use it to stream my audio collection and mirrored content from Youtube. I used to run Plex on my Synology NAS but now I have it running on bare metal. I have a webhook setup that will scrobble to my HumHub instance.&lt;/p&gt;
+&lt;h2&gt;PhpMyAdmin - https://www.phpmyadmin.net/&lt;/h2&gt;
+&lt;p&gt;This is a web-based interface to MySQL. It has been around for ages! It has a lot of features and is a great replacement for the native database client apps if you are dealing with MySQL/MariaDB. I use it to access a development MySQL database instance that is part of the same stack as this.&lt;/p&gt;
+&lt;h2&gt;Podgrab - https://github.com/akhilrex/podgrab&lt;/h2&gt;
+&lt;p&gt;“A self-hosted podcast manager to download episodes as soon as they become live” - I use it just for that. There are a few podcasts that I follow and I like to archive them because I know what it means to not be able to a favorite podcast from decades ago.&lt;/p&gt;
+&lt;h2&gt;Pypi - https://pypi.org/&lt;/h2&gt;
+&lt;p&gt;“The Python Package Index (PyPI) is a repository of software for the Python programming language.” - I run a private instance of pypi (just like my private docker registry) for pushing custom python packages. Nothing fancy.&lt;/p&gt;
+&lt;h2&gt;Reposilite - https://github.com/dzikoysk/reposilite&lt;/h2&gt;
+&lt;p&gt;“Lightweight and easy-to-use repository manager for Maven based artifacts in the JVM ecosystem” - Basically pipy but for Java.&lt;/p&gt;
+&lt;h2&gt;SourceGraph - https://about.sourcegraph.com/&lt;/h2&gt;
+&lt;p&gt;This is a source search engine that has great searching and parsing abilities making it very easy to navigate code. It’s pretty much like an IDE without the edit/build part. It is so much easier to use than gitea when searching for a piece of code or trying to remember how I implemented something in some project. It’s a bit resource hungry (even the evaluation setup) but I keep it running.&lt;/p&gt;
+&lt;h2&gt;TradeBrain - custom&lt;/h2&gt;
+&lt;p&gt;TradeBrain is a program that I develop to run technical analysis on all sorts of investment instruments.&lt;/p&gt;
+&lt;h2&gt;TubeArchivist - https://www.tubearchivist.com/&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Your self hosted YouTube media server&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;This is a great application to download and archive Youtube videos. I personally have a couple of channels that I follow, which have removed content (after making deals with big websites - yes I’m talking about you chessbrah.) so I keep a copy of every video. I also like to use this as a way of limiting what my kid gets to watch using the download queue feature (Thanks to http://noted.lol for the tip). I have a Jenkins task that will move the downloaded video files to a location where Plex can index and serve them.&lt;/p&gt;
+&lt;h2&gt;Webdav - http://www.webdav.org/&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;“WebDAV stands for &amp;quot;Web-based Distributed Authoring and Versioning&amp;quot;. It is a set of extensions to the HTTP protocol which allows users to collaboratively edit and manage files on remote web servers.”&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;This is another archaic protocol that has been around for a very long time. I use it to sync my devonTHINK databases between all the different devices. Since I mentioned it, note taking and document management is the only thing I don’t host on a server, because devonTHINK is a great application that does everything I need, and does it properly. The only downside is that it’s a macOS/iOS only application, which means vendor lock-in. For now I’m happy with Apple platforms so it’s not a problem that I need to deal with immediately.&lt;/p&gt;
+&lt;h2&gt;WebhookService - custom&lt;/h2&gt;
+&lt;p&gt;This is another custom app that I run to process and webhooks from other services. One example for this is the service that will process incoming requests from Plex about tracks that I play and post them to HumHub.&lt;/p&gt;
+</content:encoded></item><item><title>Maven publishing a subset of classes</title><description>How to include all transitive dependencies when publishing a subset of classes from a gradle project</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Fri, 29 Apr 2022 00:00:00 GMT</pubDate><guid isPermaLink="true">2022_04_29-transitive-deps-maven-for-subset-of-classes.html</guid><content:encoded>&lt;p&gt;I have been trying to get a client for a http rest service that I'm running published to a Maven repo. The client code exists within the same project as the service code. The gradle publish script should include only a couple of classes, package them and upload them to a repo. This simple setup is easy to accomplish until you realize that the transitive dependencies are missing.&lt;/p&gt;
 &lt;p&gt;Setting it up needs this code&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;// package the classes for the client
 task clientJar(type: Jar, dependsOn: classes) {
