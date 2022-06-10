@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>DimWorld</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="initial-scale=1">
+      <link rel="stylesheet" href="/css/style.css">
+    </head>
+    <body>
+        <div>
+        <strong>
+        <!--a href="/micro/micro-index.html" onClick="this.href+='?rnd='+new Date().getTime()">Micro</a> &middot; -->
+        <a href="/post/index.html" onClick="this.href+='?rnd='+new Date().getTime()">Macro</a> &middot;
+        <a href="/post/about.html">About</a> &middot; 
+        <a href="/post/now.html">Now</a> &middot; 
+        <a href="/post/fn.html">fn</a>
+        &middot;
+        <a href="/twtxt.txt">twtxt</a>
+        </strong>
+        </div>
+        <hr />
+        <div id="main">
+        <h1 id="title">DimWorld</h1>
+        <div id="date"><em>created 2021-08-30 </em></div>
+        <div class="content">
+        <p>I am totally fascinated by Dwarf Fortress and the detail it can achieve. I have huge respect for Tarn who is the programmer of the game (and his brother too, who designed the game and probably came up with a lot of those great ideas). It’s a masterpiece in procedural generation for sure. I wish I had the time to play it thoroughly but I only have the time to study it and try to understand it’s mechanics. To this end I even bought the book “Getting started with Dwarf Fortress”. The best way to learn and understand procedural generation is to try to copy the masters, so I started something new: Dim World, a base building game that is set on some planet where you tell your colonists what to do and they might eventually do it.</p>
+<p>The first thing is to get a map going so I ported over some cellular automata terrain generation code I had lying around to Swift. Refresher: Cellular automata basically generates or changes a tile based on the state of its neighbors. E.g If you have more than 4 neighbors that are alive the current cell dies and if you have 3 or less neighbors dead the cell becomes alive. This leads to interesting and natural-like patterns on the terrain.</p>
+<p><img src="/img/dimworld1.png" alt="dimworld" /></p>
+<p>The bright green and brown glyphs are trees and the blobs are forests. I had to augment the cellular automata generator with a flood fill algorithm to turn the blobs into things that resemble forests without holes. The trick here was to fill every hole except the largest one (which is the rest of the terrain).</p>
+<p>Here's a video of some keyboard controls and map generation:</p>
+<p><a href="/files/dimworld-21-08-30.mov">video</a></p>
+
+        </div>
+        </div>
+	<footer>
+	<em>generated on 2022-06-10 07:51:08</em>
+	</footer>
+  Want to say something? Please <a href="mailto:deniz.dizman@gmail.com?subject=DimWorld">send</a> an email and I will update this post with our correspondance.
+    </body>
+</html>
