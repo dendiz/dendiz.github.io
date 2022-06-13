@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Positional similarity metrics for chess</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="initial-scale=1">
+      <link rel="stylesheet" href="/css/style.css">
+    </head>
+    <body>
+        <div>
+        <strong>
+        <!--a href="/micro/micro-index.html" onClick="this.href+='?rnd='+new Date().getTime()">Micro</a> &middot; -->
+        <a href="/post/index.html" onClick="this.href+='?rnd='+new Date().getTime()">Macro</a> &middot;
+        <a href="/post/about.html">About</a> &middot; 
+        <a href="/post/now.html">Now</a> &middot; 
+        <a href="/post/fn.html">fn</a>
+        &middot;
+        <a href="/twtxt.txt">twtxt</a>
+        </strong>
+        </div>
+        <hr />
+        <div id="main">
+        <h1 id="title">Positional similarity metrics for chess</h1>
+        <div id="date"><em>created 2020-12-17 </em></div>
+        <div class="content">
+        <p>As I was watching some Hikaru Nakamura videos on youtube where he was playing against the new chess.com bots which are modeled after celebrity players I wondered how such a modelling after a players style could be done. This lead me to the initial thought of selecting the most similar board position from a history of games the player had played before for the top N results the engine returns for a the current position. But this would probably run out of good selections pretty quickly as the opening ends and the middle game approaches. It might not even work at all for openings that are not common like 1. h6 etc.</p>
+<p>So a more generalized approach is appropriate to capture the style. But what is a chess playing style in the first place? I've heard expressions like &quot;aggresive&quot;, &quot;passive&quot;, &quot;commital move&quot; being used. Would it be possible to mark such styles in a game by analyzing it? That sounds a bit difficult to quantify but could a be path exploring to capture the characteristics of players.</p>
+<p>A different approach could be to have the engine return a list of candidate moves and then select a move not based on the best centi-pawn score but based on the results of a similarity search against games of a player. So for example let's assume we have indexed 100 games from a player. And a position the engine recommends the top 5 moves a4,Nf5,... We'll make all of the recommended moves and then search our database of indexed games for the resulting board positions and pick the move that yields the closest match to a position that the player we are trying to model has already had. It feels like this should reflect the playing style of the player for the opening and maybe the early middle game but as the game progresses you wonder away from the positions you have in your database. But since we are still evaluating top engine choices, it should still return a good move.</p>
+<p>So the question is what is chess position similarity? Equality is easy to define, just the same pieces in the same squares but it's very like that you are not going to get equal positions for a high percentage of the moves you play against the model. So it needs some type of fuzzy matching or context based matching. These ideas made me think if it would be possible to use word2vec on chess board positions. And (not) surprisingly enough you can. Your vocabulary is the string representation of each position in the games you are indexing. From this it's pretty simple for the model to give back similar positions for a given position. In my experiments these were the positions that were a move or two different (because of my chosen window size) selected from different games. The results are somewhat expected but not that useful. A big shortcoming is that the position you are querying for may not be in the vocabulary and that leads to problems.</p>
+<p>A different approach is to measure the distance of each piece from it's square in the query. This idea is explored in depth in the paper &quot;Retrieval of similar chess positions&quot; by Debasis Ganguly et al. of Dublin city university. They also incorporate a couple of more metrics for similarity.</p>
+
+        </div>
+        </div>
+	<footer>
+	<em>generated on 2022-06-13 06:36:26</em>
+	</footer>
+  Want to say something? Please <a href="mailto:deniz.dizman@gmail.com?subject=Positional similarity metrics for chess">send</a> an email and I will update this post with our correspondance.
+    </body>
+</html>

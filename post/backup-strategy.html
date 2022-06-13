@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>My backup strategy</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="initial-scale=1">
+      <link rel="stylesheet" href="/css/style.css">
+    </head>
+    <body>
+        <div>
+        <strong>
+        <!--a href="/micro/micro-index.html" onClick="this.href+='?rnd='+new Date().getTime()">Micro</a> &middot; -->
+        <a href="/post/index.html" onClick="this.href+='?rnd='+new Date().getTime()">Macro</a> &middot;
+        <a href="/post/about.html">About</a> &middot; 
+        <a href="/post/now.html">Now</a> &middot; 
+        <a href="/post/fn.html">fn</a>
+        &middot;
+        <a href="/twtxt.txt">twtxt</a>
+        </strong>
+        </div>
+        <hr />
+        <div id="main">
+        <h1 id="title">My backup strategy</h1>
+        <div id="date"><em>created 2020-07-21 </em></div>
+        <div class="content">
+        <p>I've always backuped my files and folders for as long as I can remember. But up until a couple of months ago my backup strategy was ad-hoc. I would manually copy important files to a networked computer, cloud storage or before those existed to a USB drive. It was mostly not automated or very poorly automated by a couple of lines of bash scripts creating zip/tar.gz archives of directories and copying them over. This is kind of works but is very inefficient and not really sustainable as the data you need to backup accumulates over time. So about 2-3 months ago I decided to invest the time to look into some existing solutions in this area. My requirements were pretty simple:</p>
+<ul>
+<li>Support incremental backups</li>
+<li>Support encrypted backups</li>
+<li>Support for sending backups to another machine on the network</li>
+<li>Easy to configure a new directory to backup</li>
+<li>CLI driven</li>
+</ul>
+<p>After some research the simplest program that would support all these requirements seemed to be Borg backup. I paired Borg with Jenkins for scheduled backups and a Synology NAS with CloudSync for off-site encrypted backups on the cloud.</p>
+<p>The process is pretty simple.</p>
+<h3>Initial setup</h3>
+<p>There are 2 types of backups for me:</p>
+<ol>
+<li>Backups of files that I only need to keep on-site</li>
+<li>Backups of files that are super important and need to be backed up on the cloud (encrypted)</li>
+</ol>
+<p>Different projects may live on different servers on the network and each host on the network gets it's own Borg repository. The initial repo setup is done manually but it's not really worth automating this as I haven' added a new machine to the network in ages (I don't think I've added a new machine after I started using Borg)</p>
+<h3>Backup process</h3>
+<p>I use Jenkins to schedule the backups, so each app/data store gets its own backup job in Jenkins.</p>
+<p><img src="/img/jenkins-backup-jobs.png" alt="jenkins" /></p>
+<p>Scripting Borg commands via the Shell execution block in Jenkins makes everything pretty simple:</p>
+<pre><code>NFS_MOUNTS=$(mount -l | grep nfs | wc -l)
+if [ $NFS_MOUNTS -eq 0 ]; then
+ echo &quot;NFS not mounted&quot;
+ return -1
+fi
+
+sudo BORG_PASSPHRASE=&lt;password&gt; borg create -v --stats --compression zlib /mnt/backup/cloud-synced/borg-s1::ctp-data-{now} /tmp/ctp-data/
+
+</code></pre>
+<p>Borg doesn't support putting stuff on a networked machine natively but that's not really a blocker. I just mount a directory on the NAS to all the hosts. The first couple of lines in the script checks that the NAS is mounted or fails. The next line is borg command that doest the backups. There are 2 directories on the NAS</p>
+<ol>
+<li>The <code>unsynced</code> directory</li>
+<li>The <code>cloud-synced</code> directory</li>
+</ol>
+<p>I've setup Synology CloudSync to send the files in the <code>cloud-synced</code> directory over to a cloud hosting provider.</p>
+<p>I also use some plugins in Jenkins to coordinate the backup process. Some app that I host like the wiki require frequent backups and sometimes depending on system load the duration of the backup may exceed the frequency. I also don't want multiple Borg jobs writing to the same repository as this may lead to race conditions. So I use the Lockable Resources plugin in Jenkins to synchronize these jobs.</p>
+<p>There are multiple hosts that need backups so I need a Jenkins runner on each host that has access to the directories on that machine so I also need a plugin that makes sure that a job can only run on a host that I specify.</p>
+<p>This works pretty well for data that's residing on my servers but for files on laptops etc it's not really convenient. I still copy documents and files manually from client to the NAS when I want to keep a backup of those. But as I'm moving my apps to self hosted web app based solutions I find that the need to do this manual copying is pretty minimal.</p>
+
+        </div>
+        </div>
+	<footer>
+	<em>generated on 2022-06-13 06:36:26</em>
+	</footer>
+  Want to say something? Please <a href="mailto:deniz.dizman@gmail.com?subject=My backup strategy">send</a> an email and I will update this post with our correspondance.
+    </body>
+</html>

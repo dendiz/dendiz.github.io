@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>K Closest star selection</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="initial-scale=1">
+      <link rel="stylesheet" href="/css/style.css">
+    </head>
+    <body>
+        <div>
+        <strong>
+        <!--a href="/micro/micro-index.html" onClick="this.href+='?rnd='+new Date().getTime()">Micro</a> &middot; -->
+        <a href="/post/index.html" onClick="this.href+='?rnd='+new Date().getTime()">Macro</a> &middot;
+        <a href="/post/about.html">About</a> &middot; 
+        <a href="/post/now.html">Now</a> &middot; 
+        <a href="/post/fn.html">fn</a>
+        &middot;
+        <a href="/twtxt.txt">twtxt</a>
+        </strong>
+        </div>
+        <hr />
+        <div id="main">
+        <h1 id="title">K Closest star selection</h1>
+        <div id="date"><em>created 2018-05-09 </em></div>
+        <div class="content">
+        <p>In my post about generation galaxy warp lanes <a href="/code/galaxy-hyper-lane-generation/">GalaxyWarpLaneGeneration</a> I talked about the a naive method that would select the N closest stars to a given star. 
+Even though the name states the method as naive it isn't such a naive tasks when you consider large amounts of stars. For a game the number of stars could be in the 
+hundreds or maybe thousand, but what if for a minute we actually consider the real world? How could you select N closest start from 10M star? or 100M maybe even a 1B?</p>
+<p>My initial though was the simple approach: calculate the distance between the source and each of the other stars, and sort the other star list on this distance. 
+This results in an O(nlogn) algorithm which is the best a sort on this type of randomized data. But there is a better way: The key is we don't need to 
+sort all the list, we are just looking to get the closest N elements. The algorithm is as follows:</p>
+<ol>
+<li>create a MAX heap of size N</li>
+<li>add the first N stars from the list to the heap, based on a distance comparator from the source star.</li>
+<li>for the remaining stars in the list:<ol>
+<li>if the distance to that star is less than the top of the heap, remove the top and add this star.</li>
+</ol>
+</li>
+<li>get all the element in the heap for the result.</li>
+</ol>
+<pre><code>public List&lt;Star&gt; closest(List&lt;Star&gt; stars, int n) {
+    PriorityQueue&lt;Pair&lt;Star,Double&gt;&gt; heap = new PriorityQueue&lt;&gt;(n, 
+       (x1, x2) -&gt; x2.getSecond().compareTo(x1.getSecond()));
+
+    for (int i =0;i&lt;n;i++) {
+        heap.add(new Pair&lt;&gt;(stars.get(i), distance(stars.get(i))));
+    }
+    for(int i=n;i&lt;stars.size();i++) {
+        if(stars.get(i) == this) continue;;
+        double distance = distance(stars.get(i));
+        if (distance &lt; heap.peek().getSecond()) {
+            heap.poll();
+            heap.add(new Pair&lt;&gt;(stars.get(i), distance));
+        }
+    }
+    return heap.stream().map(Pair::getFirst).collect(toList());
+}
+</code></pre>
+<p>we are adding (N-k) element to a heap of k element. Each insertion will cost log(k). So the total will be o(N * logK)
+I am usually connecting 2 or 3 stars which result in 1000 * log2 which is around 300 operations vs. 1000 * log(1000) which is also 300 operations.
+It doesn't make a difference for the basic case. But if I had 10M start then 10M * log2 = 3M vs 10M * log10M = 70M
+it does make a difference.</p>
+
+        </div>
+        </div>
+	<footer>
+	<em>generated on 2022-06-13 06:36:26</em>
+	</footer>
+  Want to say something? Please <a href="mailto:deniz.dizman@gmail.com?subject=K Closest star selection">send</a> an email and I will update this post with our correspondance.
+    </body>
+</html>

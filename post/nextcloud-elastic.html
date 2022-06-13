@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>NextCloud installation with docker + full text search</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="initial-scale=1">
+      <link rel="stylesheet" href="/css/style.css">
+    </head>
+    <body>
+        <div>
+        <strong>
+        <!--a href="/micro/micro-index.html" onClick="this.href+='?rnd='+new Date().getTime()">Micro</a> &middot; -->
+        <a href="/post/index.html" onClick="this.href+='?rnd='+new Date().getTime()">Macro</a> &middot;
+        <a href="/post/about.html">About</a> &middot; 
+        <a href="/post/now.html">Now</a> &middot; 
+        <a href="/post/fn.html">fn</a>
+        &middot;
+        <a href="/twtxt.txt">twtxt</a>
+        </strong>
+        </div>
+        <hr />
+        <div id="main">
+        <h1 id="title">NextCloud installation with docker + full text search</h1>
+        <div id="date"><em>created 2020-07-20 </em></div>
+        <div class="content">
+        <p>There are multiple options when installing nextcloud but I always install my self hosted services through docker just to keep everything isolated and easy to backup. I will publish a post on the back strategy I use with docker in another post but for this post here's how I managed to get nextcloud working with docker (docker-compose actually) and the full text search capability.</p>
+<p>Why would you want full text search? Because the search capability for nextcloud out of the box is pretty naive in that it only searches for the query in the file name, which is OK sometimes, but most of the time you need the search to be in the contents of the file. This capability is provided by an external search server, in this case via ElasticSearch (which is an excellent search server albeit resource hungry). Ok, so here is the docker-compose file I use to setup everything:</p>
+<pre><code>version: '2'
+
+services:
+  db:
+    image: mariadb
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    restart: always
+    volumes:
+      - ./db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_PASSWORD=
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+
+  app:
+    image: nextcloud
+    ports:
+      - 90:80
+    links:
+      - db
+      - es
+    volumes:
+      - ./nextcloud:/var/www/html
+    restart: always
+
+  cron:
+    image: nextcloud
+    links:
+     - db
+     - es
+    volumes:
+      - ./nextcloud:/var/www/html
+      - ./crontab:/var/spool/cron/crontabs/www-data
+    restart: always
+
+  es:
+    build: ./elastic-docker/.
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - ./elastic:/usr/share/elasticsearch/data
+</code></pre>
+<p>The first two services are from the standard docker-compose file in the nextcloud documentation page. I've added another service that runs the cron scripts (you can delete this is you have a different way to run crons) and then there is elastic search service. I use local directories for persistent storage as it's super easy for backups. The elastic search image requires a bit of customization so here is the <code>Dockerfile</code> for the service</p>
+<pre><code>FROM docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+RUN /usr/share/elasticsearch/bin/elasticsearch-plugin install --batch ingest-attachment
+</code></pre>
+<p>Elastic search wants a plugin to index content from nextcloud.</p>
+<p>After these files are in place, spin up the stack with <code>docker-compose up -d</code>. Make sure you see all services up and running. You can ignore the warnings from the ElasticSearch image.</p>
+<p>After the containers are up install the following apps for Nextcloud</p>
+<ul>
+<li>full text search</li>
+<li>full text search - elastic platform</li>
+<li>full text search - files</li>
+</ul>
+<p>Now you can test the installation using</p>
+<pre><code>docker-compose exec --user www-data app php occ fulltextsearch:test
+</code></pre>
+<p>if everything goes well you can start the indexing</p>
+<pre><code>docker-compose exec --user www-data app php occ fulltextsearch:index
+</code></pre>
+
+        </div>
+        </div>
+	<footer>
+	<em>generated on 2022-06-13 06:36:26</em>
+	</footer>
+  Want to say something? Please <a href="mailto:deniz.dizman@gmail.com?subject=NextCloud installation with docker + full text search">send</a> an email and I will update this post with our correspondance.
+    </body>
+</html>

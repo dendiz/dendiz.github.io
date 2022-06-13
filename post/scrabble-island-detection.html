@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Scrabble Island detection</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="initial-scale=1">
+      <link rel="stylesheet" href="/css/style.css">
+    </head>
+    <body>
+        <div>
+        <strong>
+        <!--a href="/micro/micro-index.html" onClick="this.href+='?rnd='+new Date().getTime()">Micro</a> &middot; -->
+        <a href="/post/index.html" onClick="this.href+='?rnd='+new Date().getTime()">Macro</a> &middot;
+        <a href="/post/about.html">About</a> &middot; 
+        <a href="/post/now.html">Now</a> &middot; 
+        <a href="/post/fn.html">fn</a>
+        &middot;
+        <a href="/twtxt.txt">twtxt</a>
+        </strong>
+        </div>
+        <hr />
+        <div id="main">
+        <h1 id="title">Scrabble Island detection</h1>
+        <div id="date"><em>created 2018-05-09 </em></div>
+        <div class="content">
+        <p>there is a game app called “kelimelik” which is a Turkish version of scrabble that I’ve been playing for a while now which is quite fun. So I thought it might be a nice way to waste a couple of hours trying to write a program that would give the highest scoring word given a board state. Most of the program is quite trivial in that it just has to generate permutations of the given letters and place them in all possible combinations on the board and then check if the board is valid. E.g that all the words on the board are in a dictionary and all the tiles are connected. The second part of the validity check is interesting. The first thing that popped to my mind was using a flood-fill algorithm starting from the tile nearest to the top-left corner. After the fill if there are any tiles on the board that are unmarked then there is more than 1 island on the board and the board is invalid. So how does a flood-fill algorithm work? Quite simple actually. You mark the current tile you are on at (x,y) and recurse to the neighbors if they are not empty, or have not been marked. Here is a simple bit code that does this:</p>
+<pre><code>private boolean connectedCheck(int i, int j, String[][] board) {
+    board[i][j] = &quot;!&quot;;
+    boolean resh = true;
+    boolean resv = true;
+    boolean resh2 = true;
+    boolean resv2 = true;
+    if (i &lt; 14 &amp;&amp; !board[i + 1][j].equals(&quot;*&quot;) &amp;&amp; !board[i + 1][j].equals(&quot;!&quot;)) {
+        connectedCheck(i + 1, j, board);
+    }
+    if (i &gt; 0 &amp;&amp; !board[i - 1][j].equals(&quot;*&quot;) &amp;&amp; !board[i - 1][j].equals(&quot;!&quot;)) {
+        connectedCheck(i - 1, j, board);
+    }
+    if (j &lt; 14 &amp;&amp; !board[i][j + 1].equals(&quot;*&quot;) &amp;&amp; !board[i][j + 1].equals(&quot;!&quot;)) {
+        connectedCheck(i, j + 1, board);
+    }
+    if (j &gt; 0 &amp;&amp; !board[i][j - 1].equals(&quot;*&quot;) &amp;&amp; !board[i][j - 1].equals(&quot;!&quot;)) {
+        connectedCheck(i, j - 1, board);
+    }
+}
+</code></pre>
+<p>empty squares are noted as “*”, tiles with the letter and marked tiles with “!”. Here is a 3×3 board array for reference:</p>
+<pre><code>|   |   |   |
+|---|---|---|
+|*  | * | * |
+|A  | * | * |
+|B  | C | * |
+
+</code></pre>
+
+        </div>
+        </div>
+	<footer>
+	<em>generated on 2022-06-13 06:36:26</em>
+	</footer>
+  Want to say something? Please <a href="mailto:deniz.dizman@gmail.com?subject=Scrabble Island detection">send</a> an email and I will update this post with our correspondance.
+    </body>
+</html>

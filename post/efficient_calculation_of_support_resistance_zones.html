@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Calculation of support/resistance zones</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="initial-scale=1">
+      <link rel="stylesheet" href="/css/style.css">
+    </head>
+    <body>
+        <div>
+        <strong>
+        <!--a href="/micro/micro-index.html" onClick="this.href+='?rnd='+new Date().getTime()">Micro</a> &middot; -->
+        <a href="/post/index.html" onClick="this.href+='?rnd='+new Date().getTime()">Macro</a> &middot;
+        <a href="/post/about.html">About</a> &middot; 
+        <a href="/post/now.html">Now</a> &middot; 
+        <a href="/post/fn.html">fn</a>
+        &middot;
+        <a href="/twtxt.txt">twtxt</a>
+        </strong>
+        </div>
+        <hr />
+        <div id="main">
+        <h1 id="title">Calculation of support/resistance zones</h1>
+        <div id="date"><em>created 2019-07-23 </em></div>
+        <div class="content">
+        <p>support/resistance zones are quite essential when trading breakouts. Support is 
+a line below the price on the charts that the price bounced back from a couple 
+of times. Resistance is the same, but above the price. When a human looks at a 
+chart, it’s pretty easy for them to see these points on the chart:</p>
+<p><a href="/img/ecosrz1.png">/img/ecosrz1.png</a></p>
+<p>the shaded are is a support/resistance zone, as the price tries multiple times 
+to go past that point and succeeds with that long green candle. How to get the 
+computer to recognize these points it an interesting exercise in programming. 
+The logic is this:</p>
+<ol>
+<li>gather all open, high, low close prices in an array and sort them.</li>
+<li>define a parameter, called epsilon that will be the sensitivity for the zone.</li>
+<li>start from the first price and group all prices less than epsilon away from this in a list.</li>
+<li>remove the added prices from the original array and continue group the remaining prices.</li>
+</ol>
+<p>in the end you will have a list of lists. The more items in the list, the 
+stronger the support/resistance around that area.</p>
+<p>The worst case running time for the above algorithm is n^2 if all the prices are 
+more than epsilon away from each other, which is not very good. So we need to 
+improve on that.</p>
+<p>We can build the groups as we are iterating the original array like this:</p>
+<ol>
+<li>maintain a list of groups, initialized with a single group containing the first price.</li>
+<li>as we are iterating over the array, if the current element is less than epsilon away from the head</li>
+</ol>
+<p>of the group we add it to that group. Otherwise we create a new group and add it into that group.</p>
+<pre><code>Collections.sort(data);
+
+        SuperList&lt;SuperList&lt;Double&gt;&gt; groups = new SuperList&lt;&gt;();
+        groups.add(new SuperList&lt;&gt;());
+        groups.get(0).add(data.get(0));
+        for (int i = 1; i &lt; data.size(); i++) {
+            SuperList&lt;Double&gt; group = groups.getLast();
+            Double x = data.get(i);
+            if (Math.abs(x - group.get(0)) &lt; epsilon) {
+                group.add(x);
+            } else {
+                SuperList&lt;Double&gt; newList = new SuperList&lt;&gt;();
+                newList.add(x);
+                groups.add(newList);
+            }
+        }
+</code></pre>
+<p>I finally had the chance to plot the results of this, so I updated the post:</p>
+<p><img src="/img/ecosrz2.png" alt="" /></p>
+<p>The red zones are the resistance which is all tuples with price above the last 
+close price and the green zones are the support zones.</p>
+
+        </div>
+        </div>
+	<footer>
+	<em>generated on 2022-06-13 06:36:26</em>
+	</footer>
+  Want to say something? Please <a href="mailto:deniz.dizman@gmail.com?subject=Calculation of support/resistance zones">send</a> an email and I will update this post with our correspondance.
+    </body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Using Kruskal's MST algorithm for warp lane generation</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="initial-scale=1">
+      <link rel="stylesheet" href="/css/style.css">
+    </head>
+    <body>
+        <div>
+        <strong>
+        <!--a href="/micro/micro-index.html" onClick="this.href+='?rnd='+new Date().getTime()">Micro</a> &middot; -->
+        <a href="/post/index.html" onClick="this.href+='?rnd='+new Date().getTime()">Macro</a> &middot;
+        <a href="/post/about.html">About</a> &middot; 
+        <a href="/post/now.html">Now</a> &middot; 
+        <a href="/post/fn.html">fn</a>
+        &middot;
+        <a href="/twtxt.txt">twtxt</a>
+        </strong>
+        </div>
+        <hr />
+        <div id="main">
+        <h1 id="title">Using Kruskal's MST algorithm for warp lane generation</h1>
+        <div id="date"><em>created 2018-05-09 </em></div>
+        <div class="content">
+        <p>Almost every sci-fi / space themed game has warp lanes connecting the star systems in the game. I've come across this quite often so here is a small piece of code that implements a Minimum spanning tree between the stars to guarantee all of them are reachable.</p>
+<pre><code>public class WarpLaneBuilder
+    {
+        List&lt;HashSet&lt;StarSystem&gt;&gt; sets = new List&lt;HashSet&lt;StarSystem&gt;&gt;();
+        public void GenerateWarpLanes(List&lt;StarSystem&gt; stars)
+        {
+            foreach (var star in stars)
+            {
+                var set = new HashSet&lt;StarSystem&gt;();
+                set.Add(star);
+                sets.Add(set);
+            }
+
+            var edges = BuildEdges(stars);
+            var results = new HashSet&lt;Edge&gt;();
+            foreach (var edge in edges)
+            {
+                var set1 = Find(edge.Source);
+                var set2 = Find(edge.Target);
+                if (!set1.Equals(set2))
+                {
+                    results.Add(edge);
+                    Union(set1, set2);
+                }
+            }
+
+            foreach (var result in results)
+            {
+                result.Source.WarpLanes.Add(result.Target);
+                result.Target.WarpLanes.Add(result.Source);
+            }
+
+        }
+
+        private List&lt;Edge&gt; BuildEdges(List&lt;StarSystem&gt; stars)
+        {
+            List&lt;Edge&gt; edges = new List&lt;Edge&gt;();
+            for (int i = 0; i &lt; stars.Count - 1; i++)
+            {
+                for (int j = i + 1; j &lt; stars.Count; j++)
+                {
+                    edges.Add(new Edge(stars[i], stars[j], stars[i].DistanceTo(stars[j])));
+                }
+            }
+            edges.Sort((x,y) =&gt; x.Weight.CompareTo(y.Weight));
+            return edges;
+        }
+
+        private HashSet&lt;StarSystem&gt; Find(StarSystem star)
+        {
+            return sets.First(x =&gt; x.Contains(star));
+        }
+
+        private void Union(HashSet&lt;StarSystem&gt; set1, HashSet&lt;StarSystem&gt; set2 )
+        {
+            sets.Remove(set1);
+            sets.Remove(set2);
+            set1.UnionWith(set2);
+            sets.Add(set1);
+        }
+
+        private class Edge
+        {
+            public StarSystem Source;
+            public StarSystem Target;
+            public double Weight;
+
+            public Edge(StarSystem source, StarSystem target, double weight)
+            {
+                Source = source;
+                Target = target;
+                Weight = weight;
+            }
+        }
+    }
+</code></pre>
+
+        </div>
+        </div>
+	<footer>
+	<em>generated on 2022-06-13 06:36:26</em>
+	</footer>
+  Want to say something? Please <a href="mailto:deniz.dizman@gmail.com?subject=Using Kruskal's MST algorithm for warp lane generation">send</a> an email and I will update this post with our correspondance.
+    </body>
+</html>
