@@ -24,7 +24,7 @@
         <div id="date"><em>created 2022-06-08 </em></div>
         <div class="content">
         <p>Server racks are cool. Even though I think just the aesthetics justify its existence, having a couple of self hosted services running is a good idea. I want to go over the services I host and how I use them.</p>
-<h2>Jenkins - https://www.jenkins.io/</h2>
+<h2><a href="https://www.jenkins.io/">Jenkins</a></h2>
 <blockquote>
 <p>Jenkins is an automation and orchestration tool.</p>
 </blockquote>
@@ -34,69 +34,69 @@ Unsynced backups, that are only kept locally on a different NAS system.
 I use borg to actually do the backups and Synology’s CloudSync technology to send data over to Google Drive. I’m considering rsync.net but haven’t had the time to dive deeper into their offerings yet. Borg locks the repo that it is currently working with, so you can’t run 2 backup tasks simultaneously. This is where the “Lock Resources” plugin comes in handy. That will queue up any jobs that need the borg resource. So even if a backup task takes more than I expected it to, and another task is fired due to its schedule, it will wait until the first task is completed and not error out because it cannot acquire the borg lock.</p>
 <p>Jenkins also schedules my HumHub bots (a service which I will touch on later). These bots are custom python scripts that post various interesting things to HumHub. An example is the reddit bot which will post images of server racks from <code>/r/HomeLab</code> and keyboard images from <code>/r/mechanicalkeyboards</code>. Another funny bot is the Markov bot that will produce some gibberish sentences by analyzing all the previous content that I have posted.</p>
 <p>Jenkins is running on bare metal, but I have plans to containerize Jenkins and only run an agent on the server.</p>
-<h2>Docker registry - https://docs.docker.com/registry/deploying/</h2>
+<h2><a href="https://docs.docker.com/registry/deploying/">Docker registry</a></h2>
 <blockquote>
 <p>Docker is a containerization program.</p>
 </blockquote>
 <p>I run a custom docker registry because most of my custom programs are containerized. Jenkins will create a docker image and push it to this registry and the docker host will pull these images and run them. The docker registry itself is also running in a docker container.</p>
-<h2>DrawIO - https://drawio-app.com/</h2>
+<h2><a href="https://drawio-app.com/">DrawIO</a></h2>
 <p>This is an awesome web-based diagramming tool. It has all the stencils I could need and suits my basic diagramming needs. I usually switch between OmniGraffle, GoodNotes+Apple Pencil and DrawIO.</p>
-<h2>FileBrowser - https://github.com/filebrowser/filebrowser</h2>
+<h2><a href="https://github.com/filebrowser/filebrowser">FileBrowser</a></h2>
 <p>This is a nice web based file manager to access the files on my server, when I want to quickly share a file with another machine or just upload some file to the server. It’s a lot quicker than <code>scp</code>.</p>
-<h2>PhpBB - https://www.phpbb.com/</h2>
+<h2><a href="https://www.phpbb.com/">PhpBB</a></h2>
 <p>This is the decades old forum software. I actually started using it as a way of documenting and blogging my daily work. I was inspired by Josh of Limit Theory fame and the way he meticulously dev logged the progress of his now defunct game. It has great support for image uploading and emojis but I have moved away from this to devonTHINK3 to consolidate all my information in a single repo. Also I’ve always found the search function of PhpBB difficult to use and it didn’t work like I would have expected.</p>
-<h2>Home Gallery - https://github.com/xemle/home-gallery</h2>
+<h2><a href="https://github.com/xemle/home-gallery">Home Gallery</a></h2>
 <p>This is an app that I use to create galleries for my pictures from my iPhone. It basically serves as a backup to view the pictures from non-Apple devices. I use the Synology DSFile app to backup the pictures from my phone to my Synology NAS and point the NFS share to Home Gallery.
 It can easily deal with 7k or so pictures and videos I throw at it.</p>
-<h2>Gitea - https://gitea.io/en-us/</h2>
+<h2><a href="https://gitea.io/en-us/">Gitea</a></h2>
 <blockquote>
 <p>Git is a content versioning system.</p>
 </blockquote>
 <p>I have tried a lot of different self hosted git services ranging from GitLab, to gogs, to GitBucket and even cgit. Throughout all the different versions of my HomeLab I had troubles with each of these implementations and finally settled on Gitea. I host about 100 or so projects of mine and mirror projects that I like on GitHub. Gitea is integrated with Jenkins via webhooks and the Jenkins plugin so a push to a repo will automatically trigger a build and test cycle in Jenkins. If something goes wrong a push notification is sent to my phone and an issue is automatically created in Gitea. Even though I rarely collaborate on my own projects it’s good to have that issue created so I don’t forget to fix the broken build.</p>
-<h2>HeadPhones - https://github.com/rembo10/headphones</h2>
+<h2><a href="https://github.com/rembo10/headphones">HeadPhones</a></h2>
 <blockquote>
 <p>Headphones is an automated music downloader for NZB and Torrent</p>
 </blockquote>
 <p>This may seem like a controversial service but I use it as an easy way to reach album data and to find albums contents. I do not use the torrent/usenet integration.</p>
-<h2>HumHub - https://github.com/humhub/humhub</h2>
+<h2><a href="https://github.com/humhub/humhub">HumHub</a></h2>
 <p>This is a self hosted facebook alternative. I don’t have a facebook account as I’m not interested in acquaintances' lives nor am I interested in providing more data to facebook so they can display better ads. But I like to life-log so I can look back and reminisce. My instance only has 2 human accounts: me and my wife. It’s also home to a bunch of bots that post funny stuff or pictures. I also have a bot that will accept location check-ins, so I don’t use Swarm anymore either.</p>
-<h2>Jupyter Notebooks - https://jupyter.org/</h2>
+<h2><a href="https://jupyter.org/">Jupyter Notebooks</a></h2>
 <blockquote>
 <p>Jupyter is a web-based interactive computing platform.</p>
 </blockquote>
 <p>Jupyter notebooks are a great way to do exploratory programming and prototyping. I have used Jupyter notebooks for other reasons too, such as running this blog or creating and maintaining a todo list. But I have since reverted to the former. When I have an idea for a trading strategy I usually prototype it out in a Jupyter notebook before porting it to a TradeBrain script.</p>
-<h2>Minio - https://min.io/</h2>
+<h2><a href="https://min.io/">Minio</a></h2>
 <p>Minio is a S3 compatible blob storage service. I mainly use it to store transient image files that I do not want to upload to HumHub because it is synced to Google Drive and those image files use up a lot of space and for hosting other static content like Keras models that are used by TradeBrain.</p>
-<h2>NextCloud - https://nextcloud.com/</h2>
+<h2><a href="https://nextcloud.com/">NextCloud</a></h2>
 <p>NextCloud is a self hosted cloud drive. I use it mainly to host large files that I need access to from different machines.</p>
-<h2>PiHole - https://pi-hole.net/</h2>
+<h2><a href="https://pi-hole.net/">PiHole</a></h2>
 <blockquote>
 <p>PiHole is a DNS service.</p>
 </blockquote>
 <p>I used to use dnsmasq to resolve internal domains but now I have migrated my main DNS resolver to PiHole. Ad blocking is good to have even though I use one integrated in my browser. It’s easier to add new hosts via the web interface than it is manually adding them to /etc/hosts. I run PiHole on a dedicated celeron mini PC with Ubuntu and manually set my DNS server on the boxes I want. The router is still using the old dnsmasq box as the primary DNS server.</p>
-<h2>Plex media server - https://plex.tv</h2>
+<h2><a href="https://plex.tv">Plex media server</a></h2>
 <blockquote>
 <p>Plex is a server that will stream your videos and music.</p>
 </blockquote>
 <p>I have been a long time user of Plex to stream video and audio but have recently become a lifetime member. I mainly use it to stream my audio collection and mirrored content from Youtube. I used to run Plex on my Synology NAS but now I have it running on bare metal. I have a webhook setup that will scrobble to my HumHub instance.</p>
-<h2>PhpMyAdmin - https://www.phpmyadmin.net/</h2>
+<h2><a href="https://www.phpmyadmin.net/">PhpMyAdmin</a></h2>
 <p>This is a web-based interface to MySQL. It has been around for ages! It has a lot of features and is a great replacement for the native database client apps if you are dealing with MySQL/MariaDB. I use it to access a development MySQL database instance that is part of the same stack as this.</p>
-<h2>Podgrab - https://github.com/akhilrex/podgrab</h2>
+<h2><a href="https://github.com/akhilrex/podgrab">Podgrab</a></h2>
 <p>“A self-hosted podcast manager to download episodes as soon as they become live” - I use it just for that. There are a few podcasts that I follow and I like to archive them because I know what it means to not be able to a favorite podcast from decades ago.</p>
-<h2>Pypi - https://pypi.org/</h2>
+<h2><a href="https://pypi.org/">Pypi</a></h2>
 <p>“The Python Package Index (PyPI) is a repository of software for the Python programming language.” - I run a private instance of pypi (just like my private docker registry) for pushing custom python packages. Nothing fancy.</p>
-<h2>Reposilite - https://github.com/dzikoysk/reposilite</h2>
+<h2><a href="https://github.com/dzikoysk/reposilite">Reposilite</a></h2>
 <p>“Lightweight and easy-to-use repository manager for Maven based artifacts in the JVM ecosystem” - Basically pipy but for Java.</p>
-<h2>SourceGraph - https://about.sourcegraph.com/</h2>
+<h2><a href="https://about.sourcegraph.com/">SourceGraph</a></h2>
 <p>This is a source search engine that has great searching and parsing abilities making it very easy to navigate code. It’s pretty much like an IDE without the edit/build part. It is so much easier to use than gitea when searching for a piece of code or trying to remember how I implemented something in some project. It’s a bit resource hungry (even the evaluation setup) but I keep it running.</p>
 <h2>TradeBrain - custom</h2>
 <p>TradeBrain is a program that I develop to run technical analysis on all sorts of investment instruments.</p>
-<h2>TubeArchivist - https://www.tubearchivist.com/</h2>
+<h2><a href="https://www.tubearchivist.com/">TubeArchivist</a></h2>
 <blockquote>
 <p>Your self hosted YouTube media server</p>
 </blockquote>
 <p>This is a great application to download and archive Youtube videos. I personally have a couple of channels that I follow, which have removed content (after making deals with big websites - yes I’m talking about you chessbrah.) so I keep a copy of every video. I also like to use this as a way of limiting what my kid gets to watch using the download queue feature (Thanks to http://noted.lol for the tip). I have a Jenkins task that will move the downloaded video files to a location where Plex can index and serve them.</p>
-<h2>Webdav - http://www.webdav.org/</h2>
+<h2><a href="http://www.webdav.org/">Webdav</a></h2>
 <blockquote>
 <p>“WebDAV stands for &quot;Web-based Distributed Authoring and Versioning&quot;. It is a set of extensions to the HTTP protocol which allows users to collaboratively edit and manage files on remote web servers.”</p>
 </blockquote>
@@ -107,7 +107,7 @@ It can easily deal with 7k or so pictures and videos I throw at it.</p>
         </div>
         </div>
 	<footer>
-	<em>generated on 2022-06-13 18:08:10</em>
+	<em>generated on 2022-06-20 23:50:05</em>
 	</footer>
   Want to say something? Please <a href="mailto:deniz.dizman@gmail.com?subject=Self hosted services">send</a> an email and I will update this post with our correspondance.
     </body>
