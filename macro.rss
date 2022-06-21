@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Deniz's Web blog</title><link>https://dendiz.github.io</link><description>Deniz's personal web space</description><language>en-US</language><lastBuildDate>Tue, 21 Jun 2022 03:50:04 GMT</lastBuildDate><generator>rfeed v1.1.1</generator><docs>https://github.com/svpino/rfeed/blob/master/README.md</docs><item><title>Self hosted services</title><description>A rundown of the services that I self host on my server</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Wed, 08 Jun 2022 00:00:00 GMT</pubDate><guid isPermaLink="true">self_hosted_services.html</guid><content:encoded>&lt;p&gt;Server racks are cool. Even though I think just the aesthetics justify its existence, having a couple of self hosted services running is a good idea. I want to go over the services I host and how I use them.&lt;/p&gt;
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Deniz's Web blog</title><link>https://dendiz.github.io</link><description>Deniz's personal web space</description><language>en-US</language><lastBuildDate>Tue, 21 Jun 2022 04:50:04 GMT</lastBuildDate><generator>rfeed v1.1.1</generator><docs>https://github.com/svpino/rfeed/blob/master/README.md</docs><item><title>Self hosted services</title><description>A rundown of the services that I self host on my server</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Wed, 08 Jun 2022 00:00:00 GMT</pubDate><guid isPermaLink="true">self_hosted_services.html</guid><content:encoded>&lt;p&gt;Server racks are cool. Even though I think just the aesthetics justify its existence, having a couple of self hosted services running is a good idea. I want to go over the services I host and how I use them.&lt;/p&gt;
 &lt;h2&gt;&lt;a href="https://www.jenkins.io/"&gt;Jenkins&lt;/a&gt;&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Jenkins is an automation and orchestration tool.&lt;/p&gt;
@@ -2509,6 +2509,500 @@ Here is some clojure code to create a markov chain and generate names.&lt;/p&gt;
     		
 Playing with the order affects the quality of the results. For this example and order 3 was overfitting the data - producing mostly names 
 identical to the ones in the training data. Order 2 seems like the best fit.&lt;/p&gt;
+</content:encoded></item><item><title>Shield visual effects</title><description>A nice sphere around the ship</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Mon, 25 Dec 2017 00:00:00 GMT</pubDate><guid isPermaLink="true">shield_visual_effects.html</guid><content:encoded>&lt;p&gt;Even though I had put up some text to indicate the shield status of a ship, it doesn’t go without some visual effect to indicate a shield presence. This is mainly because I’m too lazy to read that info text every time I want to give some command to the ship. A more catchy indication is required.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/sve1.png"&gt;/img/sve1.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Also during the economical phase you can’t move ship or adjust power diversion. I found myself clicking on ships multiple times during the economy phase without realizing that it was that phase only to thing “why aren’t my clicks registering?” followed by a “duh!” second. So I used a similar effect to indicate that you can’t select ships at the moment.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/sve2.png"&gt;/img/sve2.png&lt;/a&gt;&lt;/p&gt;
+</content:encoded></item><item><title>Turn processing and economy</title><description>What happens at each turn</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Sun, 24 Dec 2017 00:00:00 GMT</pubDate><guid isPermaLink="true">turn_processing_and_economy.html</guid><content:encoded>&lt;p&gt;2 easy parts don’t require much on the 3D side, but are a pain on the GUI part. The unity GUI is quite inferior compared to the browser that I can say. As far as I can guess it was even worse in 4.x and this is the revamped GUI system in unity 5 which still not that good. So the turn system. Turns are conducted in phases.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Movement/exploration/combat turn&lt;/li&gt;
+&lt;li&gt;Economical phase&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Every 4 turns there is an economy return the others are for moving around, colonizing etc. During the movement phase the player still collects income from the colonies and pays ship maintenance costs but cannot buy ships or do research. In the economy phase the player cannot do the things done in the movement phase, but does the things not allowed in the movement phase. Every turn the ships also generate power and burn fuel.&lt;/p&gt;
+&lt;p&gt;At the beginning of the economy turn the player collects the income and pays the maintenance costs and whatever is left over he can use to purchase ships or technology. There is a nice report that displays what happened economy wise at the beginning of the turn like this&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/tpae1.png"&gt;/img/tpae1.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;One thing to mention is that if there is an enemy ship in the neighbor cells of a colony then it will not produce any income. All the colonist are fearing for their lives and will not work.&lt;/p&gt;
+&lt;p&gt;I’ve also added a nice bar at the top that displays the current star date and the credit points the player has and a button to confirm that the turn has ended.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/tpae2.png"&gt;/img/tpae2.png&lt;/a&gt;&lt;/p&gt;
+</content:encoded></item><item><title>Discovering enemy units and planets</title><description>What lies in the vast darkness of space?</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Sun, 24 Dec 2017 00:00:00 GMT</pubDate><guid isPermaLink="true">discovering_enemy_units_and_planets.html</guid><content:encoded>&lt;p&gt;At first I though that the game could be a game of perfect information where you know where all the planets are and where your enemies are based. But then first I made the planets invisible so you have to explore around to find planets to colonize. Then I though well I’ll also make the enemies invisible until you scan them. The procedure is quite simple: Every ship and planet has a set property called exploredBy. When creating the units you add yourself to the set. Then during the Update() call of every ship in transit you scan the neighboring cells with a radius of N and if there is anything on that cell you add yourself to their explored list and make them visible. Setting a sight line of 1 is okay for planets but could be dangerous for enemy ships as you would end up right in the middle if you go the max distance. So setting this to 2 or 3 is going to better I guess. But this is also a tactical choice: Do you spend all your power on the engines and have nothing attack/defense when you end up in the attacking range of an enemy ship, or do you travel less but have your guard up?&lt;/p&gt;
+&lt;p&gt;Here is the new stuff in action on a very small map for testing purposes&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/h9.gif"&gt;/img/h9.gif&lt;/a&gt;&lt;/p&gt;
+</content:encoded></item><item><title>Planet colonization</title><description>How to create a colony on a planet</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Sat, 23 Dec 2017 00:00:00 GMT</pubDate><guid isPermaLink="true">planet_colonization.html</guid><content:encoded>&lt;p&gt;This one wasn’t tricky as I expected it to be. To colonize a planet all you have to do is send a colony ship to that planet. No resistance – no ground battle the colony is yours. The colony ship disappears from the grid as it is turned into a colony base on the surface and a colonization message is displayed. Now you can get all that extra production, yeah.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/h8.gif"&gt;/img/h8.gif&lt;/a&gt;&lt;/p&gt;
+</content:encoded></item><item><title>Planets and some info panels</title><description>Some GUI additions and planets</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Thu, 21 Dec 2017 00:00:00 GMT</pubDate><guid isPermaLink="true">planets_and_some_info_panels.html</guid><content:encoded>&lt;p&gt;over the weekend I’ve added some planets to the grid. That was straight forward, find some nice planet surface textures and apply them on to a sphere. The info panels for the planets were GUI text at first with a canvas etc. But if you rotate these along the X-axis so that they lay flat on the grid the font rendering gets screwed up big time so I changed that to 3D text mesh. The results are pleasing.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/pasip1.png"&gt;/img/pasip1.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;he planet names are 3 arrays of 5 meaningless names and a unique selection is made at random from these arrays.&lt;/p&gt;
+&lt;p&gt;While at the subject of panes I also changed the ship info pane to a text mesh. The previous videos had examples of UI text and how ugly it looks when rotated as the ship info text. Now it’s much smoother:&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/pasip2.png"&gt;/img/pasip2.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;One of the tricky things here was to keep the text facing towards the user as the ship rotates. The text is a child component of the ship, and is positioned 0,0,-10 relative to the ship. When the ship rotates so does the axis for the text and it would end up in different positions for each rotation of the ship. To keep it below the ship for all rotation the positioning has to be with respect to the world axis. To accomplish this I had to get the TransformPoint for the ship location with respect to the ships origin and add the difference vector. Now when you set the position of the text you get this effect. Something along the lines of&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Vector3 p = ship.asset.transform.TransformPoint (Vector3.zero);
+text.transform.position = p + new Vector3 (0, 0, -10f);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here is some video action&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/h7.gif"&gt;/img/h7.gif&lt;/a&gt;&lt;/p&gt;
+</content:encoded></item><item><title>Ship mechanics</title><description>How do ships work in Hexarategy</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Wed, 20 Dec 2017 00:00:00 GMT</pubDate><guid isPermaLink="true">ship_mechanics.html</guid><content:encoded>&lt;p&gt;over the last week I’ve been thinking about how the ship mechanics should function. I wanted to come up with something that doesn’t require micro-managing a fleet of ships but is yet flexible enough for a nice tactical combat. The method I’m going to try out has the following properties&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Ships have a limited amount of fuel. If that fuel runs out the ship is useless. It cannot move, attack or defend itself.&lt;/li&gt;
+&lt;li&gt;Each turn N amount of fuel is converted into N*10 amounts of power.&lt;/li&gt;
+&lt;li&gt;Power can be used for shields, lasers or movement.&lt;/li&gt;
+&lt;li&gt;The player can decide how much of this power is used by which system, no power is wasted because after setting the shield and laser amounts the rest is used for the engines.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This looks to a like sweet spot is managing the ships vs stream lining battles but I can’t be sure until I have actually played some battles.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/h5.gif"&gt;/img/h5.gif&lt;/a&gt;&lt;/p&gt;
+</content:encoded></item><item><title>Avoiding obstacles in path</title><description>Path finding in a hex grid around obstacles</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Tue, 19 Dec 2017 00:00:00 GMT</pubDate><guid isPermaLink="true">avoiding_obstacales_in_path.html</guid><content:encoded>&lt;p&gt;Up until now there were any obstacles (excluding ship) so I really didn’t care for a proper path finding algorithm to select the cells that the ship would follow to reach it’s target. A simple rasterization of the cells were the way to calculate the path, but since I’ve added some asteroids it I also thought I’d spice up the path finding too.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/aoip.jpg"&gt;/img/aoip.jpg&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;In this picture the rasterization algorithm would pick the yellow line and the cells with the red dots on them, which are actually obscured by asteroids. The correct path is the path with the purple arrows. How to you choose these? Well luckily there are a couple of ways. The brute force version would be to do a breadth first search to find the target cell which would lead to wasted movements for sure. The next best approach is the select the next cell in the BFS not at random or in order but based on a heuristic, a good guess to which cell would lead quicker to the target cell. The easiest heuristic that comes to mind is the hex distance calculated as Math.max( x2-x1, y2-y1, z2-z1). You also add the total cost of movement to this cell, something that you know for sure. Why do we add the cost of movement? Because we may need a rotation to get to that neighbor cell, which is also a movement cost. So from the starting cell, you look at all the neighbors and calculate the distance to the target cell + the cost of movement to that cell and choose the closest one. You add the current cell to the visited list. Why? because in the next step the current cell will show up as a neighbor, and we don’t want to check that cell again. Then you advanced to that cell and do the same until you have reached your target. Is it possible that the target cell is never found or a ship will be there to block us? No because the target cell validity check is done before hand (the green cells). This is a simplified version of the A-start algorithm. Here it is in action&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/h4.gif"&gt;/img/h4.gif&lt;/a&gt;&lt;/p&gt;
+</content:encoded></item><item><title>Navigation order processing</title><description>Implementing a command processing queue</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Sun, 17 Dec 2017 00:00:00 GMT</pubDate><guid isPermaLink="true">navigation_order_processing.html</guid><content:encoded>&lt;p&gt;Having ships is useless if you can’t boss them around the grid. So how would you do that, be also allowing multiple ships to move at any given time without running into each other? The first iteration of the path finder was the rasterized path finder I explained here. This method will provide a list of cells that the ship must travel through (I since have added a new algorithm that takes into account any obstacles in the way. It just returns a different list of cells which isn’t of any significance for the navigation command system). When the user clicks on a ship, we need to store that clicked cell and it’s ship into a temporary variable. The first click will also highlight the possible cells the ship can navigate to. The post about cells in range explains how there are calculated. The second time the user clicks on a cells, it can mean 3 things&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;the user wants to navigate to a cell&lt;/li&gt;
+&lt;li&gt;the user wants to cancel the selection&lt;/li&gt;
+&lt;li&gt;the user wants to select another ship from his fleet&lt;/li&gt;
+&lt;li&gt;the user wants to attack an enemy ship&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;We will address the first 3 items. Items 2 and 3 are simple so let’s get them out of the way first. If the user wants to cancel the selection, he just clicks on a cell not highlighted by the cells in range call. We just need to check if the clicked cell is in the list returned from this call. If not reset the variable that holds the clicked ship to return to the initial state. If the user wants to select another ship to move, if has clicked on a cell with one of his ships. Since he can’t attack that ship, just check if the clicked cell has a ship on it and if that ship belongs to the player. If true, set the selected cell to that one.&lt;/p&gt;
+&lt;p&gt;Here is an image of a state machine that shows to transitions and states&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/nop.jpg"&gt;/img/nop.jpg&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The red transition is cancelling the selection, and the green transition is selecting another ship to navigate.&lt;/p&gt;
+&lt;p&gt;Now let’s explore the case where the user wants to navigate to a cell. We need 
+to support multiple ships wandering around at the same time, so the user doesn’t
+have to wait for the first ship to arrive before issuing a second order.
+This means we need a queue of navigation orders that will be processed at each
+update. We create an object that will store the source cell, target cell, the
+path the ship will take and the ship model and the ship object that carries meta
+data associated with the ship. At each update call we will process each item in 
+the command queue and make the required movement to the next cell in the path. 
+After each item in the queue is processed it gets queued again. This way all the 
+ships movements will be updated once for every update call. If there is another 
+ship in the next cell for the ship we are processing just skip that command item 
+for this frame. This will make the current ship wait if there is another ship 
+blocking the path, until the ship moves away from that cell. There is an edge 
+case that needs to handled here, which is that if the blocking ships final cell
+is that cell, then the current ship will wait forever. To mitigate this case 
+checking if any ships will end up at a cell blocking the way needs to be 
+considered when creating the command. Processing the cells in the path of the 
+command object is quite similar. Each update call, dequeue the next path from 
+the paths and move towards that cell. If the ship has reached the cell, transfer
+the ship to that cell and discard that cell from the path. If the path queue is 
+empty, it means we have reached our destination. So here is the algorithm outlined 
+in a list&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;copy the command item queue to a new queue, call it nextQueue&lt;/li&gt;
+&lt;li&gt;while there are items in the queue, loop&lt;ol&gt;
+&lt;li&gt;get the current command&lt;/li&gt;
+&lt;li&gt;currentCell = the cell this ship is on now&lt;/li&gt;
+&lt;li&gt;next cell = peek at the head of the path for the current command&lt;/li&gt;
+&lt;li&gt;if there is a ship on the next cell, enqueue that command in nextQueue and continue the loop&lt;/li&gt;
+&lt;li&gt;check if the ship needs a rotation to get the current cell, and process the rotation if required&lt;/li&gt;
+&lt;li&gt;move the ship towards the next cell&lt;/li&gt;
+&lt;li&gt;if the ship is in the next cell, transfer the ship to that cell.&lt;/li&gt;
+&lt;li&gt;if there are more paths to process, requeue the current command in nextQueue&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;copy nextQueue back to command item queue&lt;/li&gt;
+&lt;/ol&gt;
+</content:encoded></item><item><title>Ship collision prevention</title><description>Stop ships from colliding when moving simulataneously</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Sat, 16 Dec 2017 00:00:00 GMT</pubDate><guid isPermaLink="true">ship_movement_collision.html</guid><content:encoded>&lt;p&gt;So, in the last movement video there were ship passing through each other like they were ghost ships of some sort. I could have just added a mesh collider and blew up the ship when they touched each other but that wouldn’t really make sense for ship of the same player. No same captain wouldn’t deviate from a collision course with a friendly ship (unless they’re unconscious or something). So the simplest way was to let one of the ship wait until the other one passes, and then carry on with the navigation.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/h3.gif"&gt;/img/h3.gif&lt;/a&gt;&lt;/p&gt;
+</content:encoded></item><item><title>Movement improvements</title><description>Better movements</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Fri, 15 Dec 2017 00:00:00 GMT</pubDate><guid isPermaLink="true">movement_improvements.html</guid><content:encoded>&lt;p&gt;on the last movement post I mentioned some of the improvements that I would be 
+making to the ship movements. Here is the demo video of some of these improvements.
+There are still some rough edges as can be seen (like ships passing through 
+each other) which I will fix later. There are a few options about fixing 
+colliding ships, I’m thinking of elevating the ship in the +Z axis so it will 
+fly over the other ship. Another option would be to select a different route. 
+Current the way of selecting the hex cells to reach the target is done like this:&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/mi.jpg"&gt;/img/mi.jpg&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;the yellow line is a direct line between the source and target cells. In the 
+previous movement videos ship were taking this direct route. To rasterize the 
+this route, I select N+1 equally distanced points on the line. N is the hex 
+distance between the two points calculated as &lt;code&gt;Math.max( x1-x2,y1-y2,z1-z2)&lt;/code&gt;. 
+These points are the green dots on the yellow line. Each of these points will 
+fall into a cell on the grid and these are the cells that the ship will follow 
+to reach the target, as I highlight them in white. So here is the video of the 
+ship moving along the grid:&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/h2.gif"&gt;/img/h2.gif&lt;/a&gt;&lt;/p&gt;
+</content:encoded></item><item><title>Hex grid neighbors</title><description>Method to get the neighboring cells in a hex grid</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Thu, 14 Dec 2017 00:00:00 GMT</pubDate><guid isPermaLink="true">hex_grid_neighbors.html</guid><content:encoded>&lt;p&gt;In the graph based storage of hex grids an important function for the cells is for them to keep track of their neighbor cells.&lt;/p&gt;
+&lt;p&gt;One way you can build the neighbors list is as you are constructing the grid itself. This can be done on a direction basis. Each cell has the following the directions:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;NW (northwest)&lt;/li&gt;
+&lt;li&gt;NE (northeast)&lt;/li&gt;
+&lt;li&gt;E (east)&lt;/li&gt;
+&lt;li&gt;SE (southeast)&lt;/li&gt;
+&lt;li&gt;SW (southwest)&lt;/li&gt;
+&lt;li&gt;W (west)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;We will use an array of size 6 in each cell to store the neighbors. Each position in the array will correspond to a direction. It doesn’t really matter which index is which position as long as your are consistent about it. If you use an enumeration structure you will automatically assign integers for each direction, which you can then use as the indices for the neighbors array. Keep in mid that not every cell has exactly 6 surrounding cells. Depending on the position on the board some cells may have 3 or 5 but never more than 6. Here is an example to clarify things:&lt;/p&gt;
+&lt;p&gt;Let’s assume the following values for the 6 directions:&lt;/p&gt;
+&lt;p&gt;NW = 0, NE = 1, E = 2, SE = 3, SW = 4, W = 5&lt;/p&gt;
+&lt;p&gt;And the Cell object will have a structure similar to &lt;code&gt;Cell[] neighbors = new Cell[6];&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;if the cell we are looking at has a neighbor on the NW side, then neighbors[0] 
+will point to the neighbor cell. Incidentally the neighboring cells neighbors 
+array would have the original cell at the SE (3) position. So this relation 
+holds:&lt;/p&gt;
+&lt;p&gt;For cells with 6 neighbors the original cell is refers to it’s neighbors in a 
+direction and the neighbors refer to the original cell in the opposite direction.&lt;/p&gt;
+&lt;p&gt;How can we calculate the opposite direction? Quite easy: The position you 
+want + 3 modulo 6. The module will make the directions wrap around after 
+reaching the end of the direction array.&lt;/p&gt;
+&lt;p&gt;Ok so let’s start of with the easiest direction: the W – E connection.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/hgn1.png"&gt;/img/hgn1.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;In this diagram the white arrows show the W-E relationship between cells. 
+Remember that we are populating the neighbor list as we create the grid, so the 
+neighboring cells must exist before we can add their pointers to the neighbor 
+list. If we start from the bottom left corner, the first cell has no neighbors 
+to the W, so we can skip that. On to the second cell to its right. This guy has
+a neighbor to the west so we can add this to the list, and the opposite neighbor 
+relation also holds. We can do this for the rest of this row, and go on to the 
+next row. On the next row, the same is true: skip the first add the rest. So the
+condition for creating the E/W relation can be written&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;function addCell(x,z,i) {
+
+ if (x &amp;gt; 0)
+ {
+  cell.neighbors[W] = cells[i - 1];
+  cells[i-1].neighbors[W + 3 % 6] = cell;
+ }
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The assumption here is that all the cells in the grid are stored in an array called cells. This is a 1 dimensional array. I felt that this may be a bit counter intuitive and deserved a remark. The function will be called for each X, Z coordinate with the position of the cell in the cells array.&lt;/p&gt;
+&lt;p&gt;For the SW and SE relations we need to distinguish between the cases of even and odd rows. Why? because the the first and last hex of the rows change which neighbors they have. The first element of the 2. row (index 1 so odd) has a SW and SE neighbor but the last hex is missing a SE neighbor. The first element of the 3rd row (index 2) is missing the SW neighbor. None of the cells on the first row have a SE or SW neighbor. So our conditions are:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;if (z &amp;gt; 0 ) {
+ if (z % 2 == 0) {
+  ...
+ } else {
+  ...
+ }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Let’s take a look at the even case, the purple and orange arrows:&lt;/p&gt;
+&lt;p&gt;The first cell doesn’t have a SW neighbor, so that’s will be a special case. The rest of the cells have both neighbors.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;if (z % 2 ==0) {
+ cell.neighbors[SE] = cells[i - width]
+ //add the opposite too
+ if (x &amp;gt; 0) {
+  cell.neighbors[SW] = cells[i - width - 1] 
+  //add the opposite too
+ }
+}
+
+//The odd case (yellow and green arrows):
+
+if (z % 2 == 0) {
+...
+} else {
+ cell.neighbors[SW] = cells[i - width]
+ //add the opposite
+ if (x &amp;lt; width - 1) {
+  cell.neighbors[SE] = cells[i-width+1]
+  //add the opposite
+ }
+}
+&lt;/code&gt;&lt;/pre&gt;
+</content:encoded></item><item><title>Ship movements</title><description>Making the ships move using unity</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Thu, 14 Dec 2017 00:00:00 GMT</pubDate><guid isPermaLink="true">ship_movements.html</guid><content:encoded>&lt;p&gt;Tacked another core feature this evening, which is the movement of the ships 
+around the grid. Thankfully Unity provides a nice method of moving object around. 
+I’ll get to that but before this I tried doing stuff the old fashioned way, by 
+calculating the direction vector between the source and target, and applying a 
+translation vector with the delta time to move the object. This does work but 
+it runs into 2 problems:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;the movements are jittery. The diagonal edges on the ship were re-rendering&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;giving a sort of escalator effect&lt;/p&gt;
+&lt;ol start="2"&gt;
+&lt;li&gt;comparing vectors to know when to stop the animation is not nice because of&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;the huge delta you need to provide to the comparison. Which means that there is 
+a snap effect after you consider the vectors equal, because you have to center 
+the object on the target cell.&lt;/p&gt;
+&lt;p&gt;The best method is to use the Vector3.MoveTowards() method which guarantees that
+it will never overshoot. Now comparing vectors with a rather small epsilon works
+nicely and the stop / recenter animation look quite smooth. Here is what it looks
+like currently:&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/h.gif"&gt;/img/h.gif&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;There are obvious things that need to be done, like the ship should follow the 
+hex grids and not cut through diagonally. Also the ship needs to rotate in the
+direction that it needs to navigate. Also a nice after-burner effect would be 
+cool when the ship is moving.&lt;/p&gt;
+</content:encoded></item><item><title>hexarategy</title><description>an incomplete turn based strategy game</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Fri, 01 Dec 2017 00:00:00 GMT</pubDate><guid isPermaLink="true">hexarategy.html</guid><content:encoded>&lt;h1&gt;Shield Visual Effects&lt;/h1&gt;
+&lt;p&gt;Even though I had put up some text to indicate the shield status of a ship, it doesnâ€™t go without some visual effect to indicate a shield presence. This is mainly because Iâ€™m too lazy to read that info text every time I want to give some command to the ship. A more catchy indication is required.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/57f1b991b0add.png"&gt;/img/57f1b991b0add.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Also during the economical phase you can't move ship or adjust power diversion. I found myself clicking on ships multiple times during the economy phase without realizing that it was that phase only to thing &amp;quot;why aren't my clicks registering?&amp;quot; followed by a &amp;quot;duh!&amp;quot; second. So I used a similar effect to indicate that you can't select ships at the moment.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/57f1b9bbcda87.png"&gt;/img/57f1b9bbcda87.png&lt;/a&gt;&lt;/p&gt;
+&lt;h1&gt;Discovering enemy units and planets&lt;/h1&gt;
+&lt;p&gt;At first I though that the game could be a game of perfect information where you know where all the planets are and where your enemies are based. But then first I made the planets invisible so you have to explore around to find planets to colonize. Then I though well Iâ€™ll also make the enemies invisible until you scan them. The procedure is quite simple: Every ship and planet has a set property called exploredBy. When creating the units you add yourself to the set. Then during the Update() call of every ship in transit you scan the neighboring cells with a radius of N and if there is anything on that cell you add yourself to their explored list and make them visible. Setting a sight line of 1 is okay for planets but could be dangerous for enemy ships as you would end up right in the middle if you go the max distance. So setting this to 2 or 3 is going to better I guess. But this is also a tactical choice: Do you spend all your power on the engines and have nothing attack/defense when you end up in the attacking range of an enemy ship, or do you travel less but have your guard up?&lt;/p&gt;
+&lt;p&gt;Here is the new stuff in action on a very small map for testing purposes&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://youtu.be/bJFR6VIMcSI"&gt;https://youtu.be/bJFR6VIMcSI&lt;/a&gt;&lt;/p&gt;
+&lt;h1&gt;Turn processing and economy&lt;/h1&gt;
+&lt;p&gt;2 easy parts donâ€™t require much on the 3D side, but are a pain on the GUI part. The unity GUI is quite inferior compared to the browser that I can say. As far as I can guess it was even worse in 4.x and this is the revamped GUI system in unity 5 which still not that good. So the turn system. Turns are conducted in phases.&lt;/p&gt;
+&lt;h1&gt;Movement/exploration/combat turn&lt;/h1&gt;
+&lt;h1&gt;Economical phase&lt;/h1&gt;
+&lt;p&gt;Every 4 turns there is an economy return the others are for moving around, colonizing etc. During the movement phase the player still collects income from the colonies and pays ship maintenance costs but cannot buy ships or do research. In the economy phase the player cannot do the things done in the movement phase, but does the things not allowed in the movement phase. Every turn the ships also generate power and burn fuel.&lt;/p&gt;
+&lt;p&gt;At the beginning of the economy turn the player collects the income and pays the maintenance costs and whatever is left over he can use to purchase ships or technology. There is a nice report that displays what happened economy wise at the beginning of the turn like this&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/57f1b9d9e8099.png"&gt;/img/57f1b9d9e8099.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;One thing to mention is that if there is an enemy ship in the neighbor cells of a colony then it will not produce any income. All the colonist are fearing for their lives and will not work.&lt;/p&gt;
+&lt;p&gt;Iâ€™ve also added a nice bar at the top that displays the current star date and the credit points the player has and a button to confirm that the turn has ended.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/57f1b9f14a1e0.png"&gt;/img/57f1b9f14a1e0.png&lt;/a&gt;&lt;/p&gt;
+&lt;h1&gt;Planet colonization&lt;/h1&gt;
+&lt;p&gt;This one wasnâ€™t tricky as I expected it to be. To colonize a planet all you have to do is send a colony ship to that planet. No resistance â€“ no ground battle the colony is yours. The colony ship disappears from the grid as it is turned into a colony base on the surface and a colonization message is displayed. Now you can get all that extra production, yeah.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://youtu.be/l5AC7sPvD44"&gt;https://youtu.be/l5AC7sPvD44&lt;/a&gt;&lt;/p&gt;
+&lt;h1&gt;Planets and some info panels&lt;/h1&gt;
+&lt;p&gt;over the weekend Iâ€™ve added some planets to the grid. That was straight forward, find some nice planet surface textures and apply them on to a sphere. The info panels for the planets were GUI text at first with a canvas etc. But if you rotate these along the X-axis so that they lay flat on the grid the font rendering gets screwed up big time so I changed that to 3D text mesh. The results are pleasing.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/57f1ba0f67fae.png"&gt;/img/57f1ba0f67fae.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;the planet names are 3 arrays of 5 meaningless names and a unique selection is made at random from these arrays.&lt;/p&gt;
+&lt;p&gt;While at the subject of panes I also changed the ship info pane to a text mesh. The previous videos had examples of UI text and how ugly it looks when rotated as the ship info text. Now itâ€™s much smoother:&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/57f1ba28e4ea8.png"&gt;/img/57f1ba28e4ea8.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;One of the tricky things here was to keep the text facing towards the user as the ship rotates. The text is a child component of the ship, and is positioned 0,0,-10 relative to the ship. When the ship rotates so does the axis for the text and it would end up in different positions for each rotation of the ship. To keep it below the ship for all rotation the positioning has to be with respect to the world axis. To accomplish this I had to get the TransformPoint for the ship location with respect to the ships origin and add the difference vector. Now when you set the position of the text you get this effect. Something along the lines of&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Vector3 p = ship.asset.transform.TransformPoint (Vector3.zero);
+text.transform.position = p + new Vector3 (0, 0, -10f);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here is some video action&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://youtu.be/CXCGkh642OI"&gt;https://youtu.be/CXCGkh642OI&lt;/a&gt;&lt;/p&gt;
+&lt;h1&gt;Ship mechanics&lt;/h1&gt;
+&lt;p&gt;over the last week Iâ€™ve been thinking about how the ship mechanics should function. I wanted to come up with something that doesnâ€™t require micro-managing a fleet of ships but is yet flexible enough for a nice tactical combat. The method Iâ€™m going to try out has the following properties&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Ships have a limited amount of fuel. If that fuel runs out the ship is useless. It cannot move, attack or defend itself.&lt;/li&gt;
+&lt;li&gt;Each turn N amount of fuel is converted into N*10 amounts of power.&lt;/li&gt;
+&lt;li&gt;Power can be used for shields, lasers or movement.&lt;/li&gt;
+&lt;li&gt;The player can decide how much of this power is used by which system, no power is wasted because after setting the shield and laser amounts the rest is used for the engines.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This looks to a like sweet spot is managing the ships vs stream lining battles but I canâ€™t be sure until I have actually played some battles.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://youtu.be/kw8HuirxIys"&gt;https://youtu.be/kw8HuirxIys&lt;/a&gt;&lt;/p&gt;
+&lt;h1&gt;Hex grid border highlighting&lt;/h1&gt;
+&lt;p&gt;So, Iâ€™ve been polishing the grid looks a little bit and one of the things Iâ€™ve seen posted around the forums and Q/A sites is how to draw a line around the hexagon cell borders to indicate possible movement ranges. Previously Iâ€™ve been doing this by actually highlighting all the possible cells, but itâ€™s looks a lot better if you just highlight the borders. Hereâ€™s the results Iâ€™ve got after this implementation&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/57f1ba58dab73.png"&gt;/img/57f1ba58dab73.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Calculating the border cells is a different task which Iâ€™ve explained over here. After we have the cells that we can navigate to we need to filter out the border cells. If you look carefully the edges that need highlighting from all the cells in range are the ones that do not have a navigable neighbor. In the image the cell (4,-6,2) and (5,-6,1) are both in range, but they share a border with a navigable cell, so that edge should not be highlighted. The algorithm should be like this:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Get all the cells in range and the starting cell, and add the starting cell to the cells in range.&lt;/li&gt;
+&lt;li&gt;for all the cells loop&lt;ol&gt;
+&lt;li&gt;for all the neighboring cells of the current cell loop&lt;ol&gt;
+&lt;li&gt;if the cells current neighbor = null or cells in range doesnâ€™t have the neighbor highlight that edge&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The actual highlighting is done by placing a quad with a bar texture with the correct rotation and coordinates easily calculated from the current cell we are processing.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://youtu.be/UkWKeim-n_Y"&gt;https://youtu.be/UkWKeim-n_Y&lt;/a&gt;&lt;/p&gt;
+&lt;h1&gt;Avoiding obstacles in path during movement&lt;/h1&gt;
+&lt;p&gt;Up until now there were any obstacles (excluding ship) so I really didnâ€™t care for a proper path finding algorithm to select the cells that the ship would follow to reach itâ€™s target. A simple rasterization of the cells were the way to calculate the path, but since Iâ€™ve added some asteroids it I also thought Iâ€™d spice up the path finding too.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/57f1ba74ae111.jpg"&gt;/img/57f1ba74ae111.jpg&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;In this picture the rasterization algorithm would pick the yellow line and the cells with the red dots on them, which are actually obscured by asteroids. The correct path is the path with the purple arrows. How to you choose these? Well luckily there are a couple of ways. The brute force version would be to do a breadth first search to find the target cell which would lead to wasted movements for sure. The next best approach is the select the next cell in the BFS not at random or in order but based on a heuristic, a good guess to which cell would lead quicker to the target cell. The easiest heuristic that comes to mind is the hex distance calculated as Math.max( x2-x1, y2-y1, z2-z1). You also add the total cost of movement to this cell, something that you know for sure. Why do we add the cost of movement? Because we may need a rotation to get to that neighbor cell, which is also a movement cost. So from the starting cell, you look at all the neighbors and calculate the distance to the target cell + the cost of movement to that cell and choose the closest one. You add the current cell to the visited list. Why? because in the next step the current cell will show up as a neighbor, and we donâ€™t want to check that cell again. Then you advanced to that cell and do the same until you have reached your target. Is it possible that the target cell is never found or a ship will be there to block us? No because the target cell validity check is done before hand (the green cells). This is a simplified version of the A-start algorithm. Here it is in action&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://youtu.be/8oQPrgEamu8"&gt;https://youtu.be/8oQPrgEamu8&lt;/a&gt;&lt;/p&gt;
+&lt;h1&gt;Navigation order processing&lt;/h1&gt;
+&lt;p&gt;Having ships is useless if you canâ€™t boss them around the grid. So how would you do that, be also allowing multiple ships to move at any given time without running into each other? The first iteration of the path finder was the rasterized path finder I explained here. This method will provide a list of cells that the ship must travel through (I since have added a new algorithm that takes into account any obstacles in the way. It just returns a different list of cells which isnâ€™t of any significance for the navigation command system). When the user clicks on a ship, we need to store that clicked cell and itâ€™s ship into a temporary variable. The first click will also highlight the possible cells the ship can navigate to. The post about cells in range explains how there are calculated. The second time the user clicks on a cells, it can mean 3 things&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;the user wants to navigate to a cell&lt;/li&gt;
+&lt;li&gt;the user wants to cancel the selection&lt;/li&gt;
+&lt;li&gt;the user wants to select another ship from his fleet&lt;/li&gt;
+&lt;li&gt;the user wants to attack an enemy ship&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;We will address the first 3 items. Items 2 and 3 are simple so letâ€™s get them out of the way first. If the user wants to cancel the selection, he just clicks on a cell not highlighted by the cells in range call. We just need to check if the clicked cell is in the list returned from this call. If not reset the variable that holds the clicked ship to return to the initial state. If the user wants to select another ship to move, if has clicked on a cell with one of his ships. Since he canâ€™t attack that ship, just check if the clicked cell has a ship on it and if that ship belongs to the player. If true, set the selected cell to that one.&lt;/p&gt;
+&lt;p&gt;Here is an image of a state machine that shows to transitions and states&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/57f1ba8f2cd8d.jpg"&gt;/img/57f1ba8f2cd8d.jpg&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The red transition is cancelling the selection, and the green transition is selecting another ship to navigate.&lt;/p&gt;
+&lt;p&gt;Now letâ€™s explore the case where the user wants to navigate to a cell. We need to support multiple ships wandering around at the same time, so the user doesnâ€™t have to wait for the first ship to arrive before issuing a second order. This means we need a queue of navigation orders that will be processed at each update. We create an object that will store the source cell, target cell, the path the ship will take and the ship model and the ship object that carries meta data associated with the ship. At each update call we will process each item in the command queue and make the required movement to the next cell in the path. After each item in the queue is processed it gets queued again. This way all the ships movements will be updated once for every update call. If there is another ship in the next cell for the ship we are processing just skip that command item for this frame. This will make the current ship wait if there is another ship blocking the path, until the ship moves away from that cell. There is an edge case that needs to handled here, which is that if the blocking ships final cell is that cell, then the current ship will wait forever. To mitigate this case checking if any ships will end up at a cell blocking the way needs to be considered when creating the command. Processing the cells in the path of the command object is quite similar. Each update call, dequeue the next path from the paths and move towards that cell. If the ship has reached the cell, transfer the ship to that cell and discard that cell from the path. If the path queue is empty, it means we have reached our destination. So here is the algorithm outlined in a list&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;copy the command item queue to a new queue, call it nextQueue&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;while there are items in the queue, loop&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;get the current command&lt;/li&gt;
+&lt;li&gt;currentCell = the cell this ship is on now&lt;/li&gt;
+&lt;li&gt;next cell = peek at the head of the path for the current command&lt;/li&gt;
+&lt;li&gt;if there is a ship on the next cell, enqueue that command in nextQueue and continue the loop&lt;/li&gt;
+&lt;li&gt;check if the ship needs a rotation to get the current cell, and process the rotation if required&lt;/li&gt;
+&lt;li&gt;move the ship towards the next cell&lt;/li&gt;
+&lt;li&gt;if the ship is in the next cell, transfer the ship to that cell.&lt;/li&gt;
+&lt;li&gt;if there are more paths to process, requeue the current command in nextQueue##&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;copy nextQueue back to command item queue&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1&gt;Ship movement collision&lt;/h1&gt;
+&lt;p&gt;So, in the last movement video there were ship passing through each other like they were ghost ships of some sort. I could have just added a mesh collider and blew up the ship when they touched each other but that wouldnâ€™t really make sense for ship of the same player. No same captain wouldnâ€™t deviate from a collision course with a friendly ship (unless theyâ€™re unconscious or something). So the simplest way was to let one of the ship wait until the other one passes, and then carry on with the navigation.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://youtu.be/iVI2z1xUZsc"&gt;https://youtu.be/iVI2z1xUZsc&lt;/a&gt;&lt;/p&gt;
+&lt;h1&gt;Movement improments&lt;/h1&gt;
+&lt;p&gt;on the last movement post I mentioned some of the improvements that I would be making to the ship movements. Here is the demo video of some of these improvements. There are still some rough edges as can be seen (like ships passing through each other) which I will fix later. There are a few options about fixing colliding ships, Iâ€™m thinking of elevating the ship in the +Z axis so it will fly over the other ship. Another option would be to select a different route. Current the way of selecting the hex cells to reach the target is done like this:&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/57f1baa8917e8.jpg"&gt;/img/57f1baa8917e8.jpg&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;the yellow line is a direct line between the source and target cells. In the previous movement videos ship were taking this direct route. To rasterize the this route, I select N+1 equally distanced points on the line. N is the hex distance between the two points calculated as Math.max( x1-x2,y1-y2,z1-z2) . These points are the green dots on the yellow line. Each of these points will fall into a cell on the grid and these are the cells that the ship will follow to reach the target, as I highlight them in white. So here is the video of the ship moving along the grid:&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://youtu.be/Ij2ARqzowb4"&gt;https://youtu.be/Ij2ARqzowb4&lt;/a&gt;&lt;/p&gt;
+&lt;h1&gt;Ship movements&lt;/h1&gt;
+&lt;p&gt;Tacked another core feature this evening, which is the movement of the ships around the grid. Thankfully Unity provides a nice method of moving object around. Iâ€™ll get to that but before this I tried doing stuff the old fashioned way, by calculating the direction vector between the source and target, and applying a translation vector with the delta time to move the object. This does work but it runs into 2 problems:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;the movements are jittery. The diagonal edges on the ship were re-rendering giving a sort of escalator effect&lt;/li&gt;
+&lt;li&gt;comparing vectors to know when to stop the animation is not nice because of the huge delta you need to provide to the comparison. Which means that there is a snap effect after you consider the vectors equal, because you have to center the object on the target cell.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The best method is to use the Vector3.MoveTowards() method which guarantees that it will never overshoot. Now comparing vectors with a rather small epsilon works nicely and the stop / recenter animation look quite smooth. Here is what it looks like currently:&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://youtu.be/-Vxquzv15hc"&gt;https://youtu.be/-Vxquzv15hc&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;There are obvious things that need to be done, like the ship should follow the hex grids and not cut through diagonally. Also the ship needs to rotate in the direction that it needs to navigate. Also a nice after-burner effect would be cool when the ship is moving.&lt;/p&gt;
+&lt;h1&gt;Cells in range&lt;/h1&gt;
+&lt;p&gt;Getting the cells in a range of N is also an important aspect that worth talking about. There are 2 current uses for this feature in Hexarategy:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;get the cells that a weapon of range N can target&lt;/li&gt;
+&lt;li&gt;get the cells the ship can navigate to&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The algorithm implementations will depend on the underlying data structure you choose to represent you grid. Today I will go over algorithms that can be used when using a graph to represent the grid. Letâ€™s start with the weapon range, as the movement range is a bit more complicated since it has some different constrains.&lt;/p&gt;
+&lt;p&gt;The range of a weapon is defined as all the cells in all directions from the home cell that are &amp;lt; N units away. Think like the inside area of a circle.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/57f1bacb29308.jpg"&gt;/img/57f1bacb29308.jpg&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;If the yellow cell is the home cell, then the purple cells are all the cells that are 1 units away, and the orange cells + purple cells are all the cells that are 2 units away.  So given the yellow colored home cell, how can we get the cells that are N units away?&lt;/p&gt;
+&lt;p&gt;This is a classical graph walk with a range constraint. Instead of visiting all nodes, or quitting when a node is found, we need to quit when we exhaust our range. So we need to keep track of the range, thatâ€™s for sure. We also need to consider when we decrease this range, because for all purple cells the range from the home cell is 1, and we cannot decrease the range each time we visit a purple cell. What we need is to keep track of how many purple cells there are and decrease the range after we have consumed them all. We will need track of this by using 2 extra counters: nodesInNext and nodesInCurrent . nodesInNext  will hold the count of the neighbors in the next level and the current will hold how much of the current level we have consumed. There are recursive graph traversing algorithms and there are ones using stacks and queues. Weâ€™ll opt for a non-recursive algorithm here&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;... get the home cell and add it to the queue
+goneRange = N //how far is our range?
+nodesInCurrent = 1 /*home cell*/, nodesInNext = 0;
+while(queue.Count &amp;gt; 0 &amp;amp;&amp;amp; goneRange &amp;gt; 0)
+{
+    nodesInCurrent--;
+    currentCell = queue.Dequeue();
+    List&amp;lt;Cell&amp;gt; neighborList = new List&amp;lt;Cell&amp;gt;();
+    foreach (Cell item in currentCell.neighbors)
+    {
+        if (item != null) neighborList.Add(item);
+    }
+    neighborList.Remove(homeCell);
+    IEnumerable&amp;lt;HexCell&amp;gt; nlist =  neighborList.Except(result);
+    nodesInNext += nlist.Count();
+    foreach (Cell neighbor in nlist)
+    {
+        queue.Enqueue(neighbor);
+        result.Add(neighbor);
+    }
+
+    if (nodesInCurrent == 0)
+    {
+        goneRange--;
+        nodesInCurrent = nodesInNext;
+        nodesInNext = 0;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;the result list will contain all the cells that are in range and we can use that. Note that this doesnâ€™t check for friendly fire.&lt;/p&gt;
+&lt;p&gt;The movement range calculations are bit more interesting as there is the condition that a rotation move also costs 1 range. Take a look at this diagram&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/57f1badd6bb3c.jpg"&gt;/img/57f1badd6bb3c.jpg&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Starting at the orange cell facing NE the yellow cell is in range 1. The cell NE of the yellow cell is in range 2 as it is in the same direction. The cells to the NW and E of the orange cell are in range 2 because 1 range point would be used to rotate the ship from NE to NW and NE to E. Letâ€™s solve this algorithm with a recursive approach. Here is the outline of what we will try to implement&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;if no more range points left, return&lt;/li&gt;
+&lt;li&gt;if the result set doesnâ€™t contain the current cell, add it&lt;/li&gt;
+&lt;li&gt;for the next 3 directions, if there is a neighbor cell in that direction recurse with range â€“ 1 in that direction otherwise decrease range points.&lt;/li&gt;
+&lt;li&gt;for the previous 2 directions, if there is a neighbor cell in that direction recurse with range â€“ 1 in that direction otherwise decrease range points.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;So if we are facing NE like the diagram, and we have 2 range points, we will go to the yellow neighbor. We still have have range point so weâ€™ll go NE. Now we donâ€™t have any range points so add this cell to the results. Backtrack to the yellow cell and decrease the range points. The next direction is E, but we donâ€™t have any range points. This will hold for all the remaining directions on the this cell, so we backtrack to the orange cell. The next direction is E, and we consumed a range point by turning in this direction so we have 1 point left. There is a cell to the E so go to that cell and add it to the listâ€¦ you get the idea.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public void CellRangeMovement(Cell currentCell, int rangeLeft, List&amp;lt;Cell&amp;gt; result, Direction direction)
+{
+
+    if (rangeLeft &amp;lt; 0) return;
+    if (!result.Contains(currentCell))
+    {
+        result.Add(currentCell);
+    }
+
+    Direction nextDirection = direction;
+    int rangeReg = rangeLeft;
+    for (int i = 0; i &amp;lt; 3; i++)
+    {
+        Cell currentNeighbor = currentCell.neighbors[nextDirection];
+        if (currentNeighbor != null)
+        {
+            CellRangeMovement(currentNeighbor, rangeReg-1, result, nextDirection);
+        }
+        nextDirection = nextDirection.Next();
+        rangeReg--;
+    }
+
+    rangeReg = rangeLeft;
+    nextDirection = direction;
+    for (int i = 1; i &amp;lt; 3; i++)
+    {
+        Cell currentNeighbor = currentCell.neighbors[nextDirection];
+        if (currentNeighbor != null)
+        {
+            CellRangeMovement(currentNeighbor, rangeReg - 1, result, nextDirection);
+        }
+        nextDirection = nextDirection.Prev();
+        rangeReg--;
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;One interesting point here is that, you cannot rotate 6 six times clockwise to get all the directions, as that would mean consuming extra ranges, e.g if you are facing NE and want to face NW you would not go E,SE,SW,W,NW. You would just go NE, NW. Thatâ€™s why you have to check the directions in 2 separate for loops.&lt;/p&gt;
+&lt;h1&gt;hex grid neighbors&lt;/h1&gt;
+&lt;p&gt;In the graph based storage of hex grids an important function for the cells is for them to keep track of their neighbor cells.
+One way you can build the neighbors list is as you are constructing the grid itself. This can be done on a direction basis. Each cell has the following the directions:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;NW (northwest)&lt;/li&gt;
+&lt;li&gt;NE (northeast)&lt;/li&gt;
+&lt;li&gt;E (east)&lt;/li&gt;
+&lt;li&gt;SE (southeast)&lt;/li&gt;
+&lt;li&gt;SW (southwest)&lt;/li&gt;
+&lt;li&gt;W (west)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;We will use an array of size 6 in each cell to store the neighbors. Each position in the array will correspond to a direction. It doesnâ€™t really matter which index is which position as long as your are consistent about it. If you use an enumeration structure you will automatically assign integers for each direction, which you can then use as the indices for the neighbors array. Keep in mid that not every cell has exactly 6 surrounding cells. Depending on the position on the board some cells may have 3 or 5 but never more than 6. Here is an example to clarify things:&lt;/p&gt;
+&lt;p&gt;Letâ€™s assume the following values for the 6 directions:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;NW = 0, NE = 1, E = 2, SE = 3, SW = 4, W = 5&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;And the Cell object will have a structure similar to&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Cell[] neighbors = new Cell[6];&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;if the cell we are looking at has a neighbor on the NW side, then neighbors[0]  will point to the neighbor cell. Incidentally the neighboring cells neighbors array would have the original cell at the SE (3) position. So this relation holds:&lt;/p&gt;
+&lt;p&gt;For cells with 6 neighbors the original cell is refers to itâ€™s neighbors in a direction and the neighbors refer to the original cell in the opposite direction.&lt;/p&gt;
+&lt;p&gt;How can we calculate the opposite direction? Quite easy: The position you want + 3 modulo 6. The module will make the directions wrap around after reaching the end of the direction array.&lt;/p&gt;
+&lt;p&gt;Ok so letâ€™s start of with the easiest direction: the W â€“ E connection.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/57f1baff82c46.png"&gt;/img/57f1baff82c46.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;In this diagram the white arrows show the W-E relationship between cells. Remember that we are populating the neighbor list as we create the grid, so the neighboring cells must exist before we can add their pointers to the neighbor list. If we start from the bottom left corner, the first cell has no neighbors to the W, so we can skip that. On to the second cell to its right. This guy has a neighbor to the west so we can add this to the list, and the opposite neighbor relation also holds. We can do this for the rest of this row, and go on to the next row. On the next row, the same is true: skip the first add the rest. So the condition for creating the E/W relation can be written&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;function addCell(x,z,i) {
+
+ if (x &amp;gt; 0)
+ {
+  cell.neighbors[W] = cells[i - 1];
+  cells[i-1].neighbors[W + 3 % 6] = cell;
+ }
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The assumption here is that all the cells in the grid are stored in an array called cells. This is a 1 dimensional array. I felt that this may be a bit counter intuitive and deserved a remark. The function will be called for each X, Z coordinate with the position of the cell in the cells array.&lt;/p&gt;
+&lt;p&gt;For the SW and SE relations we need to distinguish between the cases of even and odd rows. Why? because the the first and last hex of the rows change which neighbors they have. The first element of the 2. row (index 1 so odd) has a SW and SE neighbor but the last hex is missing a SE neighbor. The first element of the 3rd row (index 2) is missing the SW neighbor. None of the cells on the first row have a SE or SW neighbor. So our conditions are:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+if (z &amp;gt; 0 ) {
+ if (z % 2 == 0) {
+  ...
+ } else {
+  ...
+ }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Letâ€™s take a look at the even case, the purple and orange arrows:&lt;/p&gt;
+&lt;p&gt;The first cell doesnâ€™t have a SW neighbor, so thatâ€™s will be a special case. The rest of the cells have both neighbors.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+if (z % 2 ==0) {
+ cell.neighbors[SE] = cells[i - width]
+ //add the opposite too
+ if (x &amp;gt; 0) {
+  cell.neighbors[SW] = cells[i - width - 1] 
+  //add the opposite too
+ }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The odd case (yellow and green arrows):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;if (z % 2 == 0) {
+...
+} else {
+ cell.neighbors[SW] = cells[i - width]
+ //add the opposite
+ if (x &amp;lt; width - 1) {
+  cell.neighbors[SE] = cells[i-width+1]
+  //add the opposite
+ }
+}
+&lt;/code&gt;&lt;/pre&gt;
+</content:encoded></item><item><title>New proxmox installation</title><description>Sick of Windows quirks with VMWare, so I installed Proxmox</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Mon, 16 Oct 2017 00:00:00 GMT</pubDate><guid isPermaLink="true">homelab_devlog_2017-10-16.html</guid><content:encoded>&lt;p&gt;Gecen hafta monster notebook’a formati bastim ve proxmox VE kurdum. Windows icinden vmware player ile sunucular su d-drive yavasligindan cok etkileniyordu ayrica windowsun kafasina gore updatelerden restart atmasindan sikildim. Su ana kadar proxmostan mumnumun. Sunucularim:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;plex&lt;/li&gt;
+&lt;li&gt;strix&lt;/li&gt;
+&lt;li&gt;jenkins&lt;/li&gt;
+&lt;li&gt;nexus&lt;/li&gt;
+&lt;li&gt;kafka&lt;/li&gt;
+&lt;li&gt;sandbox&lt;/li&gt;
+&lt;li&gt;notebook&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;RAMin yarisini allocate ettim, bir bu kadar daha kaldirir yani.&lt;/p&gt;
 </content:encoded></item><item><title>TypeSafe config override</title><description>how to override configuration values</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Tue, 28 Mar 2017 00:00:00 GMT</pubDate><guid isPermaLink="true">typesafe-config-override.html</guid><content:encoded>&lt;p&gt;Every now and then you need to be able to define some default value in your configuration and be able to override them based on the environment you are running in. TypeSafe Config has a nice way of allowing this:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;production {
   service1: 172.0.0.1
