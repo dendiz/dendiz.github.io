@@ -1,5 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Deniz's Web blog</title><link>https://dendiz.github.io</link><description>Deniz's personal web space</description><language>en-US</language><lastBuildDate>Wed, 22 Jun 2022 00:50:04 GMT</lastBuildDate><generator>rfeed v1.1.1</generator><docs>https://github.com/svpino/rfeed/blob/master/README.md</docs><item><title>Self hosted services</title><description>A rundown of the services that I self host on my server</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Wed, 08 Jun 2022 00:00:00 GMT</pubDate><guid isPermaLink="true">self_hosted_services.html</guid><content:encoded>&lt;p&gt;Server racks are cool. Even though I think just the aesthetics justify its existence, having a couple of self hosted services running is a good idea. I want to go over the services I host and how I use them.&lt;/p&gt;
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Deniz's Web blog</title><link>https://dendiz.github.io</link><description>Deniz's personal web space</description><language>en-US</language><lastBuildDate>Wed, 22 Jun 2022 01:32:04 GMT</lastBuildDate><generator>rfeed v1.1.1</generator><docs>https://github.com/svpino/rfeed/blob/master/README.md</docs><item><title>Lighting system for ASCII based games</title><description>A initial pass on a lighting system for roguelike games</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Mon, 20 Jun 2022 00:00:00 GMT</pubDate><guid isPermaLink="true">ascii_lighting_system.html</guid><content:encoded>&lt;p&gt;I've recently picked up where I had left off on my roguelike game. After going over the codebase from 2 years ago I decided to give it an overhaul
+by changing the graphics system from a tile based approach to a scene graph. There are many other changes and one of the changes I want to write about
+today is the lighting system changes.&lt;/p&gt;
+&lt;p&gt;Ligthing for ASCII tiles is pretty simple. You just need to keep a value that represents how much light is received on a cell. There is no refraction/reflection or other difficult problems to worry about. This value called illumination, basically acts as a multiplier on the RGB components of the cell.&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-swift"&gt;var fgcolor: SKColor {
+    set(newColor) {
+        let rgba = newColor.rgba
+        foreground.color = SKColor(red: CGFloat(rgba.red * illumination),
+                                 green: CGFloat(rgba.green * illumination),
+                                  blue: CGFloat(rgba.blue * illumination),
+                                 alpha: CGFloat(rgba.alpha)).usingColorSpace(.genericRGB)!
+    }
+...
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now that we have the basics down and can change the lighting on a single cell, how do we choose which cells to apply this to? There a couple of options
+but the one I chose is to use a &lt;a href="/post/roguelike-fov2.html"&gt;shadow casting&lt;/a&gt; algorithm to pick the cells. So our light source will be a point light source which emmits rays and changes the illumination values of the surrounding cells. Ambient lighting can be simulated by setting the &lt;code&gt;illumination&lt;/code&gt; value of the cells to a lower value then the illuminated cells. Usually unexplored areas are completely dark, areas that are beyond the light source reach are darkish.&lt;/p&gt;
+&lt;p&gt;For roguelike games you usually want the light source to move with the player so you can either attach a light source to the player object or make the player a light source itself. I went with the prior option after I refactored the engine to support a scene graph. This makes the design more flexible. Now since the the light node is attached to the player we will need to recompute the illuminated cells when the player moves and highlight them. There is no escaping the recomputation but there is a little optimization that be done for the highlighting part that will come in handy once we add fade-in animations. Since you are moving one tile at a time you don't need to reset all the tiles and then highlight all the tiles again. Imagine this:&lt;/p&gt;
+&lt;p&gt;A)&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;. x x x .
+. x x x .
+. x x x .
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;where the letter x represents the currently highlighted tiles and the dots are dark tiles. If we move 1 to the right, the new map will become
+B)&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;. . x x x
+. . x x x
+. . x x x
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If we take the difference of these set of coordinates once A-B and B-A we will have the sets of cells that we need to turn off and turn on. This is faster then illuminating all the cells.&lt;/p&gt;
+&lt;h3&gt;Animations&lt;/h3&gt;
+&lt;p&gt;Lighting up the tiles is simple, but a bit plain. A great effect to have is fading the tiles to their final illumination value over time.&lt;/p&gt;
+&lt;p&gt;&lt;img src="/img/2022/06/illu1.gif" alt="" /&gt;&lt;/p&gt;
+&lt;p&gt;This makes things a bit more complicated as now there are threads that we need to increase or decrease the illumination value over a certain period of time. This can be implemented with operation queues in the Apple world which provide a nice abstraction or with more lower level constructs on other platforms. The basic idea and the first iteration I have for this is to have a lighting pass before the rendering pass. Here I will get all the light sources on the scene and the cells they would light up and store an operation for each cell that will run the animation. All these animations will run concurrently after the scene has been rendered. The animations need to include a mechanism for cancelling a running animation. This is because the player can move away from a cell that was in the processing of being faded in and now should be dark. So the fade in animation will be cancelled and the new animation (or in my implemnetation an immediate value set) will replace it. 
+This cancallation support was one of the more trickier parts to implement correctly.&lt;/p&gt;
+&lt;p&gt;Here is the final version:&lt;/p&gt;
+&lt;p&gt;&lt;img src="/img/2022/06/illu1.gif" alt="" /&gt;&lt;/p&gt;
+&lt;p&gt;This as it stands now is a bespoke tile fade in animation and will later need to be incorporated into a wide animation framework.&lt;/p&gt;
+</content:encoded></item><item><title>Self hosted services</title><description>A rundown of the services that I self host on my server</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Wed, 08 Jun 2022 00:00:00 GMT</pubDate><guid isPermaLink="true">self_hosted_services.html</guid><content:encoded>&lt;p&gt;Server racks are cool. Even though I think just the aesthetics justify its existence, having a couple of self hosted services running is a good idea. I want to go over the services I host and how I use them.&lt;/p&gt;
 &lt;h2&gt;&lt;a href="https://www.jenkins.io/"&gt;Jenkins&lt;/a&gt;&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Jenkins is an automation and orchestration tool.&lt;/p&gt;
