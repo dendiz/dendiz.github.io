@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Deniz's Web blog</title><link>https://dendiz.github.io</link><description>Deniz's personal web space</description><language>en-US</language><lastBuildDate>Wed, 22 Jun 2022 01:50:04 GMT</lastBuildDate><generator>rfeed v1.1.1</generator><docs>https://github.com/svpino/rfeed/blob/master/README.md</docs><item><title>Lighting system for ASCII based games</title><description>A initial pass on a lighting system for roguelike games</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Mon, 20 Jun 2022 00:00:00 GMT</pubDate><guid isPermaLink="true">ascii_lighting_system.html</guid><content:encoded>&lt;p&gt;I've recently picked up where I had left off on my roguelike game. After going over the codebase from 2 years ago I decided to give it an overhaul
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Deniz's Web blog</title><link>https://dendiz.github.io</link><description>Deniz's personal web space</description><language>en-US</language><lastBuildDate>Wed, 22 Jun 2022 02:50:05 GMT</lastBuildDate><generator>rfeed v1.1.1</generator><docs>https://github.com/svpino/rfeed/blob/master/README.md</docs><item><title>Lighting system for ASCII based games</title><description>A initial pass on a lighting system for roguelike games</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Mon, 20 Jun 2022 00:00:00 GMT</pubDate><guid isPermaLink="true">ascii_lighting_system.html</guid><content:encoded>&lt;p&gt;I've recently picked up where I had left off on my roguelike game. After going over the codebase from 2 years ago I decided to give it an overhaul
 by changing the graphics system from a tile based approach to a scene graph. There are many other changes and one of the changes I want to write about
 today is the lighting system changes.&lt;/p&gt;
 &lt;p&gt;Ligthing for ASCII tiles is pretty simple. You just need to keep a value that represents how much light is received on a cell. There is no refraction/reflection or other difficult problems to worry about. This value called illumination, basically acts as a multiplier on the RGB components of the cell.&lt;/p&gt;
@@ -3041,6 +3041,154 @@ if (z % 2 ==0) {
 &lt;li&gt;notebook&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;RAMin yarisini allocate ettim, bir bu kadar daha kaldirir yani.&lt;/p&gt;
+</content:encoded></item><item><title>Warp lane generation with Delaunay triangulation</title><description>How to make good looking warp lanes in a space game</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Sun, 17 Sep 2017 00:00:00 GMT</pubDate><guid isPermaLink="true">warp_lane_generation_with_delaunay_triangulation.html</guid><content:encoded>&lt;p&gt;Hyper lanes a.k.a Warp Lanes? What are those? They are a simple element of most space RTS/TBS games. They the lines that connect the stars. They are the highway lanes of space time, they enable spaceships to travel through them and guide the spaceships to their destination. They are a cheap alternative to wormhole generators which bend space time to connect stars. Here are what they look like from a popular game&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/wlg1.png"&gt;/img/wlg1.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Technically speaking they are edges (the lines) between vertices (stars). What we need to do is generate these edges given a set of vertices and there a couple of methods for doing this. The first one that pops up is to generate a minimum spanning tree. But a minimum spanning tree would look this&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/wlg2.png"&gt;/img/wlg2.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;and this doesn’t exactly look like a nice interstellar highway as we would like to be able to travel to a couple of nearby stars from our origin star. This way when we are trying to reach a distant star we have multiple options of getting to that star. Image that you did your warplanes using an MST and you want to get from star A to star D and the only path is A -&amp;gt; B -&amp;gt; C -&amp;gt; D. What do you do if there is an enemy fleet in the star C system and you don’t want to engage that fleet with your science ship? Observe that the MST has only 1 connection between 2 neighboring stars so there is no way for you to do that.&lt;/p&gt;
+&lt;p&gt;So here is a naive algorithm I came up with&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;let S be a list star with random coordinates in a 1000×1000 plane&lt;/li&gt;
+&lt;li&gt;for each star in S&lt;ol&gt;
+&lt;li&gt;if a star was visited before, skip it&lt;/li&gt;
+&lt;li&gt;get the N closest stars to this star&lt;/li&gt;
+&lt;li&gt;add a connection from this star to its neighbors&lt;/li&gt;
+&lt;li&gt;add a connection from each neighbor to this star the get closest star also needs some attention as we don’t want to return a close neighbor if it already has a connection to the current star.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;the get closest star also needs some attention as we don’t want to return a close neighbor if it already has a connection to the current star.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;filter out all other stars except our current star&lt;/li&gt;
+&lt;li&gt;filter out all stars that already have a connection with the current star&lt;/li&gt;
+&lt;li&gt;map the remaining stars as a tuple of ( distance to source, this star)&lt;/li&gt;
+&lt;li&gt;sort by the distance&lt;/li&gt;
+&lt;li&gt;take N closest and return the stars from the tuple&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The N parameter determines the number of max connections going out from a star. Here is an image of this algorithm with N=5&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/wlg3.png"&gt;/img/wlg3.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;This does look a bit better but there are too many cramped points where it’s hard to tell what’s going on. The stars are too close to each other so we need some kind of regulation when generating the random points for the stars. One way of doing this is checking the “star density” when generating the star and only placing the star if it’s acceptable. This basically means not placing a star to close another and we can do this by checking if the generated star falls within a range of existing stars. That would be done by checking if it lies in a circle of radius R with the star at its origin.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;let S be a list of stars initially empty&lt;/li&gt;
+&lt;li&gt;while S size &amp;lt; number of stars to generate&lt;/li&gt;
+&lt;li&gt;generate a random point in the plane&lt;/li&gt;
+&lt;li&gt;if this point satisfies the density condition add the star to S&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;One point to note about this algorithm is that it has the possibility of never terminating if the density conditions are too strict and it cannot find a good place for the next star. So it’s a good idea to add a loop counter check that will terminate with an exception after a number of tries and tell the user to relax the number of stars and the radius R. The acceptable density function can be done as follows&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;let R be the minimum distance that two stars should be apart (which is the radius R)&lt;/li&gt;
+&lt;li&gt;for each star already generated check if (src.x – star.x)^2 – (src.y – star.y)^2 &amp;lt; R^2&lt;/li&gt;
+&lt;li&gt;if there are stars that satisfy this equation then the density condition is not satisfied.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;After adding the density check and reducing N to 3 the lines look a bit clearer.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/wlg4.png"&gt;/img/wlg4.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;There is a fundamental error in this approach. If you select a low N (connectivity value) then you sometimes will get disconnected stars like this&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/wlg5.png"&gt;/img/wlg5.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;To address this issue a combination of an MST and the naive approach could work.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/wlg6.png"&gt;/img/wlg6.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Now that the MST guarantees that all the graph will be connected we have addressed the issue but still, the layout doesn’t look good for efficient traveling. We still could use more triangulation that is more lanes connecting nearby stars. Using the closest N method led to a cluttered layout. The cause of this clutter is that if 2 stars are almost in a straight line and are the 2 closest stars, there will 2 connections to these stars that overlap.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/wlg7.png"&gt;/img/wlg7.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Yet another way of connecting the stars would be to use Delaunay Triangulation. This also produces a very nice warplane structure but still, has the cluttering problem due to the star layout.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/wlg8.png"&gt;/img/wlg8.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Now let’s address the clutter problem. It seems that the warplanes look cluttered if there are neighboring stars too close to an existing warplane.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/wlg9.png"&gt;/img/wlg9.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;the green arrow shows a lane we could do better without. How can we detect these lanes? Just from the definition of the problem. If a neighbor star is too close to a lane, drop the existing lane so the closer lane to the a star will remain. Here is a simple outline for the algorithm that requires a bit of linear algebra:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Sort all the neighbors for each star is descending order according to their distance from the origin star.&lt;/li&gt;
+&lt;li&gt;for each neighbor i to all neighbors – 1&lt;ol&gt;
+&lt;li&gt;for each neighbor j from i + 1 to all neighbors&lt;/li&gt;
+&lt;li&gt;if the distance of neighbor i from the lane between origin star and neighbor j &amp;lt; some threshold T discard the lane calculating the distance of a point P0 to a line given by P1 and P2 is&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;code&gt;Math.abs( (y2-y1)x0 – (x2-x1)y0 + x2y1 – y2x1 ) / Math.sqrt( Math.pow(y2-y1,2) + Math.pow(x2-x1,2) )&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Here is the result of a relaxed threshold that will draw a lot of lines&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/wlg10.png"&gt;/img/wlg10.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;here are the same results with a stricter threshold that has discarded the middle lane&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/wlg10.png"&gt;/img/wlg10.png&lt;/a&gt;&lt;/p&gt;
+</content:encoded></item><item><title>Procedural Dungeon Generation</title><description>A method for generating a dungeon for rogue-like games</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Sat, 13 May 2017 00:00:00 GMT</pubDate><guid isPermaLink="true">procedural-dungeon-generation.html</guid><content:encoded>&lt;p&gt;The basics of any roguelike dungeon crawling game is the dungeon. What makes these types of game infinitely replayable is their use of procedural generation to produce a new dungeon and artifacts for each game.  Some one in the internets came up with the idea of generating dungeons based on &amp;quot;pushing out&amp;quot; random rectangles generated with in a circle. To get more realistic results it's best to use a Gaussian random number generator, as rarely anything natural is uniformly randomly created.&lt;/p&gt;
+&lt;p&gt;So create some random rectangles with in a cirlce:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;    for i in range(0, num_cells):
+    	var xy = get_xy()
+    	var wh = get_wh()
+    	var type = &amp;quot;hall&amp;quot;
+    	if wh.x * wh.y &amp;gt; mean_width * mean_height * 0.9:
+    		type=&amp;quot;room&amp;quot;
+    	cells.append({&amp;quot;id&amp;quot;: i, &amp;quot;xy&amp;quot;: xy, &amp;quot;wh&amp;quot;: wh, &amp;quot;topleft&amp;quot;: xy, &amp;quot;bottomright&amp;quot;: xy + wh, &amp;quot;type&amp;quot;:type})
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;the get_xy makes sure that the top left lies in a circle:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+func get_xy():
+    var r = 100 * randf()
+    var theta = randf() * 2 * PI
+    var x = r * cos(theta) + 300
+    var y = r * sin(theta) + 300
+    return Vector2(x,y)
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;make sure that the width, height is acceptable:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;func get_wh():
+    var w = gaussian(mean_width, width_dev)
+    var h = gaussian(mean_height, height_dev)
+    if w &amp;lt; 10 or h &amp;lt; 10: return get_wh()
+    return Vector2(w,h)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;now push the rectangles outwards:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;    while touching:
+    	touching = false
+    	for i in range(0, num_cells):
+    		for j in range(i+1, num_cells):
+    			var a = cells[i]
+    			var b = cells[j]
+    			if touches(a, b):
+    				touching = true
+    				var dx = min(a[&amp;quot;bottomright&amp;quot;].x - b[&amp;quot;topleft&amp;quot;].x + padding, a[&amp;quot;topleft&amp;quot;].x - b[&amp;quot;bottomright&amp;quot;].x - padding)
+    				var dy = min(a[&amp;quot;bottomright&amp;quot;].y - b[&amp;quot;topleft&amp;quot;].y + padding, a[&amp;quot;topleft&amp;quot;].y - b[&amp;quot;bottomright&amp;quot;].y - padding)
+    				if abs(dx) &amp;lt; abs(dy): dy = 0
+    				else: dx = 0
+    				var dxa = -dx/2
+    				var dxb = dx + dxa
+    				var dya = -dy/2
+    				var dyb = dy+dya
+    				shift_cell(a,Vector2(dxa, dya))
+    				shift_cell(b,Vector2(dxb, dyb))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now some of the rectangles are designated as rooms if there are bigger than an average value in area.
+We want to use these as the main nodes for joining the rooms together.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;    cells.sort_custom(AreaSorter, &amp;quot;sort&amp;quot;)
+    var num_rooms = 0
+    for c in cells:
+    	if c[&amp;quot;type&amp;quot;] == &amp;quot;room&amp;quot;: num_rooms += 1
+    for i in range(0, min(num_rooms, num_corridor)):
+    	var c = cells.pop_back()
+    	rooms.append(c)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now connect the main rooms using Relative Neighborhood Graphs &lt;a href="https://en.wikipedia.org/wiki/Relative_neighborhood_graph"&gt;(RNG)&lt;/a&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;    # connect main rooms
+    var ab_dist = 0
+    var ac_dist = 0
+    var bc_dist = 0
+    var skip = false
+    for i in range(0, rooms.size()):
+    	for j in range(i+1, rooms.size()):
+    		skip = false
+    		ab_dist = pow(center_x(rooms[i]) - center_x(rooms[j]), 2) + pow(center_y(rooms[i]) - center_y(rooms[j]), 2)
+    		for k in range(0, rooms.size()):
+    			if i == k or j == k: continue
+    			ac_dist = pow(center_x(rooms[i]) - center_x(rooms[k]), 2) + pow(center_y(rooms[i]) - center_y(rooms[k]), 2)
+    			bc_dist = pow(center_x(rooms[j]) - center_x(rooms[k]), 2) + pow(center_y(rooms[j]) - center_y(rooms[k]), 2)
+    			if ac_dist &amp;lt; ab_dist and bc_dist &amp;lt; ab_dist:
+    				skip = true
+    			if skip: break
+    		
+    		if not skip:
+    			if not rooms[i][&amp;quot;id&amp;quot;] in graph:
+    				graph[rooms[i][&amp;quot;id&amp;quot;]] = []
+    			graph[rooms[i][&amp;quot;id&amp;quot;]].append(rooms[j][&amp;quot;id&amp;quot;])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;a href="/img/procgen_dungeons.png"&gt;img&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The RNG construction and the overlap checking code is the brute force way of solving these problems. The overlap checking can be done using an interval search tree for a better runtime performance, and the wikipedia article mentions a paper with an algorithm to do it in linearithmic time. But since the number of rooms in a dungeon are relatively small, it's not worth the added code complexity&lt;/p&gt;
 </content:encoded></item><item><title>TypeSafe config override</title><description>how to override configuration values</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Tue, 28 Mar 2017 00:00:00 GMT</pubDate><guid isPermaLink="true">typesafe-config-override.html</guid><content:encoded>&lt;p&gt;Every now and then you need to be able to define some default value in your configuration and be able to override them based on the environment you are running in. TypeSafe Config has a nice way of allowing this:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;production {
   service1: 172.0.0.1
@@ -3049,4 +3197,546 @@ if (z % 2 ==0) {
 
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;when you define you config like this if your application start with &lt;code&gt;-DSERV1=10.0.0.1&lt;/code&gt; then the command line value will override the default in the configuration file.&lt;/p&gt;
+</content:encoded></item><item><title>PGN Parser with comments and recursive variations support</title><description>C# programm to parse and represent a PGN file</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Wed, 01 Mar 2017 00:00:00 GMT</pubDate><guid isPermaLink="true">pgn-parser-recursive.html</guid><content:encoded>&lt;p&gt;PGN files are the standard way chess games are transmitted across the net. So any chess program that needs to replay or process a game needs to be able to read the PGN format.
+There are very many different PGN parsers around in different programming languages. Most of them try to process the PGN using regexes, or just reduce the data to the main
+line moves, event discarding the comments and annotations. This may be OK if you are processing the game for purposes of machine consumption as the comments don't mean
+anything to a machine but I wanted to write a parser that preserves the comments and the recursive variations.&lt;/p&gt;
+&lt;p&gt;So the first part of any non trivial parser is going to be a &amp;quot;Lexer&amp;quot; that tokenizes the input. Check out the PGN formal grammar for 
+ANTLR (https://github.com/antlr/grammars-v4/blob/master/pgn/PGN.g4) that has a details. 
+It's a good idea to use this ANTLR code to if you don't want to fiddle with insides of a parser.&lt;/p&gt;
+&lt;p&gt;So the lexer will consume the input character by character creating tokens from this input. Here is the token class that I used:&lt;/p&gt;
+&lt;pre&gt;
+    public class Token
+    {
+        public string Type { get; }
+        public string Value { get; }
+        public const string MoveNumber = "MoveNumber";
+        public const string SAN = "SAN";
+        public const string Comment = "Comment";
+        public const string EOF = "EOF";
+        public const string Result = "Result";
+        public const string Header = "Header";
+        public const string NAG = "NAG";
+        public const string LPAREN = "LPAREN";
+        public const string RPAREN = "RPAREN";
+        public Token(string type, string value)
+        {
+            Type = type;
+            Value = value.Replace("\n", "");
+        }
+
+        public override string ToString()
+        {
+            return "Token " + Type + " " + Value;
+        }
+    }
+&lt;/pre&gt;
+&lt;p&gt;We need to treat the left parenthesis and the right one as individual tokens as they will have a special meaning when we are creating the syntax tree.&lt;/p&gt;
+&lt;p&gt;Diving deeper into the Lexer:&lt;/p&gt;
+&lt;pre&gt;
+        private int _position = 0;
+        private Char _currentChar;
+        private string _text;
+        private Boolean _lexingDone;
+
+        public PgnLexer(string pgnText)
+        {
+            _text = pgnText;
+            if (_text.Length &gt; 0)
+                _currentChar = _text[_position];
+        }
+&lt;/pre&gt;
+&lt;p&gt;pretty simple, we need to do some book keeping - the current character pointer and the input data is stored.&lt;/p&gt;
+&lt;pre&gt;
+        private void Advance()
+        {
+            _position += 1;
+            if (_position &gt;= _text.Length)
+            {
+                _lexingDone = true;
+            }
+            else
+            {
+                _currentChar = _text[_position];
+            }
+        }
+&lt;/pre&gt;
+&lt;p&gt;each time we consume a character the Advance() method will increment the pointer and check if all the input has been consumed.&lt;/p&gt;
+&lt;pre&gt;
+        private void SkipWhitespace()
+        {
+            while (!_lexingDone &amp;&amp; 
+                   (Char.IsWhiteSpace(_currentChar) || 
+                                    _currentChar == '.' || 
+                                    _currentChar == '\n'))
+            {
+                Advance();
+            }
+        }
+&lt;/pre&gt;
+&lt;p&gt;Some PGN files are transcribed by humans and contain multiple whitespaces, some are computer programs inserting optional white spaces for
+better readability etc. The '.' character is also treaded as a white space as the move indication &amp;quot;2... c4&amp;quot; has multiple '.'
+characters that we'll skip.&lt;/p&gt;
+&lt;pre&gt;
+        public Token GetNextToken()
+        {
+            string result = "";
+            while (!_lexingDone)
+            {
+                //result += _currentChar;
+                if (_currentChar == '(')
+                {
+                    Advance();
+                    SkipWhitespace();
+                    return new Token(Token.LPAREN, result);
+                }
+
+                if (_currentChar == ')' &amp;&amp; result.Trim().Equals(""))
+                {
+                    Advance();
+                    SkipWhitespace();
+                    return new Token(Token.RPAREN, result);
+                }
+
+                if (_currentChar == '[')
+                {
+                    Advance();
+                    while (_currentChar != ']')
+                    {
+                        result += _currentChar;
+                        Advance();
+                    }
+                    Advance();
+                    SkipWhitespace();
+                    return new Token(Token.Header, result);
+                }
+                if (_currentChar == '.')
+                {
+                    SkipWhitespace();
+                    return new Token(Token.MoveNumber, result);
+                }
+
+                if (_currentChar == '{')
+                {
+                    while (_currentChar != '}')
+                    {
+                        Advance();
+                        result += _currentChar;
+                    }
+                    Advance();
+                    return new Token(Token.Comment, result.Replace("{","").Replace("}",""));
+                }
+
+                if ( (_currentChar == '\n' ||_currentChar == ' ' || _currentChar == ')') &amp;&amp; !result.Trim().Equals(""))
+                {
+                    SkipWhitespace();
+                    result = result.Trim().Replace(" ", "").Replace("\n", "");
+                    if (result.Equals("1-0") || result.Equals("0-1") || result.Equals("1/2-1/2") || result.Equals("*"))
+                        return new Token(Token.Result, result);
+                    if (result.StartsWith("$"))
+                    {
+                        return new Token(Token.NAG, result);
+                    }
+                    return new Token(Token.SAN, result);
+                }
+
+                result += _currentChar;
+                Advance();
+
+            }
+            if (result.Equals(""))
+                return new Token(Token.EOF, "");
+            return new Token(Token.Result, result);
+        }
+&lt;/pre&gt;
+&lt;p&gt;this is the real part that does the tokenization. Parenthesis type characters are consumed until the matching one is found, 
+otherwise we consume until we reach a character that terminates a move element and return the resulting token. 
+If we have consumed all the input we return the game result. Some PGN files may have extra white spaces at the end, 
+so we return an EOF token if that's the case.&lt;/p&gt;
+&lt;p&gt;Now that we can fetch the tokens from the file, we need to construct a tree representing the moves, comments, variations etc. in the PGN file.&lt;/p&gt;
+&lt;pre&gt;
+        private readonly PgnLexer _lexer;
+        private Token _currentToken;
+
+        public PgnParser(PgnLexer lexer)
+        {
+            _lexer = lexer;
+            _currentToken = lexer.GetNextToken();
+        }
+&lt;/pre&gt;
+&lt;p&gt;We need to track the currentToken and pass a reference to our lexer to fetch more tokens.&lt;/p&gt;
+&lt;p&gt;This method will &amp;quot;eat&amp;quot; through the tokens and allow us to move forward in the processing:&lt;/p&gt;
+&lt;pre&gt;
+        private void Eat(string tokenType)
+        {
+            if (_currentToken.Type.Equals(tokenType))
+            {
+                _currentToken = _lexer.GetNextToken();
+            }
+            else
+            {
+                throw new Exception("Invalid syntax");
+            }
+        }
+&lt;/pre&gt;
+&lt;p&gt;Take for example this made up PGN move text:&lt;/p&gt;
+&lt;p&gt;&amp;quot;1.e4 (11. f3 (111. f4 a7) a6) 1... e5 2.f4 exf4 (220... exf3) (221... exf2) 3.Nf3 g5 4.h4 ...&amp;quot;&lt;/p&gt;
+&lt;p&gt;(The move numbers are not correct even the moves may be illegal but the purpose is to illustrate the tree that we are aiming to build.)&lt;/p&gt;
+&lt;p&gt;We want to transform this into the following tree:&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/1-P17kH330Z1CMJ5qF.png"&gt;image http://forum.dizman.org/assets/images/1-P17kH330Z1CMJ5qF.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;All vertical connections are the next node connections and the horizontal connections are the variation connections. So &amp;quot;e4&amp;quot; move spawns a variation 
+that it self has an embedded variation (hence the name recursive variations). The move &amp;quot;exf4&amp;quot; spawns 2 variations at this move.&lt;/p&gt;
+&lt;p&gt;So we start with a method to transform the current token to a node:&lt;/p&gt;
+&lt;pre&gt;
+ private Node Element()
+        {
+            if (_currentToken.Type.Equals(Token.SAN))
+            {
+                Node node = new SanNode();
+                node.Value = _currentToken.Value;
+                return node;
+            }
+
+            if (_currentToken.Type.Equals(Token.Result))
+            {
+                return new ResultNode();
+            }
+
+            if (_currentToken.Type.Equals(Token.MoveNumber))
+            {
+                var node = new MoveNumberNode();
+                node.Value = _currentToken.Value;
+                return node;
+            }
+
+            if (_currentToken.Type.Equals(Token.Header))
+            {
+                var node = new HeaderNode();
+                node.Value = _currentToken.Value;
+                return node;
+
+            }
+
+            if (_currentToken.Type.Equals(Token.Comment))
+            {
+                var node = new CommentNode();
+                node.Value = _currentToken.Value;
+                return node;
+            }
+            {
+                var node = new NullNode();
+                return node;
+            }
+
+        }
+&lt;/pre&gt;
+&lt;p&gt;So first the code to build the tree&lt;/p&gt;
+&lt;pre&gt;
+        private Stack&lt;Node&gt; _stack = new Stack&lt;Node&gt;();
+
+        private Node BuildTree(Node node)
+        {
+            Node root = node;
+            Node prevNode = node;
+            while (true)
+            {
+                Console.WriteLine(_currentToken);
+                if (_currentToken.Type.Equals(Token.EOF))
+                {
+                    return null;
+                }
+                var currentNode = Element();
+                if (currentNode.GetType() == typeof(ResultNode))
+                {
+                    Eat(_currentToken.Type);
+                    prevNode.Next = currentNode;
+                    return root;
+                }
+
+
+                if (_currentToken.Type.Equals(Token.LPAREN))
+                {
+                    _stack.Push(prevNode);
+                    prevNode.Next = currentNode;
+                    prevNode = prevNode.Next;
+                }
+
+                else if (_currentToken.Type.Equals(Token.RPAREN))
+                {
+                    prevNode.Next = currentNode;
+                    var t = _stack.Pop();
+                    t.Variations.Add(t.Next);
+                    prevNode = t;
+                    prevNode.Next = null;
+                }
+                else
+                {
+                    prevNode.Next = currentNode;
+                    prevNode = prevNode.Next;
+                }
+                Eat(_currentToken.Type);
+            }
+
+
+        }
+&lt;/pre&gt;
+&lt;p&gt;The algorithm is as follows:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Get the node type for the current token.&lt;/li&gt;
+&lt;li&gt;if it's a termination token return.&lt;/li&gt;
+&lt;li&gt;if it's not a LPAREN just eat the token and link the previous token to the current token.&lt;/li&gt;
+&lt;li&gt;if it's a LPAREN it means we are starting a recursive variation annotation (RVA). So push the previous node on the stack. Once we are done with the variation, we'll need to get this node back and continue the main line. Continue linking the next node to this node as if we were not in the RVA.&lt;/li&gt;
+&lt;li&gt;it we see a RPAREN pop the node on the stack and add the next pointer nodes to the variations list. Set the previous node to this node, and delete the next pointer for this node.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So if we walk through an example move text of &amp;quot;1. e4 (11. f3 a7) 1...e5 2.Nf3&amp;quot; this is node state and stack state just before the RPAREN:&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/1-awbP4CgiRNjLcGHB.png"&gt;image http://forum.dizman.org/assets/images/1-awbP4CgiRNjLcGHB.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;When we process the RPAREN we will pop the &amp;quot;e4&amp;quot; node from the stack, move the next pointers nodes to the variations, delete the next pointer and set the previous node to e4 and continue processing.&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/1-XnoB3aI53wls76dH.png"&gt;image http://forum.dizman.org/assets/images/1-XnoB3aI53wls76dH.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;There the tree with embedded variations. The code I use actually takes care of further evaluating the tree into the chess model I use in the application by 
+checking if the move in the PGN is valid, and adding the comments to the move etc. But this is the basics of parsing the PGN file.&lt;/p&gt;
+</content:encoded></item><item><title>Terrain generation using cellular automata</title><description>how to generate different biome on a terrain using cellular automata</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Tue, 24 Jan 2017 00:00:00 GMT</pubDate><guid isPermaLink="true">terrain_generation_cellular_automata.html</guid><content:encoded>&lt;p&gt;Cellular automata are a nice way of representing natural terrains
+for game worlds. The idea is that a cell interacts with its neighbor
+cells changing their content, just as a natural process would do. The
+method actually stems from biology, where a population interacts with
+their neighbors either dying due to scarce resources or thriving by
+multiplying due to enough mates. The algorithm is pretty simple, each
+cell has a binary state that toggles based on the number of neighbors
+in a state. E.g if the current cell has more than 4 neighbors that are
+alive it will die, otherwise it will live. As you iterate the 2x2 matrix
+of cells an organic pattern starts to emerge which is what we need when
+imitating a terrain of grass. The cells may have more than 2 states, but
+I've used only too to generate a grass land with 2 types of grass tiles.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;    public boolean[][] run(int width, int height, int death, int birth, int runs) {
+        boolean[][] map = new boolean[height][width];
+        boolean[][] temp = new boolean[height][width];
+
+        for (int i = 0; i &amp;lt; map.length; i++) {
+            for (int j = 0; j &amp;lt; map[0].length; j++) {
+                map[i][j] = Utils.coinFlip();
+                temp[i][j] = map[i][j];
+            }
+        }
+
+        int WIDTH=map[0].length, HEIGHT=map.length;
+
+        for (int k = 0; k &amp;lt; runs; k++) {
+            for (int y = 0; y &amp;lt; HEIGHT-1; y++) {
+                for (int x = 0; x &amp;lt;WIDTH-1; x++) {
+                    int nbs = aliveNeighbors(temp, x, y);
+                    if (temp[y][x]) {
+                        map[y][x] = nbs &amp;gt;= death;
+                    } else {
+                        map[y][x] = nbs &amp;gt; birth;
+                    }
+                }
+            }
+
+            //copy generated to temp for the new run
+            for (int i = 0; i &amp;lt; map.length; i++) {
+                temp[i] = map[i].clone();
+            }
+
+        }
+        return map;
+    }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;the death and birth parameter define how many neighboring alive cells trigger a death
+or a birth. The runs parameter defines how many generations we will process.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;   public int aliveNeighbors(boolean[][] map,int x, int y) {
+        int count=0, my = map.length, mx = map[0].length;
+        for (int i = -1; i &amp;lt;2; i++) {
+            for (int j = -1; j &amp;lt; 2; j++) {
+                int nx = x + i;
+                int ny = y + j;
+                if (i == 0 &amp;amp;&amp;amp; j == 0) {
+
+                } else if (nx &amp;lt; 0 || ny &amp;lt; 0 || nx &amp;gt; mx || ny &amp;gt; my) {
+                    count++;
+                } else if (map[ny][nx]) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here is an example output&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/tgwca.png"&gt;/img/tgwca.png&lt;/a&gt;&lt;/p&gt;
+</content:encoded></item><item><title>chessboard heat map</title><description>a spark app that generates a heatmap for chess pieces</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Sun, 20 Sep 2015 00:00:00 GMT</pubDate><guid isPermaLink="true">chessboard-heatmap.html</guid><content:encoded>&lt;p&gt;The apache spark framework is a great way of processing HUGE amounts of data in parallel. The learning curve is really flat, and you’ll get to crunching data in no time. I have already implemented a batch log processing / analytics application and a real-time streaming application at work for n11 and I thought that I do another fun project with spark. This time it’s generating a heat-map of a chess board by processing chess games. A heat map of a chess board is 8×8 table with each cell representing a square of the chess board with a color. Blue means there were not many moves to that square, and red means there were a lot. It’s an analogy to the warm-cold method of defining distance. We will do this for each piece there is in chess. The end results will look something like this&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://i.imgur.com/6hGU74G.png"&gt;http://i.imgur.com/6hGU74G.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;So, a method we could use and that I’ve tried was to generate a FEN representation of the board after each move, and feed this data to apache spark to extract how much each piece occupied each square. This did sound reasonable and it would have been very efficient because spark would not need any chess knowledge to compute the heat map. Just some string parsing would suffice. But it turns out that this method of processing overwhelms the heat map with the initial positions of the piece. Why? because the pieces rest on their initial squares for quite some time before they move. Let’s look at an example to make it clearer. The initial state of the board as a FEN string is:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;this would mean add 1 to the squares for each piece. E.g the rooks are on a1, a8, h1, h8. Add 1 to each square. After the first move, say 1. e4, the FEN is&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;The pawn will register a hit for the e4 square, but so will all the other remaining pieces for their home squares! The will generate a heat map that says all the pieces like their home squares best which isn’t really helpful.&lt;/p&gt;
+&lt;p&gt;So we need another approach. The best way is to register a square that a piece has moved to. This requires parsing the moves in the PGN game and actually playing through the game. So we need a chess parsing library to use in our spark job. Fortunately I had a nifty little port of chess.js for java handy here that would allow me to play through the games and get back the squares the pieces moved to. But before we can dive into this, we need to clean the PGN files and make them suitable for processing by Spark. Data processing platforms like spark like to munch data that are in CSV format – a line of values separated by a comma. The values in our file will be the moves from each game, starting from the initial position. Here is an example of what I mean&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;d4,Nf6,c4,e6,Nf3,d5,Nc3,Be7,Bg5,h6,Bh4,O-O,e3,b6,Bd3,Bb7,
+O-O,Nbd7,Bg3,c5,cxd5,Nxd5,Nxd5,Bxd5,Rc1,Nf6,dxc5,Bxc5,a3,a5,
+Qe2,Nh5,Be5,Bxf3,gxf3,Qg5+,Bg3,g6,Rc4,Rfd8,Rd1,Rd5,Rg4,Nxg3,
+hxg3,Qf6,Rf4,Qg5,Rg4,Qf6,Rf4,Qg5,Rg4,Qf6
+e4,c5,Nf3,d6,d4,cxd4,Nxd4,Nf6,Nc3,a6,g3,e6,Bg2,Be7,O-O,O-O,a4,
+Nc6,Be3,Rb8,f4,Qc7,Kh1,Bd7,Nb3,b6,g4,h6,Qe2,Nb4,Nd4,Rbc8,
+Rad1,Qc4,Qf3,e5,Nf5,Bxf5,exf5,exf4,Rd4,Qc7,Bxf4,Nxc2,Rd2,Nb4,h4,
+Nh7,g5,Qc4,f6,gxf6,gxf6,Bxf6,Ne4,Be5,Rxd6,Bg7,Bxh6,Bxh6,Rxh6,Rc6,Qg4+,Kh8,Rxh7+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So let’s dive into converting the PGN files.We will use the excellent chesspresso library to parse the PGN files because I haven’t yet integrated PGN methods into chesslib. the dependency for chesspresso can be added using&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;resolvers += &amp;quot;clojars.org&amp;quot; at &amp;quot;http://clojars.org/repo&amp;quot;
+libraryDependencies += &amp;quot;com._0xab&amp;quot; % &amp;quot;chesspresso&amp;quot; % &amp;quot;0.9.2&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Thanks to the guy who was kind enough to package and upload this to a repository. Meanwhile I’m not so nice and haven’t uploaded chesslib to a repository, but no problem we’ll just add it to the /lib directory and the sbt assembly plugin will pick it up from there. So let’s start by parsing the PGN files using chesspresso&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;def getGames(file: File) : Stream[Game] = {
+    val fis = new FileInputStream(file)
+    println(&amp;quot;parsing file &amp;quot; + file)
+    val reader = new PGNReader(fis, &amp;quot;&amp;quot;)
+
+    val games = di2(reader)
+    //println(file + &amp;quot;... found &amp;quot; + games.size + &amp;quot; games&amp;quot;)
+
+    games
+  }
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;this method expects the PGN file as a File object, and reads it using the chesspresso PGNReader.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;def di2(reader:PGNReader): Stream[Game] = {
+    @tailrec
+    def di3(game:Game, reader:PGNReader, gameList : Stream[Game]): Stream[Game] = {
+      if (Option(game).isDefined) {
+        if (gameList.size % 5000 == 0) {
+          println(&amp;quot;processing game &amp;quot; +gameList.size + &amp;quot; &amp;quot; + game)
+        }
+        //println(&amp;quot;found game &amp;quot; + game + &amp;quot; list size &amp;quot; +gameList.size )
+        di3(try {reader.parseGame()} catch{ case e:Exception=&amp;amp;gt;reader.parseGame()},reader, game #:: gameList)
+      } else {
+        gameList
+      }
+    }
+    di3(reader.parseGame(), reader, Stream.empty)
+  }
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;this is the actual method that reads the games to a list. Chesspresso iterates over the games and streams the games from the file on demand (because PGN files may contain more than one game). Since we are consuming the whole stream this will not work if you try to process a PGN file with lots of games in it (around 1M suffers on my 8gb machine). If you need to split a PGN file to smaller files use pgn-extract.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; def extractMoves(game:Game) : String = {
+    game.gotoStart()
+    try {
+      val mainLine = game.getMainLine.toSeq
+      val moves = mainLine.map(x=&amp;gt; {
+        game.getPosition.doMove(x)
+        x
+      }).toList.filter(_ != &amp;amp;quot;&amp;amp;quot;)
+      moves.mkString(&amp;amp;quot;,&amp;amp;quot;)
+    } catch {
+      case e:Exception=&amp;gt;&amp;quot;&amp;quot;
+    }
+  }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This method will get the moves made in the game as a list and concatenate them using a comma to the CSV format that I showed you above. Chesspresso will throw an exception on an invalid move, and some PGN’s do contain invalid moves.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; def main(args:Array[String]) = {
+    val hotFolder = &amp;quot;/data/pgn/archive/&amp;quot;
+    val outFolder = &amp;quot;/data/fen/&amp;quot;
+    val files: Seq[File] = new File(hotFolder).listFiles().toSeq.filter(_.getName.endsWith(&amp;quot;pgn&amp;quot;))
+
+    files.foreach({file=&amp;gt;
+      val games = getGames(file)
+      val moves = games.map(extractMoves)
+      val target = new BufferedOutputStream( new FileOutputStream(new File(outFolder+file.getName + &amp;quot;.moves&amp;quot;)) )
+      try moves.foreach({x=&amp;gt; target.write(x.getBytes); target.write(&amp;quot;n&amp;quot;.getBytes) }) finally target.close
+    })
+  }
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;All that’s left is to execute the parsing methods and save the CSV move list to a file and we are ready to jump into spark to process this data. Thats what the main function above does.&lt;/p&gt;
+&lt;p&gt;So let’s define some spark configs like the CSV file location etc.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;val logFile = &amp;quot;/data/fen/&amp;quot; // Should be some file on your system
+val outputDir = &amp;quot;/tmp/&amp;quot;
+val conf = new SparkConf().setAppName(&amp;quot;Simple Application&amp;quot;)
+val sc = new SparkContext(conf)
+val moveData = sc.textFile(logFile)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;we will also need a data structure to hold the results, how many times each piece moves to a square.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; val map = Map(
+        &amp;quot;r&amp;quot; -&amp;gt; Array.fill(64)(0),
+        &amp;quot;n&amp;quot; -&amp;gt; Array.fill(64)(0),
+        &amp;quot;b&amp;quot; -&amp;gt; Array.fill(64)(0),
+        &amp;quot;k&amp;quot; -&amp;gt; Array.fill(64)(0),
+        &amp;quot;q&amp;quot; -&amp;gt; Array.fill(64)(0),
+        &amp;quot;p&amp;quot; -&amp;gt; Array.fill(64)(0)
+      )
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;this map can be though of like this: the keys represent each piece (the colors are irrelevant) and the values are an array of size 64 – one slot for each square on the chess board. When a piece moves to a square we will increment the count in the array.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;  val mmap = Map(
+        &amp;quot;a8&amp;quot;-&amp;gt;0, &amp;quot;b8&amp;quot;-&amp;gt;1, &amp;quot;c8&amp;quot;-&amp;gt;2, &amp;quot;d8&amp;quot;-&amp;gt;3, &amp;quot;e8&amp;quot;-&amp;gt;4, &amp;quot;f8&amp;quot;-&amp;gt;5, &amp;quot;g8&amp;quot;-&amp;gt;6, &amp;quot;h8&amp;quot;-&amp;gt;7,
+        &amp;quot;a7&amp;quot;-&amp;gt;8, &amp;quot;b7&amp;quot;-&amp;gt;9, &amp;quot;c7&amp;quot;-&amp;gt;10,&amp;quot;d7&amp;quot;-&amp;gt;11,&amp;quot;e7&amp;quot;-&amp;gt;12,&amp;quot;f7&amp;quot;-&amp;gt;13,&amp;quot;g7&amp;quot;-&amp;gt;14,&amp;quot;h7&amp;quot;-&amp;gt;15,
+        &amp;quot;a6&amp;quot;-&amp;gt;16,&amp;quot;b6&amp;quot;-&amp;gt;17,&amp;quot;c6&amp;quot;-&amp;gt;18,&amp;quot;d6&amp;quot;-&amp;gt;19,&amp;quot;e6&amp;quot;-&amp;gt;20,&amp;quot;f6&amp;quot;-&amp;gt;21,&amp;quot;g6&amp;quot;-&amp;gt;22,&amp;quot;h6&amp;quot;-&amp;gt;23,
+        &amp;quot;a5&amp;quot;-&amp;gt;24,&amp;quot;b5&amp;quot;-&amp;gt;25,&amp;quot;c5&amp;quot;-&amp;gt;26,&amp;quot;d5&amp;quot;-&amp;gt;27,&amp;quot;e5&amp;quot;-&amp;gt;28,&amp;quot;f5&amp;quot;-&amp;gt;29,&amp;quot;g5&amp;quot;-&amp;gt;30,&amp;quot;h5&amp;quot;-&amp;gt;31,
+        &amp;quot;a4&amp;quot;-&amp;gt;32,&amp;quot;b4&amp;quot;-&amp;gt;33,&amp;quot;c4&amp;quot;-&amp;gt;34,&amp;quot;d4&amp;quot;-&amp;gt;35,&amp;quot;e4&amp;quot;-&amp;gt;36,&amp;quot;f4&amp;quot;-&amp;gt;37,&amp;quot;g4&amp;quot;-&amp;gt;38,&amp;quot;h4&amp;quot;-&amp;gt;39,
+        &amp;quot;a3&amp;quot;-&amp;gt;40,&amp;quot;b3&amp;quot;-&amp;gt;41,&amp;quot;c3&amp;quot;-&amp;gt;42,&amp;quot;d3&amp;quot;-&amp;gt;43,&amp;quot;e3&amp;quot;-&amp;gt;44,&amp;quot;f3&amp;quot;-&amp;gt;45,&amp;quot;g3&amp;quot;-&amp;gt;46,&amp;quot;h3&amp;quot;-&amp;gt;47,
+        &amp;quot;a2&amp;quot;-&amp;gt;48,&amp;quot;b2&amp;quot;-&amp;gt;49,&amp;quot;c2&amp;quot;-&amp;gt;50,&amp;quot;d2&amp;quot;-&amp;gt;51,&amp;quot;e2&amp;quot;-&amp;gt;52,&amp;quot;f2&amp;quot;-&amp;gt;53,&amp;quot;g2&amp;quot;-&amp;gt;54,&amp;quot;h2&amp;quot;-&amp;gt;55,
+        &amp;quot;a1&amp;quot;-&amp;gt;56,&amp;quot;b1&amp;quot;-&amp;gt;57,&amp;quot;c1&amp;quot;-&amp;gt;58,&amp;quot;d1&amp;quot;-&amp;gt;59,&amp;quot;e1&amp;quot;-&amp;gt;60,&amp;quot;f1&amp;quot;-&amp;gt;61,&amp;quot;g1&amp;quot;-&amp;gt;62,&amp;quot;h1&amp;quot;-&amp;gt;63
+      )
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;this second mmap array is a mapping from the string (SAN) notation of a square to it’s place the array that I mentioned above. We will need this because chesslib’s internal representation of a chess board as an array is different than what we will be using. Now let’s get to crunching those chess moves:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+ val key = moveData.flatMap(line=&amp;gt; {
+      // the maps above are here - omitted for readability
+      val cl = new ChessLib()
+      cl.reset()
+      val moves = line.split(&amp;quot;,&amp;quot;)
+      moves.foreach(move=&amp;gt; {
+        try {
+          val resultMove = Option(cl.move(move))
+          if (resultMove.nonEmpty) {
+            val piece = resultMove.get.piece
+            val to = resultMove.get.strTo
+            map(piece)(mmap(to)) += 1
+          }
+        } catch { case _ =&amp;gt; }
+      })
+      map.toSeq
+    }).groupByKey()
+    val map1: RDD[(String, List[Array[Int]])] = key.map(x=&amp;gt; (x._1, x._2.toList))
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;we start by mapping each line in our input. We initialise a chesslib instance that we will use to process the moves and reset to the starting position of a game. Next we split the CSV into a list of moves and for each move we make chesslib play that move. The result of the move method contains the piece and the square that the move was made to. We take that square and increment the count in the array contained in the map. We will need some grouping to we convert the map into a sequence. So before the sequence the result will be something like&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Map(&amp;quot;r&amp;quot;-&amp;gt; Array(10, 15, 20, 2, ...) //64 of these numbers
+Map(&amp;quot;r&amp;quot;-&amp;gt; Array(11, 25, 10, 1, ...) //64 of these numbers
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;after the conversion to a sequence we will have&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;(&amp;quot;r&amp;quot;, Array(10, 15, 20, 2, ...)), (&amp;quot;r&amp;quot;, Array(11, 25, 10, 1, ...)), ...
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Why do we need this? because we will merge these maps to sum all the values in the arrays for each piece. The above example states that the rook was on a1 10 times in game 1 and 11 times in game 2. So the heat map will contains 21 for the rook on a1. When we group this sequence by key using the spark provided groupByKey method we will have the following result&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;(&amp;quot;r&amp;quot; -&amp;amp;gt; List(Array(10, 15, 20, 2, ...), Array(11, 25, 10, 1, ...) )
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;we need to add the corresponding indexes in each array to obtain our result. We will use a helper function for this called combineLists&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;def combineLists[A](ss:List[Array[A]]) =
+    (ss.head.map(List(_)) /: ss.tail)(_.zip(_).map(p=&amp;gt;p._2 :: p._1))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;this methods takes a list of arrays, and returns a list of zipped lists. To for the input&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;List(1,2,3), List(5,6,7), List(7,8,9)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;we will get the output&lt;/p&gt;
+&lt;p&gt;Next we need to sum the values in the combined lists for a our final result&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;val map2: RDD[(String, List[Int])] = values.map(x=&amp;amp;gt; (x._1, x._2.map(_.sum).toList))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;this will give us the total numbers of moves to each square for each piece. Just what we needed for the heat map!
+But we still need to do one more thing before we can start the rendering of the map and that is to normalise the values in the array to values between 0 and 1. We can do that using the feature normalisation formula&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://imgur.com/l4gwnyv.png"&gt;http://imgur.com/l4gwnyv.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;the code is like this&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;val map3: RDD[(String, List[Double])] = map2.map(x=&amp;amp;gt; (x._1, x._2.map( y=&amp;gt; (y - x._2.min) / (x._2.max.toDouble - x._2.min) )))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;now let’s create our map files as HTML pages with a table containing the heat map&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;   map3.collect().foreach(rdd=&amp;gt; {
+      val tpl = html(rdd._1, rdd._2.mkString(&amp;quot;,&amp;quot;))
+      new PrintWriter(outputDir + rdd._1 + &amp;quot;.html&amp;quot;) { write(tpl); close}
+    })
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;the html() function used here is a string template that uses the values between 0 and 1 to create a HLS color for a 5 color heat map. check out the code in the repo – it’s too verbose to include it in this post.&lt;/p&gt;
+&lt;p&gt;That’s about it on how to generate a chess board heat map. Here are the results for 1.5M games analyzed:&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://i.imgur.com/6hGU74G.png"&gt;http://i.imgur.com/6hGU74G.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://imgur.com/PbJC7Kx.png"&gt;http://imgur.com/PbJC7Kx.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://imgur.com/FHXDfVL.png"&gt;http://imgur.com/FHXDfVL.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://imgur.com/5I08pXS.png"&gt;http://imgur.com/5I08pXS.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://imgur.com/HaHDp9E.png"&gt;http://imgur.com/HaHDp9E.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://imgur.com/UvNxeq7.png"&gt;http://imgur.com/UvNxeq7.png&lt;/a&gt;&lt;/p&gt;
 </content:encoded></item></channel></rss>
