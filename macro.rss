@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Deniz's Web blog</title><link>https://dendiz.github.io</link><description>Deniz's personal web space</description><language>en-US</language><lastBuildDate>Wed, 22 Jun 2022 02:50:05 GMT</lastBuildDate><generator>rfeed v1.1.1</generator><docs>https://github.com/svpino/rfeed/blob/master/README.md</docs><item><title>Lighting system for ASCII based games</title><description>A initial pass on a lighting system for roguelike games</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Mon, 20 Jun 2022 00:00:00 GMT</pubDate><guid isPermaLink="true">ascii_lighting_system.html</guid><content:encoded>&lt;p&gt;I've recently picked up where I had left off on my roguelike game. After going over the codebase from 2 years ago I decided to give it an overhaul
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Deniz's Web blog</title><link>https://dendiz.github.io</link><description>Deniz's personal web space</description><language>en-US</language><lastBuildDate>Wed, 22 Jun 2022 03:50:04 GMT</lastBuildDate><generator>rfeed v1.1.1</generator><docs>https://github.com/svpino/rfeed/blob/master/README.md</docs><item><title>Lighting system for ASCII based games</title><description>A initial pass on a lighting system for roguelike games</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Mon, 20 Jun 2022 00:00:00 GMT</pubDate><guid isPermaLink="true">ascii_lighting_system.html</guid><content:encoded>&lt;p&gt;I've recently picked up where I had left off on my roguelike game. After going over the codebase from 2 years ago I decided to give it an overhaul
 by changing the graphics system from a tile based approach to a scene graph. There are many other changes and one of the changes I want to write about
 today is the lighting system changes.&lt;/p&gt;
 &lt;p&gt;Ligthing for ASCII tiles is pretty simple. You just need to keep a value that represents how much light is received on a cell. There is no refraction/reflection or other difficult problems to worry about. This value called illumination, basically acts as a multiplier on the RGB components of the cell.&lt;/p&gt;
@@ -3739,4 +3739,74 @@ But we still need to do one more thing before we can start the rendering of the 
 &lt;p&gt;&lt;a href="http://imgur.com/5I08pXS.png"&gt;http://imgur.com/5I08pXS.png&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="http://imgur.com/HaHDp9E.png"&gt;http://imgur.com/HaHDp9E.png&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="http://imgur.com/UvNxeq7.png"&gt;http://imgur.com/UvNxeq7.png&lt;/a&gt;&lt;/p&gt;
+</content:encoded></item><item><title>MacBook Pro mouse lag</title><description>Mouse lag issues with an external monitor on macOS X</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Fri, 04 Sep 2015 00:00:00 GMT</pubDate><guid isPermaLink="true">macbook_pro_mouse_lag.html</guid><content:encoded>&lt;p&gt;Suddenly my macbook's mouse started lagging and jumping all over the screen. For a second I would see it where I expected it to be then when I moved the mouse (or trackpad) the cursor would teleport to some weird part of one my screens. This is really annoying and it actually hinders you from getting anything done on the computer. After some research on the apple forums I saw that people have been complaining about this for ages (since 2012). The problem only happens if you have an external monitor connected. And event then it doesn't happen all the time. I use a separate macbook at work connected to an external monitor and I have had no issues there but at home my mouse is erratic. I've read that people have found different solutions that make the problem go away, some of them even looked like superstitions like unplug the USB mouse, count to 10, switch of the left monitor, replug the mouse, switch the monitor back on and bam! it works no more lag. What worked for my was to change the monitor refresh rate from 60 to 60. Yes that's not a typo, there are 2 60's in the drop down.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;image missing&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;the second 60 is the charm. Computers are weird some times.&lt;/p&gt;
+&lt;p&gt;update: This kept working until the monitors went to sleep for the night. In the morning the lag and jumping was back and changing the refresh rate didn’t fix things this time. I’ve tried lowering the resolution on the monitors and the jumping was gone.&lt;/p&gt;
+&lt;p&gt;update 2: so after disconnecting and reconnecting the issue appeared again. So the ultimate cure is to change the resolution after connecting the monitors. And I thought linux had multi monitor issues!&lt;/p&gt;
+</content:encoded></item><item><title>Tactics chess</title><description>a chess puzzle generator and solver interface</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Sat, 01 Aug 2015 00:00:00 GMT</pubDate><guid isPermaLink="true">tactix.html</guid><content:encoded>&lt;p&gt;Tactics training is such an essential part of chess if you want to improve. So much so that I bought a premium chess.com subscription mainly for the unlimited tactics they give. But then I thought, why not do my own and have unlimited tactics to practice on? See that cluster from laptops a couple of posts ago? well that is the chess engine cluster that I’m using to generate tactics training puzzles such as this:&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/tactix1.png"&gt;/img/tactix1.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;white to play and get a good position with blacks king wondering around the board 😀&lt;/p&gt;
+&lt;p&gt;So how are tactics like these generated? Find the positions for tactical opportunities is actually rather simple. You get some game PGN’s, and feed them into a chess engine like stockfish, and mark the position where the engine evaluation goes from a draw-ish position to a material advantage for one side. For example consider the board state&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;r1b1r3/1p1nqpkp/p3pnp1/3p2N1/3P3Q/2NBP3/PP3PPP/3R1RK1 b - - 13 15&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;the evaluation stock fish has given for this position is 34cp (0.34 pawns). But in the game black made the mistake of playing e5 which tilted the evaluation of the position to 338cp (3.38 pawns) in whites favour. This means that white has the opportunity to gain a substantial advantage with a certain move. That’s what’s asked of the player during the tactics training session, find this move and the sequence of moves that come after it to hold the advantage. And that’s the hard part. How do you know when to terminate the sequence of moves for the puzzle. If you just let the player play 1 move, you have no way of knowing if the player actually saw the correct sequence that leads to an advantageous position or if it was just a lucky guess. It’s not satisfying to the player just to play one move and not follow through.&lt;/p&gt;
+&lt;p&gt;The chess engine evaluation line actually gives you the lines that it considers good, so that’s a big help. You just need to have the player play along these lines, but for how many moves? A tactical position may result in an advantage in 2 moves or 5 moves after a long combination. What I have found that works nicely are the following conditions for termination:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Go a maximum of 6 moves (12 plies) deep during searching. 6 moves deep is very challenging even for masters of the game.&lt;/li&gt;
+&lt;li&gt;if the last move was not a capture&lt;/li&gt;
+&lt;li&gt;if the last move was not a check&lt;/li&gt;
+&lt;li&gt;if the last move was not a mate in X move&lt;/li&gt;
+&lt;li&gt;if the opponent would pass, a capture would not be made&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Checking for these conditions after every candidate move leads to some pretty decent puzzles.&lt;/p&gt;
+&lt;p&gt;Here is my poor-mans cluster that crunched all the games to generate the tactics&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://imgur.com/ZEySaMS.png"&gt;http://imgur.com/ZEySaMS.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Architecture
+The tactix application consists of 3 main parts&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;domain models&lt;/li&gt;
+&lt;li&gt;tactix finder&lt;/li&gt;
+&lt;li&gt;tactix webapp&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The most interesting part is the tactix-finder module that actually implements most of what I was talking above. It is an Akka app (hence the cluster in the image above) that distributes calculation of tactics to different actors in the network. Here are a bunch of diagrams that explain how this is accomplished:&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/tactix3.png"&gt;/img/tactix3.png&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="/img/tactix4.png"&gt;/img/tactix4.png&lt;/a&gt;&lt;/p&gt;
+</content:encoded></item><item><title>A simple solution to the Monty Hall problem</title><description>No complex math solution to the Monty Hall problem.</description><author>Deniz Dizman &lt;deniz.dizman@gmail.com&gt;</author><pubDate>Thu, 16 Jul 2015 00:00:00 GMT</pubDate><guid isPermaLink="true">simple_solution_to_the_monty_hall_problem.html</guid><content:encoded>&lt;p&gt;The Monty Hall problem is an interesting probability question that people have a hard time understanding the solution. The problem is this: You are on a TV show and the there are 3 closed doors. Behind one of the doors is a brand new car, and behind the two other doors there is a goat. Obviously you want the car. So you make a choice. The door you chose remains closed but one of the other doors are opened and a goat is revealed (always). Now you are asked the following question: Would you like to change the door you selected, or stay with your initial selection? What should you do? does it even matter?&lt;/p&gt;
+&lt;p&gt;I've asked this question to a few people and all of them thought that it didn't matter. I had a hard time explaining to them that it did, until I saw this table which explains it all so nicely&lt;/p&gt;
+&lt;p&gt;In the table stay means choose door 1 and stay with your choice, change means choose 1 but change.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+  &lt;th&gt;door 1&lt;/th&gt;
+  &lt;th&gt;door 2&lt;/th&gt;
+  &lt;th&gt;door 3&lt;/th&gt;
+  &lt;th&gt;stay&lt;/th&gt;
+  &lt;th&gt;change&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+  &lt;td&gt;car&lt;/td&gt;
+  &lt;td&gt;goat&lt;/td&gt;
+  &lt;td&gt;goat&lt;/td&gt;
+  &lt;td&gt;cat&lt;/td&gt;
+  &lt;td&gt;goat&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;td&gt;goat&lt;/td&gt;
+  &lt;td&gt;cat&lt;/td&gt;
+  &lt;td&gt;goat&lt;/td&gt;
+  &lt;td&gt;goat&lt;/td&gt;
+  &lt;td&gt;car&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;td&gt;goat&lt;/td&gt;
+  &lt;td&gt;goat&lt;/td&gt;
+  &lt;td&gt;cat&lt;/td&gt;
+  &lt;td&gt;goat&lt;/td&gt;
+  &lt;td&gt;car&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;so you can see that unless you picked the car on your initial pick, you will get a goat 2/3 times if you don't change. The reason is that Monty always reveals the door with a goat behind it and of course never your selected door. Such a nice example of a table as a data visualization tool being useful.&lt;/p&gt;
 </content:encoded></item></channel></rss>

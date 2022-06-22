@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>A simple solution to the Monty Hall problem</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="initial-scale=1">
+      <link rel="stylesheet" href="/css/style.css">
+    </head>
+    <body>
+        <div>
+        <strong>
+        <!--a href="/micro/micro-index.html" onClick="this.href+='?rnd='+new Date().getTime()">Micro</a> &middot; -->
+        <a href="/post/index.html" onClick="this.href+='?rnd='+new Date().getTime()">Macro</a> &middot;
+        <a href="/post/about.html">About</a> &middot; 
+        <a href="/post/now.html">Now</a> &middot; 
+        <a href="/post/fn.html">fn</a>
+        &middot;
+        <a href="/twtxt.txt">twtxt</a>
+        </strong>
+        </div>
+        <hr />
+        <div id="main">
+        <h1 id="title">A simple solution to the Monty Hall problem</h1>
+        <div id="date"><em>created 2015-07-16 </em></div>
+        <div class="content">
+        <p>The Monty Hall problem is an interesting probability question that people have a hard time understanding the solution. The problem is this: You are on a TV show and the there are 3 closed doors. Behind one of the doors is a brand new car, and behind the two other doors there is a goat. Obviously you want the car. So you make a choice. The door you chose remains closed but one of the other doors are opened and a goat is revealed (always). Now you are asked the following question: Would you like to change the door you selected, or stay with your initial selection? What should you do? does it even matter?</p>
+<p>I've asked this question to a few people and all of them thought that it didn't matter. I had a hard time explaining to them that it did, until I saw this table which explains it all so nicely</p>
+<p>In the table stay means choose door 1 and stay with your choice, change means choose 1 but change.</p>
+<table>
+<thead>
+<tr>
+  <th>door 1</th>
+  <th>door 2</th>
+  <th>door 3</th>
+  <th>stay</th>
+  <th>change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>car</td>
+  <td>goat</td>
+  <td>goat</td>
+  <td>cat</td>
+  <td>goat</td>
+</tr>
+<tr>
+  <td>goat</td>
+  <td>cat</td>
+  <td>goat</td>
+  <td>goat</td>
+  <td>car</td>
+</tr>
+<tr>
+  <td>goat</td>
+  <td>goat</td>
+  <td>cat</td>
+  <td>goat</td>
+  <td>car</td>
+</tr>
+</tbody>
+</table>
+<p>so you can see that unless you picked the car on your initial pick, you will get a goat 2/3 times if you don't change. The reason is that Monty always reveals the door with a goat behind it and of course never your selected door. Such a nice example of a table as a data visualization tool being useful.</p>
+
+        </div>
+        </div>
+	<footer>
+	<em>generated on 2022-06-22 03:50:04</em>
+	</footer>
+  Want to say something? Please <a href="mailto:deniz.dizman@gmail.com?subject=A simple solution to the Monty Hall problem">send</a> an email and I will update this post with our correspondance.
+    </body>
+</html>
