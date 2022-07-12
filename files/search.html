@@ -40,10 +40,11 @@
 	  var resultDocs = [];
 	  lemmas.forEach(function(lemma) {
 	      var docs = window.invidx.invidx[lemma];
-	      docs.forEach(doc => resultDocs.push({token: lemma, doc: doc}));
+		  if (!!docs) {
+		      docs.forEach(doc => resultDocs.push({token: lemma, doc: doc}));
+		  }
 	  });
-					 
-	  
+					  
 	  //console.log("docs", resultDocs);
 	  fetches = resultDocs.map(doc => {
 	      var url = '/post/' + window.invidx.files[doc.doc] + '?' + Math.random();
