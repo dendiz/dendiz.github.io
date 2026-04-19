@@ -27,9 +27,9 @@ How I get things done with my [[productivity framework\|productivity framework]]
 - Corporate Finance
 ## Listening
 - Metalcore 🤘🎸
-- Audible: False Gods - Graham McNeill
+- Audible: Galaxy in Flames - Ben Counter
 ### Listening queue
-- Galaxy in Flames
+- 
 - Honor of the queen
 ## Reading
 [My goodreads profile](https://www.goodreads.com/user/show/57830550-deniz-dizman)
