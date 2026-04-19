@@ -25,6 +25,7 @@ How I get things done with my [[productivity framework\|productivity framework]]
 ## Learning
 - Quantitative trading
 - Corporate Finance
+- Chess
 ## Listening
 - Metalcore 🤘🎸
 - Audible: Galaxy in Flames - Ben Counter
