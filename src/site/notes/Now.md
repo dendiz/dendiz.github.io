@@ -29,7 +29,6 @@ How I get things done with my [[productivity framework\|productivity framework]]
 - Metalcore 🤘🎸
 - Audible: Galaxy in Flames - Ben Counter
 ### Listening queue
-- 
 - Honor of the queen
 ## Reading
 [My goodreads profile](https://www.goodreads.com/user/show/57830550-deniz-dizman)
