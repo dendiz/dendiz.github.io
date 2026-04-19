@@ -38,8 +38,7 @@ How I get things done with my [[productivity framework\|productivity framework]]
 - Algorithmic trading
 - Introduction to Stochastic Calculus with Applications
 ## Watching
-- The Pitt S02
-- 24 Season 5
+ - 24 Season 5
 ### Watching queue
 - Scrubs (reboot)
 - Malcolm in the middle (reboot)
