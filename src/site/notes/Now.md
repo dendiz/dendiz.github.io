@@ -54,9 +54,9 @@ How I get things done with my [[productivity framework\|productivity framework]]
 - Productivity: Calendar App, Things3, Obsidian
 - Programming: Xcode, Terminal, git
 - Services: gitea, mastodon, plex, audiobookshelf, minio, jupyter, immich, jenkins, peertube, pocketbase, Prefect
-## Week notes
-My [realtime updates](http://mastodon.dendiz.xyz/@dendiz) on the Fediverse
-- 2026 [[Week Note 08\|W08]] | [[Week Note 09\|W09]] | [[Week Note 10\|W10]] | [[Week Note 11\|W11]] | [[Week Note 12\|W12]]| [[Week Note 13\|W13]] | [[Week Note 14\|W14]] | [[Week Note 15\|W15]] | [[Week Note 16\|W16]]
+## Notes
+- My [realtime updates](http://mastodon.dendiz.xyz/@dendiz) on the Fediverse.
+- My [[Week Notes\|Week Notes]] 
 ## Extra curricular
 - [[Home studio recording\|Home studio recording]]
 - [MechTek](/mechtek.html) -- Top down Mech game
