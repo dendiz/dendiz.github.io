@@ -22,6 +22,7 @@ This is a [now](https://nownownow.com) page, inspired by Derek Sivers. Its aim i
 How I get things done with my [[productivity framework\|productivity framework]]
 - Apple -- [App Intents](https://developer.apple.com/documentation/appintents) Framework and developer tooling
 - [[PolyGate\|PolyGate]] -- A data aggregator running on Prefect
+- [[ChessBrain\|ChessBrain]] - A set of computer chess related apps
 ## Learning
 - Quantitative trading
 - Corporate Finance
@@ -71,3 +72,4 @@ How I get things done with my [[productivity framework\|productivity framework]]
 - [[PolyGate\|PolyGate]] -- A data aggregator running on Prefect
 - TradeBrain -- A set of financial models for trading
 - [IMG2FEN](https://blog.dendiz.xyz/chess-img-fen/img2fen.html) -- Converts a screenshot of a chessboard to a FEN string
+- [[ChessBrain\|ChessBrain]] -- A set of computer chess related apps
