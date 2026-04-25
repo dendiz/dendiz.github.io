@@ -1,16 +1,16 @@
 ---
-{"dg-publish":true,"permalink":"/chess-bitboards/","dg-note-properties":{}}
+{"dg-publish":true,"permalink":"/chess-bitboards/","dg-note-properties":{"date":"2024-09-14"}}
 ---
 
-**Chess Programming: Diving into Bit Manipulation**
+## Chess Programming: Diving into Bit Manipulation
 
 Chess programming is a hobby I have pursued for some time now. I have implemented a PGN parser with recursive variation support and a chess modeler that loads the game and validates moves. I attempted to create a chess engine, but I don’t think it went very well. I always opted for the most comprehensible approach rather than the most efficient one. Now, for a change, I’m going to dive into the world of bit manipulation to understand the mechanics of hardcore chess programming.
 
-**A Recap**
+### A Recap
 
 The straightforward approach to chess programming involves modeling the pieces, the board, and the squares. One common method is to keep an 8x8 matrix to represent the board, where pieces occupy specific spaces. When computing the moves for a piece, you would iterate from the piece's position on the board through each of the squares and generate possible moves. This process requires significant computational power, and no serious engine can remain competitive with such an implementation. Search depth is critical in classical chess engines; you need fast move generation and validation to search deeply.
 
-**Introducing Bitboards**
+### Introducing Bitboards
 
 The first concept to tackle is the bitboard. As the name suggests, a bitboard is a string of bits representing the board. Since a chessboard has 64 squares, and an `Int64` has 64 bits—one for each square—this mapping works perfectly. The idea is to assign a bitboard to each piece of each color and set the corresponding bits in the `Int64` that reflect the position of that piece on the board. Here’s an example:
 
@@ -28,7 +28,7 @@ The king is on e1. The advantage of working with bitboards is that you can use t
 
 Since my implementation is in Swift, it’s important to note that not all languages provide the utilities that Swift does, but the concepts remain the same.
 
-**Creating a Square Abstraction**
+## Creating a Square Abstraction 
 
 To start, it’s helpful to have an abstraction for a `Square`. Even though we won’t use a `Square` object for storage, we still need to compute the index of a bit in the bitboard that corresponds to the file and rank of a square. It’s also useful to have utility functions, such as creating a bitmask for the square, which is a 64-bit number with only the bit corresponding to that square set.
 
@@ -44,7 +44,7 @@ public static let fileHMask: UInt64 = 0x8080808080808080
 
 The `rank1Mask` has 1's on the first rank from A to H, while the `fileAMask` has 1's on the first file from 1 to 8. These masks come in handy for checking borders or selecting a specific rank or file to work with.
 
-**Tricky Methods Explained**
+### Tricky Methods Explained
 
 Here’s one tricky method I want to explain: getting the squares for the set bits in the board.
 
@@ -101,7 +101,7 @@ This is all for today. I plan to write about computing moves for the King and Kn
 
 Now that we've covered the basics of bitboards, it's time to take a look at our model from a higher level. The objects we need to model the game include at least a board and pieces. While the engine that powers our moves and tracks piece positions will be the bitboards, there are other features we need, such as setting up the board using a FEN or retrieving the FEN representation. Below are some of the key functions I believe are useful:
 
-### `occupancy(color: Color) -> BitBoard`
+ `occupancy(color: Color) -> BitBoard`
 This method returns a bitboard with all the bits set for the pieces of the specified color. This is particularly useful when computing moves, as you need to check for captures. The implementation is straightforward: you simply perform a bitwise OR on all the bitboards for the given side.
 
 ```swift
@@ -112,15 +112,15 @@ if color == .white {
 
 You can also perform a bitwise OR on the result of both colors to get all the occupied squares on the board. From this, you can easily deduce the empty squares.
 
-### `subscript(square: Square) -> (PieceType, Color)?`
+`subscript(square: Square) -> (PieceType, Color)?`
 This method helps determine which piece, if any, is occupying a particular square on the board. I use a dictionary that holds references to each bitboard, keyed by the piece type and color. It’s crucial to use references because bitboards are integers, and if they are properties of the board class, the dictionary should point to these bitboards rather than hold separate copies. 
 
 Fetching the actual piece is then just a matter of performing a bitwise AND operation between the board for that piece and color, and the mask of the square. If the result is non-zero, then that’s the piece occupying the square.
 
-### `possibleMoves(from: Square) -> BitBoard?`
+`possibleMoves(from: Square) -> BitBoard?`
 This method returns all the possible moves that a piece on the specified square can make, if any. The computation of moves for each piece using bitboards is a topic I'll cover in a future post.
 
-### `isAttacked(square: Square, by color: Color) -> Bool`
+`isAttacked(square: Square, by color: Color) -> Bool`
 This method will be frequently used, especially since you cannot castle through a check or leave your king in check. The basic idea is to retrieve all the bitboards for a given color, iterate through the set bits (representing the pieces on the board), and, for each square, determine the type of piece. You can then request the attacking moves for that piece. To check if the attack bitboard includes the specified square, you perform a bitwise AND operation.
 
 ```swift
@@ -320,7 +320,6 @@ After we shift and subtract
 
 Our attack vector shows that we can attack 2 squares to the left. This trick only works towards the left of the bits as we need subtraction. To compute the attack in the other direction we just need to mirror the bitboard and run the same operation. Then we can combine the results from these, mask for the rank, file or diagonal we are interested in and return. This will automatically work for files, ranks and diagonals. 
 
-
 Here is another example:
 
 ![img](https://img.dendiz.xyz/images/2024/09/28/Screenshot-2024-09-28-at-5.05.21PM.md.png)
@@ -336,7 +335,7 @@ Assuming we have tokenized all the text and parsed it into some structure, we ca
 
 The first point is interesting because SAN notation does not mention coordinates but only the piece type (implicitly for pawns). To actually make a move, we need the source square of that piece. So, when creating a move from SAN notation, we need to pass in the current state of the board. It’s also helpful for the move object to contain additional information, such as the color of the piece and its type, as well as whether this move was a promotion or a capture. Here’s the information I tracked in my implementation:
 
-```
+```swift
 init(
     from: Square,
     to: Square,
