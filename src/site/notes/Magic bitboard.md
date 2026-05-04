@@ -60,6 +60,3 @@ The algorithm can be summarized as follows (applied for each square, for bishop 
 4. generate a sparse 64 bits random number (sparse mean bitwise and 3 64bit ints) as they seem to provide faster results
 5. use this generated magic to map the sliding attack to a table. If there is an existing entry for that index, discard the random number and try again
 6. if you can map all the sliding attacks without collision that random is the magic number for that piece on that square.
-
-
-- 

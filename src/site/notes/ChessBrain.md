@@ -10,7 +10,7 @@ This is the actual brainy parts of the system. It contains the foundational code
 
 - [[PGN Parser\|PGN Parser]] - Ingesting a chess game
 - [[Chess Bitboard\|Chess Bitboard]]- An efficient way to represent a game of chess in a computer
-- [[Magic bitboard\|Magic bitboard]] - An fast implementation for attack generation
+- [[Magic bitboard\|Magic bitboard]] - A fast attack generator implementation
 
 ## Apps
 I also have an app to replay/edit a game PGN that also uses the Cortex to evaluate a position. I use this app to mainly take notes on games that I played.
