@@ -9,7 +9,7 @@
 This is the actual brainy parts of the system. It contains the foundational code to represent the game of chess, validate the rules and state and also search for moves. I had a series of blog posts explaining some of the techniques used to implement this in an efficient way which I will link and also add some more with time. 
 
 - [[PGN Parser\|PGN Parser]] - Ingesting a chess game
-- [[Chess Bitboard\|Chess Bitboard]]- An efficient way to represent a game of chess in a computer
+- [[Chess Bitboard\|Chess Bitboard]] - An efficient way to represent a game of chess in a computer
 - [[Magic bitboard\|Magic bitboard]] - A fast attack generator implementation
 
 ## Apps
