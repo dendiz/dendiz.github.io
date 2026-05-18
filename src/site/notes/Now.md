@@ -29,9 +29,9 @@ How I get things done with my [[productivity framework\|productivity framework]]
 - Chess
 ## Listening
 - Metalcore 🤘🎸
-- Audible: Galaxy in Flames - Ben Counter
+- Audible: Honor of the queen
 ### Listening queue
-- Honor of the queen
+_empty_
 ## Reading
 [My goodreads profile](https://www.goodreads.com/user/show/57830550-deniz-dizman)
 ### Currently Reading
@@ -40,7 +40,7 @@ How I get things done with my [[productivity framework\|productivity framework]]
 - Algorithmic trading
 - Introduction to Stochastic Calculus with Applications
 ## Watching
- - 24 Season 5
+ - 24 Season 6
 ### Watching queue
 - Scrubs (reboot)
 - Malcolm in the middle (reboot)
