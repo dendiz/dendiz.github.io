@@ -30,6 +30,4 @@ This is the actual brainy parts of the system. It contains the foundational code
 ## Apps
 I also have an app to replay/edit a game PGN that also uses a UCI engine to evaluate a position. I use this app to mainly take notes on games that I played.
 
-[![Screenshot-2026-04-24-at-1.52.12PM.md.png](https://img.dendiz.xyz/images/2026/04/24/Screenshot-2026-04-24-at-1.52.12PM.md.png)](https://img.dendiz.xyz/image/Er1a)
-
-[![Screenshot-2026-04-24-at-1.53.20PM.md.png](https://img.dendiz.xyz/images/2026/04/24/Screenshot-2026-04-24-at-1.53.20PM.md.png)](https://img.dendiz.xyz/image/EHLX)
+[![Screenshot-2026-06-08-at-3.32.40PM.md.png](https://img.dendiz.xyz/images/2026/06/08/Screenshot-2026-06-08-at-3.32.40PM.md.png)](https://img.dendiz.xyz/image/Ev9Z)

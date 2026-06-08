@@ -21,8 +21,6 @@ This is a [now](https://nownownow.com) page, inspired by Derek Sivers. Its aim i
 ## Working
 How I get things done with my [[productivity framework\|productivity framework]]
 - Apple -- [App Intents](https://developer.apple.com/documentation/appintents) Framework and developer tooling
-- [[PolyGate\|PolyGate]] -- A data aggregator running on Prefect
-- [[ChessBrain\|ChessBrain]] - A set of computer chess related apps
 ## Learning
 - Quantitative trading
 - Corporate Finance
@@ -66,7 +64,7 @@ _empty_
 - [[SideMark\|SideMark]] -- A Markdown parser for Swift
 - [[Elephas\|Elephas]] -- A Mastodon client for macOS
 - [[KeyPulse\|KeyPulse]] -- A keystroke and mouse click counter
-- [C4I:MC](/0000/00/c4imc.md.html) -- A Mech strategy/simulation game
+- C4I:MC -- A Mech strategy/simulation game
 - [[RetroTrade\|RetroTrade]] -- A back testing framework for trading
 - [[Liquidate\|Liquidate]] -- A market simulation game
 - [[PolyGate\|PolyGate]] -- A data aggregator running on Prefect
