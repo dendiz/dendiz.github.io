@@ -6,6 +6,7 @@
 Every Sunday I put up a note outlining important things that happened over the past week and what I'm looking forward to for next week. 
 
 # 2026 
+- [[Week Note 25-26\|W25]]
 - [[Week Note 24-26\|W24]]
 - [[Week Note 23-26\|W23]]
 - [[Week Note 22-26\|W22]]
