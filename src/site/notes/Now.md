@@ -55,7 +55,6 @@ _empty_
 - Services: gitea, mastodon, plex, audiobookshelf, minio, jupyter, immich, jenkins, peertube, pocketbase, Prefect
 ## Notes
 - My [realtime updates](http://mastodon.dendiz.xyz/@dendiz) on the Fediverse.
-- My [[Week Notes\|Week Notes]] 
 ## Extra curricular
 - [[Home studio recording\|Home studio recording]]
 - [MechTek](/mechtek.html) -- Top down Mech game
