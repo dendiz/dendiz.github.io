@@ -22,8 +22,6 @@ _This page lives on this computer_
 - My [realtime updates](http://mastodon.dendiz.xyz/@dendiz) on the Fediverse.
 - [My goodreads profile](https://www.goodreads.com/user/show/57830550-deniz-dizman)
 ## Extra curricular
-- [Carbine2](/carbine2/carbine2/canvas.html) -- Top down shooter game in HTML5
-- [jschess](/jschess/index.html) -- A chess engine in Javascript (~1500 ELO)
 - [[SideMark\|SideMark]] -- A Markdown parser for Swift
 - [[Elephas\|Elephas]] -- A Mastodon client for macOS
 - [[KeyPulse\|KeyPulse]] -- A keystroke and mouse click counter
