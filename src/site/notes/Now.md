@@ -3,6 +3,7 @@
 ---
 
 Hi!
+
 I'm Deniz (say [hi](mailto:deniz.dizman@gmail.com)) and I like to program computers. I work as a software engineer and have had the chance to build stuff for amazing companies such as [this](https://www.apple.com), [this](https://www.trendyol.com) and [this](https://www.n11.com) and a few others.
 
 This is a [now](https://nownownow.com) page, inspired by Derek Sivers. Its aim is to provide you with a very high level overview of what's going on in my life. It's hosted at my home office. It's powered by Obsidian and the digital garden plugin
