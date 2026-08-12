@@ -2,7 +2,6 @@
 {"dg-publish":true,"permalink":"/chess-brain/","dg-note-properties":{"date":"2026-04-24"}}
 ---
 
-
 > ChessBrain is a project for developing some chess related programs. 
 
 ## ChessFront
