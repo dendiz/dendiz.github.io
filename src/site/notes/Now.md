@@ -25,5 +25,4 @@ _This page lives on this computer_
 ## Extra curricular
 - [[Elephas\|Elephas]] -- A Mastodon client for macOS
 - [[KeyPulse\|KeyPulse]] -- A keystroke and mouse click counter
-- [[RetroTrade\|RetroTrade]] -- A back testing framework for trading
 - [[ChessBrain\|ChessBrain]] -- A set of computer chess related apps
